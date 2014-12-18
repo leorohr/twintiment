@@ -43,5 +43,14 @@
 		<!-- Compiler for custom widget sets. Should not be deployed -->
 		<dependency org="com.vaadin" name="vaadin-client-compiler"
 			rev="&vaadin.version;" conf="widgetset-compile->default" />
+		
+		 <!-- Twitter HBC -->
+		<dependency org="com.twitter" name="hbc-core" rev="2.2.0" />
+		
+		<!-- Necessary?
+			Twitter4J HBC
+			<dependency org="com.twitter" name="hbc-twitter4j" rev="2.2.0" />
+		-->	
+		
 	</dependencies>
 </ivy-module>
