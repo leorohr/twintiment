@@ -19,7 +19,6 @@ public class TweetStreamer {
 	//TODO size adequate?
 	private BlockingQueue<String> msgQueue = new LinkedBlockingQueue<String>(100000);
 	private Client hosebirdClient;
-	private static Object readerMutex;
 	
 	public TweetStreamer() {
 
@@ -51,30 +50,33 @@ public class TweetStreamer {
 	}
 	
 	//TODO parallelize this
+	//ThreadPoolExecutor executor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
 	public void startStreaming() {
+	
 		
-		new StreamTweets().run();
+		Thread t = new Thread(new TweetStream());
+		t.start();
 		
+		try { Thread.sleep(5000);
+		} catch (InterruptedException e) {	e.printStackTrace(); }
+		
+		t.interrupt();
+
 	}
 	
-	private class StreamTweets implements Runnable {
+	private class TweetStream implements Runnable {
 
 		@Override
 		public void run() {
-			System.out.println("asd");
-			while(!hosebirdClient.isDone()) {
+			while(!hosebirdClient.isDone() && !Thread.currentThread().isInterrupted()) {
 				try {
-					synchronized (readerMutex) {
-						
-						System.out.println(msgQueue.take());
-					}
-			
+					System.out.println(msgQueue.take());
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 			
-			hosebirdClient.stop();
+			hosebirdClient.stop(); //TODO this has to go somewhere else
 			
 		}
 

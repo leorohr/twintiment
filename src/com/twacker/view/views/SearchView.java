@@ -78,8 +78,7 @@ public class SearchView extends CustomComponent implements View, Button.ClickLis
 	@Override
 	public void buttonClick(ClickEvent event) {
 //		UI.getCurrent().getNavigator().navigateTo(MainView.ID);
-		
-		System.out.println("foadfoad");
+
 		TweetStreamer streamer = new TweetStreamer();
 		streamer.startStreaming();
 		
