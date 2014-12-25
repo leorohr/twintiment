@@ -14,6 +14,11 @@ import com.vaadin.ui.UI;
 //TODO Servlet Description in web.xml
 //TODO Application class?
 
+/** 
+ * TODO
+ * @author leorohr
+ *
+ */
 @SuppressWarnings("serial")
 @Theme("twacker")
 public class TwackerUI extends UI {
