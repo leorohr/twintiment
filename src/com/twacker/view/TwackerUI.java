@@ -3,7 +3,7 @@ package com.twacker.view;
 import javax.servlet.annotation.WebServlet;
 
 import com.twacker.view.views.MainView;
-import com.twacker.view.views.SearchView;
+import com.twacker.view.views.SearchViewImpl;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
@@ -35,7 +35,7 @@ public class TwackerUI extends UI {
 		getPage().setTitle("Twacker");
 		
 		navigator = new Navigator(this, this);
-		navigator.addView("", new SearchView());
+		navigator.addView("", new SearchViewImpl());
 		navigator.addView(MainView.ID, new MainView());
 	
 	}

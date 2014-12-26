@@ -27,6 +27,7 @@ public class TweetStreamer {
 	//TODO size adequate?
 	private BlockingQueue<String> msgQueue = new LinkedBlockingQueue<String>(100000);
 	private Client hosebirdClient;
+	private Thread streamThread;
 	
 	public TweetStreamer() {
 
@@ -34,9 +35,7 @@ public class TweetStreamer {
 		StatusesFilterEndpoint hosebirdEndpoint = new StatusesFilterEndpoint();
 		
 		//Filter for terms
-		List<Long> followings = Lists.newArrayList(1234L, 566788L);
-		List<String> terms = Lists.newArrayList("twitter", "api");
-		hosebirdEndpoint.followings(followings);
+		List<String> terms = Lists.newArrayList("api");
 		hosebirdEndpoint.trackTerms(terms);
 		
 		AppProperties properties = AppProperties.getAppProperties();
@@ -61,17 +60,19 @@ public class TweetStreamer {
 	//TODO parallelize this
 	//ThreadPoolExecutor executor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
 	public void startStreaming() {
+		
+		if(streamThread != null && streamThread.isAlive())
+			return;
+		
+		streamThread = new Thread(new TweetStream(), "StreamThread");
+		streamThread.start();
+	}
 	
-		
-		Thread t = new Thread(new TweetStream());
-		t.start();
-		
-		try { Thread.sleep(5000);
-		} catch (InterruptedException e) {	e.printStackTrace(); }
-		
-		t.interrupt();
-		hosebirdClient.stop(); //TODO this has to go somewhere else
-
+	public void stopStreaming() {
+	
+		if(streamThread != null)
+			streamThread.interrupt();
+		hosebirdClient.stop();
 	}
 	
 	private class TweetStream implements Runnable {
