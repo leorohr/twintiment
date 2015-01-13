@@ -53,6 +53,9 @@
 		
 		<!-- SLF4J binding to plain System.out --> 
 		<dependency org="org.slf4j" name="slf4j-simple" rev="1.7.9" />
+		
+		<!-- Apache Commons CSV Parsre -->
+		<dependency org="org.apache.commons" name="commons-csv" rev="1.0" />
 				
 	</dependencies>
 </ivy-module>
