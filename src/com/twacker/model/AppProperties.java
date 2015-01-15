@@ -34,16 +34,9 @@ public class AppProperties {
 	// Singleton
 	private static AppProperties instance;
 
-	AppProperties() {
+	AppProperties() throws IOException {
 		Properties props = new Properties();
-					
-		try {
-			props.load(AppProperties.class.getClassLoader().getResourceAsStream("/resources/config.properties"));
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.err.println("Could not read config file\n");
-		}
+		props.load(AppProperties.class.getClassLoader().getResourceAsStream("/resources/config.properties"));
 		
 		consumerKey = props.getProperty("consumerKey");
 		consumerSecret = props.getProperty("consumerSecret");
@@ -51,7 +44,7 @@ public class AppProperties {
 		accessTokenSecret = props.getProperty("accessTokenSecret");
 	}
 	
-	public static AppProperties getAppProperties() {
+	public static AppProperties getAppProperties() throws IOException {
 		if(AppProperties.instance == null)
 			AppProperties.instance = new AppProperties();
 		
