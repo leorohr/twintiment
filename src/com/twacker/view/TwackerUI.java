@@ -2,7 +2,7 @@ package com.twacker.view;
 
 import javax.servlet.annotation.WebServlet;
 
-import com.twacker.view.views.MainView;
+import com.twacker.view.views.MainViewImpl;
 import com.twacker.view.views.SearchViewImpl;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -11,8 +11,8 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
-//TODO Servlet Description in web.xml
 //TODO Application class?
+//TODO rename project
 
 /** 
  * TODO
@@ -36,7 +36,7 @@ public class TwackerUI extends UI {
 		
 		navigator = new Navigator(this, this);
 		navigator.addView("", new SearchViewImpl());
-		navigator.addView(MainView.ID, new MainView());
+		navigator.addView(MainViewImpl.ID, new MainViewImpl());
 	
 	}
 
