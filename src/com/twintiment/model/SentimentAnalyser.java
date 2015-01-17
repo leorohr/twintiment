@@ -1,4 +1,4 @@
-package com.twacker.model;
+package com.twintiment.model;
 
 import java.io.Closeable;
 import java.io.File;

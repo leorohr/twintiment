@@ -1,9 +1,9 @@
-package com.twacker.view;
+package com.twintiment.view;
 
 import javax.servlet.annotation.WebServlet;
 
-import com.twacker.view.views.MainViewImpl;
-import com.twacker.view.views.SearchViewImpl;
+import com.twintiment.view.views.MainViewImpl;
+import com.twintiment.view.views.SearchViewImpl;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
@@ -12,7 +12,6 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
 //TODO Application class?
-//TODO rename project
 
 /** 
  * TODO
@@ -20,19 +19,19 @@ import com.vaadin.ui.UI;
  *
  */
 @SuppressWarnings("serial")
-@Theme("twacker")
-public class TwackerUI extends UI {
+@Theme("twintiment")
+public class TwintimentUI extends UI {
 
 	private Navigator navigator;
 	
 	@WebServlet(value = "/*", asyncSupported = true)
-	@VaadinServletConfiguration(productionMode = false, ui = TwackerUI.class)
+	@VaadinServletConfiguration(productionMode = false, ui = TwintimentUI.class)
 	public static class Servlet extends VaadinServlet {
 	}
 
 	@Override
 	protected void init(VaadinRequest request) {
-		getPage().setTitle("Twacker");
+		getPage().setTitle("Twintiment");
 		
 		navigator = new Navigator(this, this);
 		navigator.addView("", new SearchViewImpl());

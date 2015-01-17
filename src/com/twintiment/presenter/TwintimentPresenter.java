@@ -1,32 +1,32 @@
-package com.twacker.presenter;
+package com.twintiment.presenter;
 
 import java.io.IOException;
 
-import com.twacker.model.TweetStreamer;
-import com.twacker.view.views.SearchView;
+import com.twintiment.model.TweetStreamer;
+import com.twintiment.view.views.SearchView;
 
 /**
  * TODO make this a listener for new tweets from streamer
  * @author leorohr
  * TODO	
  */
-public class TwackerPresenter {
+public class TwintimentPresenter {
 	private SearchView searchView;
 	private TweetStreamer streamer;
-	private static TwackerPresenter instance;
+	private static TwintimentPresenter instance;
 	
 	/**
 	 * Implements the singleton pattern.
 	 * @param searchView
 	 * @return the instance of the presenter. Can be null.
 	 */
-	public static TwackerPresenter getInstance(SearchView searchView) {
+	public static TwintimentPresenter getInstance(SearchView searchView) {
 		if(instance == null)
-			instance = new TwackerPresenter(searchView);
+			instance = new TwintimentPresenter(searchView);
 		return instance;
 	}
 	
-	private TwackerPresenter(SearchView searchView) {
+	private TwintimentPresenter(SearchView searchView) {
 		this.searchView = searchView;
 	}
 

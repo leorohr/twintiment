@@ -1,4 +1,4 @@
-package com.twacker.model;
+package com.twintiment.model;
 
 import java.io.IOException;
 import java.util.List;
@@ -47,7 +47,7 @@ public class TweetStreamer {
 				
 		
 		ClientBuilder builder = new ClientBuilder()
-			.name("Twacker-01")
+			.name("SenTweet-01")
 			.hosts(hosebirdHosts)
 			.authentication(hosebirdAuth)
 			.endpoint(hosebirdEndpoint)
@@ -90,6 +90,8 @@ public class TweetStreamer {
 				try {
 					String msg = msgQueue.take();
 					System.out.print(msg + " Sentiment: ");
+					
+					//Parse JSON message and retrieve the actual message from it.
 					ObjectMapper mapper = new ObjectMapper();
 					String text = mapper.readTree(msg).findValue("text").asText();
 					double score = sentimentAnalyser.calculateSentiment(text);

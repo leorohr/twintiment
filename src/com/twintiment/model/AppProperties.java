@@ -1,4 +1,4 @@
-package com.twacker.model;
+package com.twintiment.model;
 
 import java.io.IOException;
 import java.util.Properties;

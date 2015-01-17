@@ -1,9 +1,9 @@
 @import "addons.scss";
-@import "twacker.scss";
+@import "twintiment.scss";
 
 /* This file prefixes all rules with the theme name to avoid causing conflicts with other themes. */
-/* The actual styles should be defined in twacker.scss */
-.twacker {
+/* The actual styles should be defined in twintiment.scss */
+.twintiment {
   @include addons;
-  @include twacker;
+  @include twintiment;
 }
