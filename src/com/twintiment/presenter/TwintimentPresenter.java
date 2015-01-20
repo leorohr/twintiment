@@ -61,6 +61,8 @@ public class TwintimentPresenter implements TweetListener {
 				
 			double score = sentimentAnalyser.calculateSentiment(text);
 			System.out.print(text + ": " + score + "\n");
+			searchView.addTableRow(new Object[] {text, score});
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
