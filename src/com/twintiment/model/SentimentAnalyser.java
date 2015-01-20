@@ -2,6 +2,7 @@ package com.twintiment.model;
 
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -22,18 +23,16 @@ public class SentimentAnalyser implements Closeable {
 	private CSVParser parser;
 	private CSVRecord[] records;
 	
-	public SentimentAnalyser() {
+	/**
+	 * @throws FileNotFoundException if the sentiment dictionary file was not found. 
+	 * @throws IOException if the sentiment dictionary file could not be parsed successfully.
+	 */
+	public SentimentAnalyser() throws FileNotFoundException, IOException  {
 		
 		labMTFile = new File(FILEPATH);
 		
-		try {
-			parser = new CSVParser(new FileReader(labMTFile), CSVFormat.TDF.withHeader());
-			records = parser.getRecords().toArray(new CSVRecord[0]);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+		parser = new CSVParser(new FileReader(labMTFile), CSVFormat.TDF.withHeader());
+		records = parser.getRecords().toArray(new CSVRecord[0]);	
 	}
 	
 	/**
@@ -41,9 +40,8 @@ public class SentimentAnalyser implements Closeable {
 	 * the string's sentiment score.
 	 * @param s The string to calculate the sentiment score for.
 	 * @return The sentiment score for the provided string as double value.
-	 * @throws IOException if the sentiment dictionary file could not be successfully parsed.
 	 */
-	public double calculateSentiment(String s) throws IOException {
+	public double calculateSentiment(String s) {
 		
 		String[] words = s.toLowerCase().split(" ");
 		double sentimentScore = 0;
@@ -65,13 +63,16 @@ public class SentimentAnalyser implements Closeable {
 	}
 
 	/**
-	 * This method should be called to make sure the filestream is closed correctly.
-	 * @throws IOException 
+	 * This method should be called to make sure the filestream is closed correctly. 
 	 */
 	@Override
-	public void close() throws IOException {
+	public void close() {
 		
-		parser.close();	
+		try {
+			parser.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
 	}
 
 }

@@ -1,11 +1,14 @@
 package com.twintiment.model;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.twintiment.presenter.TweetListener;
 import com.twitter.hbc.ClientBuilder;
 import com.twitter.hbc.core.Client;
 import com.twitter.hbc.core.Constants;
@@ -20,10 +23,10 @@ import com.twitter.hbc.httpclient.auth.OAuth1;
 /**
  * TODO
  * @author leorohr
- * TODO combine sentiment analysis and stream in presenter. probably best with observer pattern and this streamer fires "NewTweetEvents" or alike.
  */
 public class TweetStreamer {
 	
+	private List<TweetListener> listeners = new ArrayList<TweetListener>();
 	//TODO size adequate?
 	private BlockingQueue<String> msgQueue = new LinkedBlockingQueue<String>(100000);
 	private SentimentAnalyser sentimentAnalyser = new SentimentAnalyser();
@@ -31,13 +34,20 @@ public class TweetStreamer {
 	private Thread streamThread;
 	
 	
+	public void addListener(TweetListener listener) {
+		listeners.add(listener);
+	}
+	
+	public void removeListener(TweetListener listener) {
+		listeners.remove(listener);
+	}
+	
 	public TweetStreamer(List<String> filterTerms) throws IOException {
 
 		Hosts hosebirdHosts = new HttpHosts(Constants.STREAM_HOST);
 		StatusesFilterEndpoint hosebirdEndpoint = new StatusesFilterEndpoint();
 		
-		//Filter for terms
-//		hosebirdEndpoint.trackTerms(Lists.newArrayList("sad")); //default term for debugging 
+		//Filter for terms 
 		hosebirdEndpoint.trackTerms(filterTerms);
 		
 		AppProperties properties = AppProperties.getAppProperties();
@@ -47,7 +57,7 @@ public class TweetStreamer {
 				
 		
 		ClientBuilder builder = new ClientBuilder()
-			.name("SenTweet-01")
+			.name("Twintiment-01")
 			.hosts(hosebirdHosts)
 			.authentication(hosebirdAuth)
 			.endpoint(hosebirdEndpoint)
@@ -74,11 +84,7 @@ public class TweetStreamer {
 			streamThread.interrupt();
 		hosebirdClient.stop();
 		
-		try {
-			sentimentAnalyser.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		sentimentAnalyser.close();
 	}
 	
 	private class TweetStream implements Runnable {
@@ -89,13 +95,13 @@ public class TweetStreamer {
 			while(!hosebirdClient.isDone() && !Thread.currentThread().isInterrupted()) {
 				try {
 					String msg = msgQueue.take();
-					System.out.print(msg + " Sentiment: ");
-					
-					//Parse JSON message and retrieve the actual message from it.
+					//Parse JSON message and pass it to all listeners
 					ObjectMapper mapper = new ObjectMapper();
-					String text = mapper.readTree(msg).findValue("text").asText();
-					double score = sentimentAnalyser.calculateSentiment(text);
-					System.out.print(score + "\n");
+					JsonNode tweet = mapper.readTree(msg);
+					
+					for(TweetListener l : listeners)
+						l.newTweetArrived(tweet);
+					
 				} catch (InterruptedException | IOException e) {
 					e.printStackTrace();
 				}
