@@ -1,0 +1,7 @@
+.googlemap img {
+    max-width: none;
+}
+
+.v-widget.googlemap {
+    min-height: 200px;
+}

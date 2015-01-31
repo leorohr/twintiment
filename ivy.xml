@@ -62,6 +62,8 @@
 		
 		<!-- Google Maps -->
 		<dependency org="com.vaadin.tapio" name="googlemaps" rev="1.0.0" />
+		
+		<dependency org="org.peimari" name="dawn" rev="2" />
 
 		
 				

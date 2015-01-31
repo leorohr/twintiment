@@ -1,6 +1,7 @@
 package com.twintiment.presenter;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.twintiment.model.SentimentAnalyser;
@@ -11,7 +12,9 @@ import com.twintiment.view.views.SearchView;
  * @author leorohr
  * TODO	
  */
-public class TwintimentPresenter implements TweetListener {
+public class TwintimentPresenter implements TweetListener, Serializable {
+	
+	private static final long serialVersionUID = 8526370213359196037L;
 	private SearchView searchView;
 	private TweetStreamer streamer;
 	private static TwintimentPresenter instance;
@@ -61,7 +64,7 @@ public class TwintimentPresenter implements TweetListener {
 				
 			double score = sentimentAnalyser.calculateSentiment(text);
 			System.out.print(text + ": " + score + "\n");
-			searchView.addTableRow(new Object[] {text, score});
+			searchView.addTableRow(new Object[] {text, score}); //TODO this doesnt show immediately, why?
 			
 			
 		} catch (IOException e) {
