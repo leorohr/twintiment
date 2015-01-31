@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE ivy-module [
-	<!ENTITY vaadin.version "7.3.6">
+	<!ENTITY vaadin.version "7.3.9">
 ]>
 <ivy-module version="2.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -59,6 +59,9 @@
 		
 		<!-- Jackson --> 
 		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.5.0"/>
+		
+		<!-- Google Maps -->
+		<dependency org="com.vaadin.tapio" name="googlemaps" rev="1.0.0" />
 
 		
 				
