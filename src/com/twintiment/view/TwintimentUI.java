@@ -3,10 +3,8 @@ package com.twintiment.view;
 import javax.servlet.annotation.WebServlet;
 
 import com.twintiment.view.views.MainViewImpl;
-import com.twintiment.view.views.SearchViewImpl;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
@@ -21,7 +19,6 @@ import com.vaadin.ui.UI;
  */
 @SuppressWarnings("serial")
 @Theme("twintiment")
-@Widgetset("com.twintiment.view.widgetset.TwintimentWidgetset")
 public class TwintimentUI extends UI {
 
 	private Navigator navigator;
@@ -36,8 +33,7 @@ public class TwintimentUI extends UI {
 		getPage().setTitle("Twintiment");
 		
 		navigator = new Navigator(this, this);
-		navigator.addView("", new SearchViewImpl());
-		navigator.addView(MainViewImpl.ID, new MainViewImpl());
+		navigator.addView("", new MainViewImpl());
 	
 	}
 

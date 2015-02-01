@@ -6,7 +6,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.twintiment.model.SentimentAnalyser;
 import com.twintiment.model.TweetStreamer;
-import com.twintiment.view.views.SearchView;
+import com.twintiment.view.views.MainView;
 
 /**
  * @author leorohr
@@ -15,7 +15,7 @@ import com.twintiment.view.views.SearchView;
 public class TwintimentPresenter implements TweetListener, Serializable {
 	
 	private static final long serialVersionUID = 8526370213359196037L;
-	private SearchView searchView;
+	private MainView searchView;
 	private TweetStreamer streamer;
 	private static TwintimentPresenter instance;
 	
@@ -24,13 +24,13 @@ public class TwintimentPresenter implements TweetListener, Serializable {
 	 * @param searchView
 	 * @return the instance of the presenter. Can be null.
 	 */
-	public static TwintimentPresenter getInstance(SearchView searchView) {
+	public static TwintimentPresenter getInstance(MainView searchView) {
 		if(instance == null)
 			instance = new TwintimentPresenter(searchView);
 		return instance;
 	}
 	
-	private TwintimentPresenter(SearchView searchView) {
+	private TwintimentPresenter(MainView searchView) {
 		this.searchView = searchView;
 	}
 
