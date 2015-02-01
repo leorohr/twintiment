@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twintiment.model.SentimentAnalyser;
 import com.twintiment.model.TweetStreamer;
 import com.twintiment.view.views.MainView;
@@ -56,16 +57,24 @@ public class TwintimentPresenter implements TweetListener, Serializable {
 	 * @param tweet The tweet that is taken from the queue.
 	 */
 	@Override
-	public void newTweetArrived(JsonNode tweet) {		
+	public void newTweetArrived(String tweet) {		
 		
 		SentimentAnalyser sentimentAnalyser = null;
 		try {
 			sentimentAnalyser = new SentimentAnalyser();
-			String text = tweet.findValue("text").asText();
-				
+
+			//Parse Json
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode jsonTree = mapper.readTree(tweet);
+			String text = jsonTree.findValue("text").asText();
 			double score = sentimentAnalyser.calculateSentiment(text);
+			
+			float[] coordinates = mapper.readValue(jsonTree.findValue("coordinates").asText(), float[].class);
+			if(coordinates != null)
+				System.out.println(text + ": "+ coordinates);
+			
 //			System.out.print(text + ": " + score + "\n");
-			//Push change to UI
+			//Push new entry to UI
 			UI.getCurrent().access(() -> mainView.addTableRow(new Object[] {text, score}));
 			
 		} catch (IOException e) {

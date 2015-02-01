@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twintiment.presenter.TweetListener;
 import com.twitter.hbc.ClientBuilder;
 import com.twitter.hbc.core.Client;
@@ -49,7 +47,7 @@ public class TweetStreamer {
 		
 		//Filter for terms 
 		hosebirdEndpoint.trackTerms(filterTerms);
-		
+
 		AppProperties properties = AppProperties.getAppProperties();
 		Authentication hosebirdAuth = new OAuth1(
 				properties.getConsumerKey(), properties.getConsumerSecret(),
@@ -95,14 +93,10 @@ public class TweetStreamer {
 			while(!hosebirdClient.isDone() && !Thread.currentThread().isInterrupted()) {
 				try {
 					String msg = msgQueue.take();
-					//Parse JSON message and pass it to all listeners
-					ObjectMapper mapper = new ObjectMapper();
-					JsonNode tweet = mapper.readTree(msg);
-					
 					for(TweetListener l : listeners)
-						l.newTweetArrived(tweet);
+						l.newTweetArrived(msg);
 					
-				} catch (InterruptedException | IOException e) {
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
