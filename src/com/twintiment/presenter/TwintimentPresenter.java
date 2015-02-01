@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.twintiment.model.SentimentAnalyser;
 import com.twintiment.model.TweetStreamer;
 import com.twintiment.view.views.MainView;
+import com.vaadin.ui.UI;
 
 /**
  * @author leorohr
@@ -15,7 +16,7 @@ import com.twintiment.view.views.MainView;
 public class TwintimentPresenter implements TweetListener, Serializable {
 	
 	private static final long serialVersionUID = 8526370213359196037L;
-	private MainView searchView;
+	private MainView mainView;
 	private TweetStreamer streamer;
 	private static TwintimentPresenter instance;
 	
@@ -24,20 +25,20 @@ public class TwintimentPresenter implements TweetListener, Serializable {
 	 * @param searchView
 	 * @return the instance of the presenter. Can be null.
 	 */
-	public static TwintimentPresenter getInstance(MainView searchView) {
+	public static TwintimentPresenter getInstance(MainView mainView) {
 		if(instance == null)
-			instance = new TwintimentPresenter(searchView);
+			instance = new TwintimentPresenter(mainView);
 		return instance;
 	}
 	
-	private TwintimentPresenter(MainView searchView) {
-		this.searchView = searchView;
+	private TwintimentPresenter(MainView mainView) {
+		this.mainView = mainView;
 	}
 
 	public void startStreaming() {
 		
 		try {
-			streamer = new TweetStreamer(searchView.getFilterTerms());
+			streamer = new TweetStreamer(mainView.getFilterTerms());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -63,9 +64,9 @@ public class TwintimentPresenter implements TweetListener, Serializable {
 			String text = tweet.findValue("text").asText();
 				
 			double score = sentimentAnalyser.calculateSentiment(text);
-			System.out.print(text + ": " + score + "\n");
-			searchView.addTableRow(new Object[] {text, score}); //TODO this doesnt show immediately, why?
-			
+//			System.out.print(text + ": " + score + "\n");
+			//Push change to UI
+			UI.getCurrent().access(() -> mainView.addTableRow(new Object[] {text, score}));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -75,7 +76,5 @@ public class TwintimentPresenter implements TweetListener, Serializable {
 		}
 		
 	}
-	
-	
 
 }

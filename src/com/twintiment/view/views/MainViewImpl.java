@@ -4,12 +4,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.twintiment.presenter.TwintimentPresenter;
+import com.vaadin.data.Container;
+import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.tapio.googlemaps.GoogleMap;
 import com.vaadin.tapio.googlemaps.client.LatLon;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
@@ -18,13 +20,12 @@ import com.vaadin.ui.VerticalLayout;
 
 public class MainViewImpl extends CustomComponent implements MainView, Button.ClickListener {
 
-
 	private VerticalLayout mainLayout;
 	private Button stopButton;
 	private Button startButton;
 	private TextField keywordTF;
 	private Table table;
-	private TwintimentPresenter presenter = TwintimentPresenter.getInstance(this);
+	private TwintimentPresenter presenter;
 	
 	private static final long serialVersionUID = -6224565670170192401L;
 	
@@ -37,12 +38,16 @@ public class MainViewImpl extends CustomComponent implements MainView, Button.Cl
 	 */
 	public MainViewImpl() {
 		buildMainLayout();
-		
 		setCompositionRoot(mainLayout);
 		
+		presenter = TwintimentPresenter.getInstance(this);
+		
 		//Initialise table
-		table.addContainerProperty("Message", String.class, "");
-		table.addContainerProperty("Score", Double.class, 0.0d);
+		Container container = new IndexedContainer();
+		container.addContainerProperty("Message", String.class, "");
+		container.addContainerProperty("Score", Double.class, 0.0d);
+		table.setContainerDataSource(container);
+		
 		table.setColumnWidth("Score", 75);
 		table.setColumnExpandRatio("Message", 1.0f);
 	}
@@ -74,9 +79,12 @@ public class MainViewImpl extends CustomComponent implements MainView, Button.Cl
 		return Arrays.asList(arr);
 	}
 
-
 	@Override
 	public void addTableRow(Object[] cells) {
+		
+		
+		
+		
 		table.addItem(cells, null);
 	}
 
@@ -125,6 +133,4 @@ public class MainViewImpl extends CustomComponent implements MainView, Button.Cl
 		
 		return mainLayout;
 	}
-
-	
 }
