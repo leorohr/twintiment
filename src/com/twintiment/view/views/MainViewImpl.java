@@ -9,6 +9,7 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.tapio.googlemaps.GoogleMap;
 import com.vaadin.tapio.googlemaps.client.LatLon;
+import com.vaadin.tapio.googlemaps.client.overlays.GoogleMapMarker;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -25,6 +26,7 @@ public class MainViewImpl extends CustomComponent implements MainView, Button.Cl
 	private Button startButton;
 	private TextField keywordTF;
 	private Table table;
+	private GoogleMap map;
 	private TwintimentPresenter presenter;
 	
 	private static final long serialVersionUID = -6224565670170192401L;
@@ -52,42 +54,6 @@ public class MainViewImpl extends CustomComponent implements MainView, Button.Cl
 		table.setColumnExpandRatio("Message", 1.0f);
 	}
 
-	@Override
-	public void enter(ViewChangeEvent event) {
-		
-		startButton.addClickListener(this);
-		stopButton.addClickListener(this);
-		
-	}
-
-	@Override
-	public void buttonClick(ClickEvent event) {
-//		UI.getCurrent().getNavigator().navigateTo(MainView.ID);
-		
-		if(event.getButton().equals(startButton)) {
-			presenter.startStreaming();
-		}
-		else if(event.getButton().equals(stopButton)) {
-			presenter.stopStreaming();
-		}
-	}
-
-	@Override
-	public List<String> getFilterTerms() {
-
-		String[] arr = keywordTF.getValue().split(" ");
-		return Arrays.asList(arr);
-	}
-
-	@Override
-	public void addTableRow(Object[] cells) {
-		
-		
-		
-		
-		table.addItem(cells, null);
-	}
-
 	private VerticalLayout buildMainLayout() {
 		// common part: create layout
 		mainLayout = new VerticalLayout();
@@ -101,7 +67,7 @@ public class MainViewImpl extends CustomComponent implements MainView, Button.Cl
 		
 		//map
 		//API-Key and clientId will be necessary when deploying this app
-		GoogleMap map = new GoogleMap(null, null, null);
+		map = new GoogleMap(null, null, null);
 		map.setSizeFull();
 		map.setCenter(new LatLon(51.512093, -0.11703));
         map.setZoom(5);
@@ -132,5 +98,43 @@ public class MainViewImpl extends CustomComponent implements MainView, Button.Cl
 		mainLayout.setExpandRatio(hlayout, 0.3f);
 		
 		return mainLayout;
+	}
+	
+	@Override
+	public void enter(ViewChangeEvent event) {
+		
+		startButton.addClickListener(this);
+		stopButton.addClickListener(this);
+		
+	}
+
+	@Override
+	public void buttonClick(ClickEvent event) {		
+		if(event.getButton().equals(startButton)) {
+			presenter.startStreaming();
+		}
+		else if(event.getButton().equals(stopButton)) {
+			presenter.stopStreaming();
+		}
+	}
+
+	@Override
+	public List<String> getFilterTerms() {
+		String[] arr = keywordTF.getValue().split(" ");
+		return Arrays.asList(arr);
+	}
+
+	@Override
+	public void addTableRow(Object[] cells) {
+		table.addItem(cells, null);
+	}
+	
+	@Override
+	public void addMapMarker(double[] coordinates, String text, double score) {
+		GoogleMapMarker marker =
+				new GoogleMapMarker("'" + text + "'" + " -- Score: " + score,
+									new LatLon(coordinates[0], coordinates[1]), false);
+		
+		map.addMarker(marker);
 	}
 }

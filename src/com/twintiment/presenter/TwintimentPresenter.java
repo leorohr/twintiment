@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.twintiment.model.GeoLocator;
 import com.twintiment.model.SentimentAnalyser;
 import com.twintiment.model.TweetStreamer;
 import com.twintiment.view.views.MainView;
@@ -69,13 +70,21 @@ public class TwintimentPresenter implements TweetListener, Serializable {
 			String text = jsonTree.findValue("text").asText();
 			double score = sentimentAnalyser.calculateSentiment(text);
 			
-			float[] coordinates = mapper.readValue(jsonTree.findValue("coordinates").asText(), float[].class);
-			if(coordinates != null)
-				System.out.println(text + ": "+ coordinates);
 			
-//			System.out.print(text + ": " + score + "\n");
+			double[] tweetCoordinates = mapper.readValue(jsonTree.findValue("coordinates").asText(), double[].class);
+			String location = jsonTree.findValue("location").asText();
+			double[] userCoordinates = GeoLocator.getCoordinates(location);
+						
 			//Push new entry to UI
-			UI.getCurrent().access(() -> mainView.addTableRow(new Object[] {text, score}));
+			//TODO probably this should all be done in one UI call instead of 3..
+			UI.getCurrent().access(
+					() -> {
+				mainView.addTableRow(new Object[] {text, score});
+				if(tweetCoordinates != null)
+					mainView.addMapMarker(tweetCoordinates, text, score);
+				else if(userCoordinates != null)
+					mainView.addMapMarker(userCoordinates, text, score);
+				});
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -85,5 +94,4 @@ public class TwintimentPresenter implements TweetListener, Serializable {
 		}
 		
 	}
-
 }

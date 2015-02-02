@@ -10,4 +10,5 @@ public interface MainView extends View {
 	
 	public List<String> getFilterTerms();
 	public void addTableRow(Object[] cells);
+	public void addMapMarker(double[] coordinates, String text, double score);
 }
