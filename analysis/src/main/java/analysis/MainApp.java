@@ -1,22 +1,15 @@
 package analysis;
 
-import java.io.IOException;
+import java.io.File;
+
+
 
 public class MainApp {
 	
 	public static void main(String[] args) {
-		try {
-			Analyser analyser = new Analyser("C:/Users/Leo/Desktop/tweets.json");
-			
-			while(analyser.hasNext()) {
-				analyser.hasGeoTag();
-				analyser.nextLine();
-			}
-			
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+	
+		ConcProcessor proc = new ConcProcessor(2);
+		proc.runAnalysis(new File("/Users/leorohr/Desktop/tweets.json"));
+		
 	}
-
 }
