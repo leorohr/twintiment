@@ -1,0 +1,31 @@
+@CHARSET "UTF-8";
+
+table, th, td {
+	border: 1px solid #015D80;
+}
+
+
+th {
+	height: 35px;
+	text-align: left;
+	vertical-align: bottom;
+	background-color: #0082B4;
+	font-size: 1em;
+	padding: 5px;
+	color: white;
+}
+
+td {
+	padding: 5px;
+}
+
+table {
+	border-collapse: collapse;
+	overflow-x: hidden;
+}
+
+div.tableWrapper {
+	height: 400px;
+	overflow-y: scroll;
+	width: 60%; 
+}
