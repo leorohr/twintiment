@@ -1,4 +1,4 @@
 .DS_Store
-.settings/*
-src/main/webapp/WEB-INF/lib/*
-target/*
+.settings
+src/main/webapp/WEB-INF/lib/
+target

@@ -51,7 +51,7 @@ function wscallback(message) {
 
 var stompClient;
 function connectToWs() {
-	var socket = new SockJS("/Twinti/data_stream");
+	var socket = new SockJS("/Twintiment/data_stream");
 	stompClient = Stomp.over(socket);
 
 	stompClient.connect({},
