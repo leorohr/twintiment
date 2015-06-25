@@ -22,6 +22,7 @@ public class SentimentAnalyser implements Closeable {
 	private File labMTFile;
 	private CSVParser parser;
 	private CSVRecord[] records;
+	private double happinessMean;
 	
 	/**
 	 * @throws FileNotFoundException if the sentiment dictionary file was not found. 
@@ -32,7 +33,14 @@ public class SentimentAnalyser implements Closeable {
 		labMTFile = new File(FILEPATH);
 		
 		parser = new CSVParser(new FileReader(labMTFile), CSVFormat.TDF.withHeader());
-		records = parser.getRecords().toArray(new CSVRecord[0]);	
+		records = parser.getRecords().toArray(new CSVRecord[0]);
+
+		// Get the average happiness value of the records
+		for(CSVRecord r : records) {
+			happinessMean += Double.parseDouble(r.get("happiness_average"));
+		}
+		happinessMean /= records.length;
+		 
 	}
 	
 	/**
@@ -58,8 +66,11 @@ public class SentimentAnalyser implements Closeable {
 			}
 			
 		}
-			
-		return sentimentScore;
+		
+		//Substract the mean happiness for each of the words
+		sentimentScore -= words.length*happinessMean;
+		
+		return sentimentScore/words.length;
 	}
 
 	/**
