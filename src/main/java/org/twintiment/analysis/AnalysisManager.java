@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.twintiment.analysis.geolocation.GeoLocator;
 import org.twintiment.analysis.sentiment.SentimentAnalyser;
 import org.twintiment.vo.TweetDataMsg;
+import org.twintiment.vo.TweetRateMsg;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +30,7 @@ public class AnalysisManager {
 	private Thread transmissionThread, analysisThread;
 	private TweetSource source;
 	private SentimentAnalyser sentimentAnalyser;
+	private long tweetCount = 0;
 	
 	@Autowired
 	public AnalysisManager(MessageSendingOperations<String> messagingTemplate) {
@@ -65,10 +67,20 @@ public class AnalysisManager {
 			
 			@Override
 			public void run() {
+				long startTime = System.currentTimeMillis();
+				long now;
 				while(!isStopped) {
 					
 					try {
 						messagingTemplate.convertAndSend("/queue/data", messageQueue.take());
+						
+						//Send the tweet-rate every ten seconds
+						now = System.currentTimeMillis();
+						if((now - startTime) > 10000) {
+							messagingTemplate.convertAndSend("/queue/tweet_rate", new TweetRateMsg(tweetCount, now));
+							tweetCount = 0;
+							startTime = System.currentTimeMillis();
+						}
 					} catch (MessagingException | InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -92,7 +104,7 @@ public class AnalysisManager {
 	 * 			into a JsonNode object.					
 	 */
 	private void analyseNextTweet() throws IOException {
-		//TODO set up analysis chain (eventually should be based on user preferences)		
+		//TODO set up analysis chain (based on user preferences?)		
 			
 		ObjectMapper mapper = new ObjectMapper(); 
 		JsonNode tweet = mapper.readTree(source.getNextTweet());
@@ -103,7 +115,6 @@ public class AnalysisManager {
 		//Extract HashTags
 		JsonNode tagNode = tweet.findValue("entities").findValue("hashtags");
 		hashtags = tagNode.findValuesAsText("text");
-			
 		
 		//Get Sentiment
 		double sentiment = sentimentAnalyser.calculateSentiment(text);
@@ -123,11 +134,14 @@ public class AnalysisManager {
 		
 		messageQueue.offer(new TweetDataMsg(text, sentiment, coords,
 				date, hashtags ));
+		
+		//Track number of processed tweets
+		++tweetCount;
 	}
 	
 	/**
 	 * Parses the date of a tweet into a Java Date object.
-	 * @param date The date as String in the Twitter 'created_at' format.
+	 * @param date The date as String in the format of Twitter's 'created_at'-field.
 	 * @return A data object object 
 	 */
 	private Date getTwitterDate(String date) throws ParseException {

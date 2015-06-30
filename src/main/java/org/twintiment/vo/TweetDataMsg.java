@@ -35,7 +35,6 @@ public class TweetDataMsg {
 	
 	public TweetDataMsg(String message, double sentiment, double[] coords,
 			Date date, List<String> hashtags) {
-		super();
 		this.message = message;
 		this.sentiment = sentiment;
 		this.coords = coords;

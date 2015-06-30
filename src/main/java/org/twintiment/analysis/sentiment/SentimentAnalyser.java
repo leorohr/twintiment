@@ -40,7 +40,6 @@ public class SentimentAnalyser implements Closeable {
 			happinessMean += Double.parseDouble(r.get("happiness_average"));
 		}
 		happinessMean /= records.length;
-		 
 	}
 	
 	/**
@@ -55,21 +54,16 @@ public class SentimentAnalyser implements Closeable {
 		double sentimentScore = 0;
 		
 		for(String word : words) {
-		
-			//TODO worthwhile to order the labmt file entries by alphabet and then apply better search?
+			//TODO order the labmt file entries by alphabet and then apply better search
 			for(int i=0; i<records.length; i++)
 			{
 				if(records[i].get("word").equals(word)) {
-					sentimentScore += Double.parseDouble(records[i].get("happiness_average"));
+					sentimentScore += Double.parseDouble(records[i].get("happiness_average")) - happinessMean;
 					break;
 				}
 			}
-			
 		}
-		
-		//Substract the mean happiness for each of the words
-		sentimentScore -= words.length*happinessMean;
-		
+				
 		return sentimentScore/words.length;
 	}
 

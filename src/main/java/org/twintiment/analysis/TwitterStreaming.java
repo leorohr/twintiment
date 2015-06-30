@@ -59,7 +59,6 @@ public class TwitterStreaming implements TweetSource {
 	public String getNextTweet() {
 
 		try {
-			System.out.println("getnext");
 			return msgQueue.take();
 		} catch (InterruptedException e) {
 			e.printStackTrace();

@@ -47,7 +47,7 @@ public class GeoLocator {
 	 */
 	public static double[] getCoordinates(String address) throws IOException {
 		
-		if(address.equals(""))
+		if(address.equals("") || address.equals(" "))
 			return null;
 		
 		//Create request

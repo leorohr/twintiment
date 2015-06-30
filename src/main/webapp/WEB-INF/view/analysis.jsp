@@ -13,11 +13,15 @@
 	src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.0.0-beta.9/sockjs.min.js" />"></script>
 <script type="text/javascript"
 	src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" />"></script>
+
 <!-- Leaflet  -->
 <link rel="stylesheet"
 	href="<c:url value="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />">
 <script
 	src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+
+<!-- Highcharts -->
+<script src="http://code.highcharts.com/stock/highstock.js"></script>
 
 <script type="text/javascript"
 	src="<c:url value="/resources/js/application.js" />"></script>
@@ -27,8 +31,9 @@
 </head>
 
 <body>
-	<div id="map_div" style="width: 60%; height: 300px;"></div>
-
+	<div id="map_div" class="map"></div>
+	<div id="chart_div" class="chart"></div>
+	
 	<form:form>
 		<input id="filterTerms" name="filterTerms"
 			placeholder="Enter Filterterms...">

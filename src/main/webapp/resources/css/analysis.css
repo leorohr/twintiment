@@ -1,5 +1,5 @@
 @CHARSET "UTF-8";
-
+/* Table */
 table, th, td {
 	border: 1px solid #015D80;
 }
@@ -24,8 +24,23 @@ table {
 	overflow-x: hidden;
 }
 
+/* divs */
 div.tableWrapper {
 	height: 400px;
 	overflow-y: scroll;
 	width: 60%; 
+}
+
+div.map {
+	width: 60%;
+	height: 300px;
+	/* float: left; */
+}
+
+div.chart {
+	width: 40%;
+	height: 300px;
+	float: right;
+	top: -200px;
+	position: relative;
 }
