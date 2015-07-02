@@ -27,9 +27,9 @@ public class GeoLocator {
 		
 		//If tweet-coordinates are present, return them.
 		JsonNode coords;
-		if(!(coords = tweet.findValue("coordinates")).isNull()) {
+		if(!(coords = tweet.get("coordinates")).isNull()) {
 			 //flip order. Twitter returns coords in lon/lat
-			return new double[] { coords.get(1).asDouble(), coords.get(0).asDouble() };
+			return new double[] { coords.get("coordinates").get(1).asDouble(), coords.get("coordinates").get(0).asDouble() };
 		}
 		
 		//Otherwise lookup the user's hometown.

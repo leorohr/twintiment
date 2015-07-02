@@ -1,13 +1,18 @@
 package org.twintiment.analysis;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.MessagingException;
@@ -15,6 +20,7 @@ import org.springframework.messaging.core.MessageSendingOperations;
 import org.springframework.stereotype.Component;
 import org.twintiment.analysis.geolocation.GeoLocator;
 import org.twintiment.analysis.sentiment.SentimentAnalyser;
+import org.twintiment.vo.FileMeta;
 import org.twintiment.vo.TweetDataMsg;
 import org.twintiment.vo.TweetRateMsg;
 
@@ -31,6 +37,10 @@ public class AnalysisManager {
 	private TweetSource source;
 	private SentimentAnalyser sentimentAnalyser;
 	private long tweetCount = 0;
+	private HashSet<FileMeta> availableFiles = new HashSet<FileMeta>();
+	
+	@Autowired
+	ServletContext servletContext;
 	
 	@Autowired
 	public AnalysisManager(MessageSendingOperations<String> messagingTemplate) {
@@ -39,6 +49,20 @@ public class AnalysisManager {
 			sentimentAnalyser = new SentimentAnalyser();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	@PostConstruct
+	public void postConstruct() {
+		//Populate the availableFiles-list
+		File datasetDir = new File(servletContext.getRealPath("/datasets"));
+		if(!datasetDir.exists()) {
+			datasetDir.mkdir();
+		}
+		
+		File[] files = datasetDir.listFiles();
+		for(File f : files) {	
+			availableFiles.add(new FileMeta(f.getName(), f.length()));
 		}
 	}
 	
@@ -54,8 +78,8 @@ public class AnalysisManager {
 				while(!isStopped) {
 					try {
 						analyseNextTweet();
-					} catch (IOException e1) {
-						e1.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
 						continue;
 					}	
 				}
@@ -151,9 +175,17 @@ public class AnalysisManager {
 		sf.setLenient(true);
 		return sf.parse(date);
 	}
-
+	
+	public void addAvailableFile(File file) {		
+		availableFiles.add(new FileMeta(file.getName(), file.length()));
+	}
 	
 	public void setTweetSource(TweetSource source) {
 		this.source = source;
 	}
+	
+	public HashSet<FileMeta> getAvailableFiles() {
+		return this.availableFiles;
+	}
+
 }

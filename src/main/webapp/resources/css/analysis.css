@@ -4,7 +4,6 @@ table, th, td {
 	border: 1px solid #015D80;
 }
 
-
 th {
 	height: 35px;
 	text-align: left;
@@ -24,23 +23,52 @@ table {
 	overflow-x: hidden;
 }
 
+table.fileTable tr:hover {
+	background-color: #015D80;
+}
+
+table.fileTable { 
+	width: 100%;
+}
+
+table.tweetTable {
+	width: 100%;
+}
+
 /* divs */
-div.tableWrapper {
-	height: 400px;
-	overflow-y: scroll;
-	width: 60%; 
+div.left_container {
+	width: 60%;
+	float: left;
 }
 
 div.map {
-	width: 60%;
+	width: 100%;
 	height: 300px;
-	/* float: left; */
+}
+
+
+div.tweetTableWrapper {
+	max-height: 400px;
+	overflow-y: auto;
+	width: 100%; 
+}
+
+div.right_container {
+	width: 40%;
+	float: right;
+}
+
+div.stream_tab_container {
+	width: 40%;
+}
+
+div.fileTableWrapper {
+	overflow-y: auto;
+	max-height: 150px; 
 }
 
 div.chart {
-	width: 40%;
+	width: 100%;
 	height: 300px;
-	float: right;
-	top: -200px;
-	position: relative;
 }
+

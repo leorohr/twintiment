@@ -30,9 +30,6 @@ public class TweetDataMsg {
 		return hashtags;
 	}
 	
-	public TweetDataMsg() {
-	} //TODO remove
-	
 	public TweetDataMsg(String message, double sentiment, double[] coords,
 			Date date, List<String> hashtags) {
 		this.message = message;
