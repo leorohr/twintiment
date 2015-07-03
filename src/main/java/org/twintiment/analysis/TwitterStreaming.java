@@ -32,6 +32,8 @@ public class TwitterStreaming implements TweetSource {
 		
 		//Filter for terms 
 		hosebirdEndpoint.trackTerms(filterTerms);
+		//Filter only english tweets
+		hosebirdEndpoint.addQueryParameter("language", "en"); 
 
 		AppProperties properties = AppProperties.getAppProperties();
 		Authentication hosebirdAuth = new OAuth1(

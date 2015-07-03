@@ -11,5 +11,4 @@ window.tweetPerMin = []; //mapping a minute to the number of tweets
 $('#tabs').tab();
 
 
-
 }); //document ready

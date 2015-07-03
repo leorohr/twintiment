@@ -53,7 +53,6 @@ streamer = (function() {
 		
 		//update chart
 		tpm_chart.series[0].setData(tweetPerMin);
-		console.log(tweetPerMin);
 
 	} //data_callback
 
