@@ -1,4 +1,5 @@
 .DS_Store
 .settings
 src/main/webapp/WEB-INF/lib/
+src/main/webapp/resources/bower_components
 target

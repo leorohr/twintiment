@@ -6,40 +6,35 @@
 <title>Twintiment</title>
 
 <script type="text/javascript"
-	src="<c:url value="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" />"></script>
+	src="<c:url value="/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
 <script type="text/javascript"
-	src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.0.0-beta.9/sockjs.min.js" />"></script>
+	src="<c:url value="/resources/bower_components/sockjs-client/dist/sockjs.min.js" />"></script>
 <script type="text/javascript"
-	src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" />"></script>
-
-<!-- jQuery UI -->
-<link rel="stylesheet"
-	href="<c:url value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" />">
-<script type="text/javascript"
-	src="<c:url value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" />"></script>
-
+	src="<c:url value="/resources/bower_components/stomp-websocket/lib/stomp.min.js" />"></script>
 
 <!--  jQuery Fileupload -->
 <script type="text/javascript"
-	src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload.min.js" />"></script>
-
+	src="<c:url value="/resources/bower_components/blueimp-file-upload/js/jquery.fileupload.js" />"></script>
+	
 <!-- Bootstrap -->
 <link rel="stylesheet"
-	href="<c:url value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>" />
+	href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css"/>" />
 <link rel="stylesheet"
-	href="<c:url value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>" />
+	href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>" />
 <script
-	src="<c:url value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"/> "></script>
+	src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js"/> "></script>
 
 <!-- Leaflet  -->
 <link rel="stylesheet"
-	href="<c:url value="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />">
+	href="<c:url value="/resources/bower_components/leaflet/dist/leaflet.css" />">
 <script
-	src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+	src="<c:url value="/resources/bower_components/leaflet/dist/leaflet.js" />"></script>
+<!-- Heatmap plugin -->
+<script
+	src="<c:url value="/resources/bower_components/Leaflet.heat/dist/leaflet-heat.js"/>"></script>
 
 <!-- Highcharts -->
-<script src="http://code.highcharts.com/stock/highstock.js"></script>
-
+<script src="<c:url value="/resources/bower_components/highcharts/highcharts.js"/>"></script>
 
 
 <link rel="stylesheet"
