@@ -4,11 +4,11 @@ $(document).ready(function() {
 //TODO only if table is actually visible
 updateFileTable(); 
 
-$('#progressBar').progressbar({value: 0});
+//$('#progressBar').progressbar({value: 0});
 
 var fileupload = $('#fileupload').fileupload({
 //		maxChunkSize: 10000000 //10MB - TODO not chunked has file size limit of 4GB
-	replaceFileInput: false,
+	replaceFileInput: true,
 	maxNumberOfFiles: 1,
 	add: function (e, data) {
         data.context = $('#startUpload') 
@@ -18,13 +18,21 @@ var fileupload = $('#fileupload').fileupload({
     },
     done: function(e, data) {
     	updateFileTable();
+    },
+    progressall: function(e, data) { 
+		var progress = parseInt(data.loaded / data.total * 100, 10);
+		$('#progress').css(
+		'width',
+		progress + '%'
+		);
+		$('#progress').html(progress + "%");
     }
-}).on('fileuploadprogress', function(e, data) {
-	$("#progressBar").progressbar( "option", "value", data.loaded/data.total * 100);
-	$("#bitrateLbl").text(bytesToSize(data.loaded) + "/" + 
-		bytesToSize(data.total) + " - " + 
-		bytesToSize(data.bitrate/8) + '/s');
 });
+//}).on('fileuploadprogress', function(e, data) {
+//	$("#progressBar").progressbar( "option", "value", data.loaded/data.total * 100);
+//	$("#bitrateLbl").text(bytesToSize(data.loaded) + "/" + 
+//		bytesToSize(data.total) + " - " + 
+//		bytesToSize(data.bitrate/8) + '/s');
 // handlers for chunked uploading 
 //		.on('fileuploadchunksend', function (e, data) {})
 //		.on('fileuploadchunkdone', function (e, data) {})

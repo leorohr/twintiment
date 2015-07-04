@@ -5,17 +5,21 @@
 <head>
 <title>Twintiment</title>
 
+<!--  jQuery  -->
 <script type="text/javascript"
 	src="<c:url value="/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/bower_components/jquery-ui/ui/minified/widget.min.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/resources/bower_components/blueimp-file-upload/js/jquery.fileupload.js" />"></script>
+
 <script type="text/javascript"
 	src="<c:url value="/resources/bower_components/sockjs-client/dist/sockjs.min.js" />"></script>
 <script type="text/javascript"
 	src="<c:url value="/resources/bower_components/stomp-websocket/lib/stomp.min.js" />"></script>
 
-<!--  jQuery Fileupload -->
-<script type="text/javascript"
-	src="<c:url value="/resources/bower_components/blueimp-file-upload/js/jquery.fileupload.js" />"></script>
-	
+
+
 <!-- Bootstrap -->
 <link rel="stylesheet"
 	href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css"/>" />
@@ -29,12 +33,18 @@
 	href="<c:url value="/resources/bower_components/leaflet/dist/leaflet.css" />">
 <script
 	src="<c:url value="/resources/bower_components/leaflet/dist/leaflet.js" />"></script>
-<!-- Heatmap plugin -->
+<!-- Plugins -->
 <script
 	src="<c:url value="/resources/bower_components/Leaflet.heat/dist/leaflet-heat.js"/>"></script>
+<script
+	src="<c:url value="/resources/bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"/>"></script>
+<link rel="stylesheet"
+	href="<c:url value="/resources/bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css" />">
+	
 
 <!-- Highcharts -->
-<script src="<c:url value="/resources/bower_components/highcharts/highcharts.js"/>"></script>
+<script
+	src="<c:url value="/resources/bower_components/highcharts/highcharts.js"/>"></script>
 
 
 <link rel="stylesheet"
@@ -53,14 +63,13 @@
 </head>
 
 <body>
-	
-	<div id="right_container" class="right_container">	
+
+	<div id="right_container" class="right_container">
 		<div id="chart_container" class="chart_container">
 			<div id="chart_div" class="chart"></div>
 			<div id="tpm_chart_div" class="chart"></div>
 		</div>
-		<div id="stream_tab_container" class="stream_tab_container">
-	</div>
+		<div id="stream_tab_container" class="stream_tab_container"></div>
 		<div id="content">
 			<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
 				<li class="active"><a href="#liveTab" data-toggle="tab">Live
@@ -72,9 +81,9 @@
 					<!-- Live Stream Controls -->
 					<form:form>
 						<input id="filterTerms" name="filterTerms"
-							placeholder="Enter Filterterms...">
-						<input id="startStreaming" type="button" value="Start" />
-						<input id="stopStreaming" type="button" value="Stop" />
+							placeholder="Enter Filterterms..." class="form-control">
+						<input type="button" value="Start" class="btn btn-default btn-success" id="startStreaming"/>
+						<input type="button" value="Stop" class="btn btn-default" id="stopStreaming"/>
 					</form:form>
 				</div>
 				<div class="tab-pane" id="fileTab">
@@ -88,36 +97,43 @@
 								</tr>
 							</thead>
 							<tbody>
-								<!-- Insterted by JS -->
+								<!-- Inserted by JS -->
 							</tbody>
 						</table>
 					</div>
 
 					<div>
-						<input id="startFileAnalysis" type="button" value="Start Analysis" />
-						<input id="stopFileAnalysis" type="button" value="Stop Analysis" />
+						<input type="button" value="Start Analysis" class="btn btn-default" id="startFileAnalysis"/>
+						<input type="button" value="Stop Analysis" class="btn btn-default" id="stopFileAnalysis"/>
 					</div>
 
 					<div id="fileUploadContainer">
-						<input id="fileupload" type="file" data-url="/Twintiment/upload"
-							accept="application/json" /> <input id="startUpload"
-							type="button" value="Upload" /> <input id="cancelUpload"
-							type="button" value="Cancel" />
-						<div id="progressBar"></div>
+						<span class="btn btn-default fileinput-button">
+							<span>Select a file...</span>
+							<input id="fileupload" type="file" name="files[]" accept="application/json" data-url="/Twintiment/upload"/>
+						</span>
+						<button class="btn btn-default" id="startUpload">Upload</button>
+						<button class="btn btn-default" id="cancelUpload">Cancel</button>
+						<div class="progress">
+							<div class="progress-bar progress-bar-info" id="progress",
+								aria-valuemin="0" aria-valuemax="100"></div>
+						</div>
 						<label id="bitrateLbl"></label>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- content div -->
-
 	</div>
-	<!-- container -->
-
-
 
 	<div id="left_container" class="left_container">
 		<div id="map_div" class="map"></div>
+
+		<label class="radio-inline"> <input type="radio"
+				id="markerRadioBtn" name="mapTypeRb" checked="checked">Markers
+		</label> <label class="radio-inline"> <input type="radio"
+				id="heatRadioBtn" name="mapTypeRb">Heatmap
+		</label>
+
 		<div class="tweetTableWrapper">
 			<table id="tweetTable" class="tweetTable" border="1">
 				<thead>
@@ -127,7 +143,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<!-- Insterted by JS -->
+					<!-- Inserted by JS -->
 				</tbody>
 			</table>
 		</div>

@@ -29,10 +29,19 @@ streamer = (function() {
 	function data_callback(message) {
 		var js = JSON.parse(message.body);
 				
-		//Add marker to map
-		if(js['coords'] != null)
-			L.marker(js['coords']).addTo(map);
-		
+		//Add heatmap point or marker
+		if(js['coords'] != null) {
+			if($('#heatRadioBtn').prop('checked')) {
+				mapWidget.addHeatPoint(js['coords']);
+			}
+			else {
+				
+				var marker = L.marker(js['coords']);//.addTo(mapWidget.map);
+				marker.bindPopup(js['message']+"<br>"+js['sentiment']);
+				mapWidget.addMarker(marker);;
+			}
+ 		}
+
 		//Add row to table
 		$('#tweetTable').find('tbody')
 			.append($('<tr>')
@@ -80,6 +89,12 @@ streamer = (function() {
 		);		
 	} //connectToWs
 
+	function setRadioButtonsDisabled(disabled) {
+		//Lock radiobuttons
+			$('#heatRadioBtn').attr('disbaled', disabled);
+			$('#markerRadioBtn').attr('disabled', disabled);
+	}
+
 	//public
 	return {
 		selectedFile : "",
@@ -88,6 +103,7 @@ streamer = (function() {
 		 * Starts the server's live tweet feed and connects to the websocket.
 		 */
 		startStreaming : function(filterterms) {
+			
 			// Start tweet streamer
 			var request = $.get("analysis/start_streaming", {
 				"filterTerms" : filterterms
@@ -96,6 +112,9 @@ streamer = (function() {
 			}).done(function() {
 				console.log("Started server stream.");
 				
+				//Disable radio buttons
+				setRadioButtonsDisabled(true);
+
 				connectToWs();
 			});
 		}, //startStreaming
@@ -117,6 +136,9 @@ streamer = (function() {
 			}).done(function() {
 				console.log("Started server stream.");
 				
+				//Disable radio buttons
+				setRadioButtonsDisabled(true);
+
 				connectToWs();
 			});
 		}, //startFileAnalysis
@@ -132,6 +154,9 @@ streamer = (function() {
 					stompClient.disconnect(function() {
 						console.log("Disconnected from websocket.");
 					});
+
+					//reactivate radiobuttons
+					setRadioButtonsDisabled(false);
 				});
 		} //stopStreaming
 	} //public
