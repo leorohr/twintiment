@@ -1,38 +1,18 @@
 @CHARSET "UTF-8";
-/* Table */
-table, th, td {
-	border: 1px solid #015D80;
-}
 
 th {
-	height: 35px;
-	text-align: left;
-	vertical-align: bottom;
 	background-color: #0082B4;
-	font-size: 1em;
-	padding: 5px;
 	color: white;
-}
-
-td {
-	padding: 5px;
 }
 
 table {
 	border-collapse: collapse;
 	overflow-x: hidden;
+	width: 100%;
 }
 
 table.fileTable tr:hover {
 	background-color: #0279A7;
-}
-
-table.fileTable { 
-	width: 100%;
-}
-
-table.tweetTable {
-	width: 100%;
 }
 
 /* divs */
@@ -48,9 +28,23 @@ div.map {
 
 
 div.tweetTableWrapper {
-	max-height: 400px;
+	max-height: 250px;
 	overflow-y: auto;
 	width: 100%; 
+}
+
+div.topNegTweetsWrapper {
+	float: right;
+	width: 50%;
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+div.topPosTweetsWrapper {
+	float: left;
+	width: 50%;
+	max-height: 400px;
+	overflow-y: auto;
 }
 
 div.right_container {

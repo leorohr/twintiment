@@ -4,8 +4,6 @@ $(document).ready(function() {
 //TODO only if table is actually visible
 updateFileTable(); 
 
-//$('#progressBar').progressbar({value: 0});
-
 var fileupload = $('#fileupload').fileupload({
 //		maxChunkSize: 10000000 //10MB - TODO not chunked has file size limit of 4GB
 	replaceFileInput: true,

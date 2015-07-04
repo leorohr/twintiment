@@ -20,6 +20,7 @@ import org.twintiment.analysis.AnalysisManager;
 import org.twintiment.analysis.DataFile;
 import org.twintiment.analysis.TwitterStreaming;
 import org.twintiment.vo.FileMeta;
+import org.twintiment.vo.TopTweetsMsg;
 
 @Controller
 public class FrontController {
@@ -78,5 +79,11 @@ public class FrontController {
 	public Set<FileMeta> getAvailableFiles() {
 		
 		return manager.getAvailableFiles();
+	}
+	
+	@RequestMapping(value="/analysis/top_tweets", method=RequestMethod.GET)
+	@ResponseBody
+	public TopTweetsMsg getTopTweets() {
+		return new TopTweetsMsg(manager.getTopPosTweets(), manager.getTopNegTweets());
 	}
 }

@@ -13,17 +13,18 @@ streamer = (function() {
 		streamer.stopStreaming();
 	});
 
+	$('#filterTerms').keypress(function(event) {
+		if(event.keyCode==13)
+			$('#startStreaming').click(); //start
+		return event.keyCode != 13; //no form submit (to prevent refresh)
+	});
+	
 	$('#startFileAnalysis').click(function(e) {
 		streamer.startFileAnalysis();
 	});
 
 	$('#stopFileAnalysis').click(function(e) {
 		streamer.stopStreaming();
-	});
-	
-	//Do not submit form on enter
-	$('#filterTerms').keypress(function(event) {
-		return event.keyCode != 13; 
 	});
 	
 	function data_callback(message) {
@@ -43,15 +44,7 @@ streamer = (function() {
  		}
 
 		//Add row to table
-		$('#tweetTable').find('tbody')
-			.append($('<tr>')
-					.append($('<td>')
-						.append(js['message'])
-					.append($('</td>')))
-					.append($('<td>')
-							.append(js['sentiment'])
-					.append($('</td>')))
-			.append($('</tr>')));	
+		appendToTweetTable('#tweetTable', js['message'], js['sentiment']);
 		
 		//Update TweetsPerMin		
 		var minuteDate = new Date(js['date']).setSeconds(0); //date variable with secs dropped
@@ -89,12 +82,6 @@ streamer = (function() {
 		);		
 	} //connectToWs
 
-	function setRadioButtonsDisabled(disabled) {
-		//Lock radiobuttons
-			$('#heatRadioBtn').attr('disbaled', disabled);
-			$('#markerRadioBtn').attr('disabled', disabled);
-	}
-
 	//public
 	return {
 		selectedFile : "",
@@ -115,7 +102,25 @@ streamer = (function() {
 				//Disable radio buttons
 				setRadioButtonsDisabled(true);
 
+				//Poll for top tweets every 10 seconds
+				window.intervalVar = setInterval(function() {
+
+					$.get('analysis/top_tweets', function(response) {
+						
+						$('#topPosTweetsTable tbody').children().remove(); //clear table
+						for(i in response.topPosTweets) {
+							appendToTweetTable('#topPosTweetsTable', response.topPosTweets[i].message, response.topPosTweets[i].sentiment);
+						}
+						$('#topNegTweetsTable tbody').children().remove(); //clear table
+						for(i in response.topNegTweets) {
+							appendToTweetTable('#topNegTweetsTable', response.topNegTweets[i].message, response.topNegTweets[i].sentiment);
+						}
+					})
+				}, 10000);
+				
 				connectToWs();
+				
+				
 			});
 		}, //startStreaming
 		
@@ -154,6 +159,9 @@ streamer = (function() {
 					stompClient.disconnect(function() {
 						console.log("Disconnected from websocket.");
 					});
+					
+					//Stop polling for top tweets
+					clearInterval(window.intervalVar);
 
 					//reactivate radiobuttons
 					setRadioButtonsDisabled(false);

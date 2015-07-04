@@ -25,7 +25,7 @@
 	href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css"/>" />
 <link rel="stylesheet"
 	href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>" />
-<script
+<script.get
 	src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js"/> "></script>
 
 <!-- Leaflet  -->
@@ -134,8 +134,39 @@
 				id="heatRadioBtn" name="mapTypeRb">Heatmap
 		</label>
 
+		<div>
+			<div class="topPosTweetsWrapper">
+				<table id="topPosTweetsTable" class="table table-bordered" border="1">
+					<caption>5 Most Positive Tweets</caption>
+					<thead>
+						<tr>
+							<th style="width: 85%">Message</th>
+							<th style="width: 15%">Score</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Inserted by JS -->
+					</tbody>
+				</table>
+			</div>
+			<div class="topNegTweetsWrapper">
+				<table id="topNegTweetsTable" class="table table-bordered" border="1">
+					<caption>5 Most Negative Tweets</caption>	
+					<thead>
+						<tr>
+							<th style="width: 85%">Message</th>
+							<th style="width: 15%">Score</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Inserted by JS -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+
 		<div class="tweetTableWrapper">
-			<table id="tweetTable" class="tweetTable" border="1">
+			<table id="tweetTable" class="table table-bordered" border="1">
 				<thead>
 					<tr>
 						<th style="width: 85%">Message</th>
@@ -143,10 +174,11 @@
 					</tr>
 				</thead>
 				<tbody>
-					<!-- Inserted by JS -->
+					 <!-- Inserted by JS -->
 				</tbody>
 			</table>
 		</div>
+		
 	</div>
 
 </body>

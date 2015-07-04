@@ -38,6 +38,9 @@ public class AnalysisManager {
 	private SentimentAnalyser sentimentAnalyser;
 	private long tweetCount = 0;
 	private HashSet<FileMeta> availableFiles = new HashSet<FileMeta>();
+	private final int NUM_TOP_TWEETS = 5;
+	private TweetDataMsg[] topPosTweets = new TweetDataMsg[5]; //Top 5 positive tweets (descending)
+	private TweetDataMsg[] topNegTweets = new TweetDataMsg[5]; //analaguous
 	
 	@Autowired
 	ServletContext servletContext;
@@ -127,8 +130,7 @@ public class AnalysisManager {
 	 * @throws IOException if the tweet taken from the source could not be parsed
 	 * 			into a JsonNode object.					
 	 */
-	private void analyseNextTweet() throws IOException {
-		//TODO set up analysis chain (based on user preferences?)		
+	private void analyseNextTweet() throws IOException {		
 			
 		ObjectMapper mapper = new ObjectMapper(); 
 		JsonNode tweet = mapper.readTree(source.getNextTweet());
@@ -156,11 +158,30 @@ public class AnalysisManager {
 			e.printStackTrace();
 		}
 		
-		messageQueue.offer(new TweetDataMsg(text, sentiment, coords,
-				date, hashtags ));
+		TweetDataMsg tweetMsg = new TweetDataMsg(text, sentiment, coords,
+				date, hashtags); 
+		messageQueue.offer(tweetMsg);
 		
 		//Track number of processed tweets
 		++tweetCount;
+		
+		//Update top tweet lists
+		int i=NUM_TOP_TWEETS;
+		if(sentiment > 0) {
+			if(topPosTweets[i-1] == null || sentiment > topPosTweets[i-1].getSentiment()) { //positive tweet
+				i--;
+				while(i > 0 && (topPosTweets[i-1] == null || sentiment > topPosTweets[i-1].getSentiment()))
+					i--;
+				topPosTweets[i] = tweetMsg;
+			}
+		} else if(sentiment < 0) {
+			if(topNegTweets[i-1] == null || sentiment < topNegTweets[i-1].getSentiment()) { //negative tweet
+				i--;
+				while(i > 0 && (topNegTweets[i-1] == null || sentiment < topNegTweets[i-1].getSentiment()))
+					i--;
+				topNegTweets[i] = tweetMsg;
+			}
+		}
 	}
 	
 	/**
@@ -186,6 +207,14 @@ public class AnalysisManager {
 	
 	public HashSet<FileMeta> getAvailableFiles() {
 		return this.availableFiles;
+	}
+	
+	public TweetDataMsg[] getTopPosTweets() {
+		return topPosTweets;
+	}
+	
+	public TweetDataMsg[] getTopNegTweets() {
+		return topNegTweets;
 	}
 
 }
