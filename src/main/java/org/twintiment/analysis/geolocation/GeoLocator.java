@@ -7,15 +7,26 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.twintiment.analysis.AnalysisStatistics;
+
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Component
 public class GeoLocator {
 
-	private static final String OSM_KEY = "Fmjtd%7Cluu82q622h%2Cbn%3Do5-94zwqf";
-	private static final String MAPS_URL = "http://open.mapquestapi.com/geocoding/v1/address?key="
+	@Autowired
+	private AnalysisStatistics stats;
+	
+	private final String OSM_KEY = "Fmjtd%7Cluu82q622h%2Cbn%3Do5-94zwqf";
+	private final String MAPS_URL = "http://open.mapquestapi.com/geocoding/v1/address?key="
 											+ OSM_KEY + "&outFormat=json&location=";  
+ 
+	public GeoLocator() {
+	}
 	
 	/**
 	 * Return either the user's hometown or the tweet's coordinates
@@ -23,12 +34,14 @@ public class GeoLocator {
 	 * @return double array of size two containing lat/lon respectively; null if not resolved
 	 * @throws IOException
 	 */
-	public static double[] getCoordinates(JsonNode tweet) throws IOException {
+	public double[] getCoordinates(JsonNode tweet) throws IOException {
 		
 		//If tweet-coordinates are present, return them.
 		JsonNode coords;
 		if(!(coords = tweet.get("coordinates")).isNull()) {
-			 //flip order. Twitter returns coords in lon/lat
+			stats.incNumTagged(); 
+			
+			//flip order. Twitter returns coords in lon/lat
 			return new double[] { coords.get("coordinates").get(1).asDouble(), coords.get("coordinates").get(0).asDouble() };
 		}
 		
@@ -45,7 +58,7 @@ public class GeoLocator {
 	 * 			(i.e. country-level) accuracy.
 	 * @throws IOException
 	 */
-	public static double[] getCoordinates(String address) throws IOException {
+	public double[] getCoordinates(String address) throws IOException {
 		
 		if(address.equals("") || address.equals(" "))
 			return null;
@@ -95,6 +108,9 @@ public class GeoLocator {
 					latLng.findValue("lng").asDouble()				
 					};
 		}
+		
+		//Update stats
+		stats.incNumInferred();
 			
 		return coordinates;
 	}	

@@ -49,7 +49,7 @@ $('#fileTable').click(function(e) {
 
 	//select clicked row
 	var row = $(e.target.parentNode);
-	row.css('background-color', '#015D80');
+	row.css('background-color', '#F5F5F5');
 	streamer.selectedFile = row.children()[0].innerHTML;	//first column contains filename
 });
 

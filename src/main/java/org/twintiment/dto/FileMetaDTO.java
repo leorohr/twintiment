@@ -1,6 +1,6 @@
 package org.twintiment.dto;
 
-public class FileMeta {
+public class FileMetaDTO {
 	private String fileName;
 	private long fileSize;
 	
@@ -11,14 +11,14 @@ public class FileMeta {
 		return fileSize;
 	}
 	
-	public FileMeta(String fileName, long fileSize) {
+	public FileMetaDTO(String fileName, long fileSize) {
 		this.fileName = fileName;
 		this.fileSize = fileSize;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		FileMeta fm = (FileMeta) obj;
+		FileMetaDTO fm = (FileMetaDTO) obj;
 		return (fileName.equals(fm.fileName) && fileSize == fm.fileSize);
 	}
 	

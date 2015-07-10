@@ -17,10 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.twintiment.analysis.AnalysisManager;
+import org.twintiment.analysis.AnalysisStatistics;
 import org.twintiment.analysis.DataFile;
 import org.twintiment.analysis.TwitterStreaming;
-import org.twintiment.vo.FileMeta;
-import org.twintiment.vo.TopTweetsMsg;
+import org.twintiment.dto.FileMetaDTO;
+import org.twintiment.dto.StatsDTO;
 
 @Controller
 public class FrontController {
@@ -29,6 +30,8 @@ public class FrontController {
 	private AnalysisManager manager;
 	@Autowired
 	private ServletContext servletContext;
+	@Autowired
+	private AnalysisStatistics stats;
 	
 	@RequestMapping("/analysis")
 	@ResponseBody
@@ -76,14 +79,21 @@ public class FrontController {
 	
 	@RequestMapping(value="/files", method=RequestMethod.GET)
 	@ResponseBody
-	public Set<FileMeta> getAvailableFiles() {
+	public Set<FileMetaDTO> getAvailableFiles() {
 		
 		return manager.getAvailableFiles();
 	}
 	
-	@RequestMapping(value="/analysis/top_tweets", method=RequestMethod.GET)
+//	@RequestMapping(value="/analysis/top_tweets", method=RequestMethod.GET)
+//	@ResponseBody
+//	public TopTweetsDTO getTopTweets() {
+//		return new TopTweetsDTO(manager.getTopPosTweets(), manager.getTopNegTweets());
+//	}
+	
+	@RequestMapping(value="/analysis/stats", method=RequestMethod.GET)
 	@ResponseBody
-	public TopTweetsMsg getTopTweets() {
-		return new TopTweetsMsg(manager.getTopPosTweets(), manager.getTopNegTweets());
+	public StatsDTO getStats() {
+		
+		return stats.getDTO();
 	}
 }

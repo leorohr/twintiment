@@ -1,10 +1,10 @@
 package org.twintiment.dto;
 
-public class TopTweetsMsg {
+public class TopTweetsDTO {
 	private TweetDataMsg[] topPosTweets;
 	private TweetDataMsg[] topNegTweets;
 	
-	public TopTweetsMsg(TweetDataMsg[] topPosTweets, TweetDataMsg[] topNegTweets) {
+	public TopTweetsDTO(TweetDataMsg[] topPosTweets, TweetDataMsg[] topNegTweets) {
 		super();
 		this.topPosTweets = topPosTweets;
 		this.topNegTweets = topNegTweets;

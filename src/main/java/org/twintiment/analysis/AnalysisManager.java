@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -19,10 +21,10 @@ import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.core.MessageSendingOperations;
 import org.springframework.stereotype.Component;
 import org.twintiment.analysis.geolocation.GeoLocator;
+import org.twintiment.analysis.geolocation.GeoUtils;
 import org.twintiment.analysis.sentiment.SentimentAnalyser;
-import org.twintiment.vo.FileMeta;
-import org.twintiment.vo.TweetDataMsg;
-import org.twintiment.vo.TweetRateMsg;
+import org.twintiment.dto.FileMetaDTO;
+import org.twintiment.dto.TweetDataMsg;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,11 +38,14 @@ public class AnalysisManager {
 	private Thread transmissionThread, analysisThread;
 	private TweetSource source;
 	private SentimentAnalyser sentimentAnalyser;
-	private long tweetCount = 0;
-	private HashSet<FileMeta> availableFiles = new HashSet<FileMeta>();
-	private final int NUM_TOP_TWEETS = 5;
-	private TweetDataMsg[] topPosTweets = new TweetDataMsg[5]; //Top 5 positive tweets (descending)
-	private TweetDataMsg[] topNegTweets = new TweetDataMsg[5]; //analaguous
+	private HashSet<FileMetaDTO> availableFiles = new HashSet<FileMetaDTO>();
+	private List<TweetDataMsg> tweets = Collections.synchronizedList(new ArrayList<TweetDataMsg>());
+	
+	@Autowired
+	private AnalysisStatistics stats;
+	
+	@Autowired
+	private GeoLocator locator;
 	
 	@Autowired
 	ServletContext servletContext;
@@ -48,6 +53,7 @@ public class AnalysisManager {
 	@Autowired
 	public AnalysisManager(MessageSendingOperations<String> messagingTemplate) {
 		this.messagingTemplate = messagingTemplate;
+		
 		try {
 			sentimentAnalyser = new SentimentAnalyser();
 		} catch (IOException e) {
@@ -57,6 +63,7 @@ public class AnalysisManager {
 	
 	@PostConstruct
 	public void postConstruct() {
+
 		//Populate the availableFiles-list
 		File datasetDir = new File(servletContext.getRealPath("/datasets"));
 		if(!datasetDir.exists()) {
@@ -65,13 +72,14 @@ public class AnalysisManager {
 		
 		File[] files = datasetDir.listFiles();
 		for(File f : files) {	
-			availableFiles.add(new FileMeta(f.getName(), f.length()));
+			availableFiles.add(new FileMetaDTO(f.getName(), f.length()));
 		}
 	}
 	
 	public void startAnalysis() {
 		
 		this.isStopped = false;
+		this.stats.resetStats();
 		
 		//TODO possibly multiple threads to analyse? depends on backend analysis implementation
 		analysisThread = new Thread(new Runnable() {
@@ -101,11 +109,11 @@ public class AnalysisManager {
 					try {
 						messagingTemplate.convertAndSend("/queue/data", messageQueue.take());
 						
-						//Send the tweet-rate every ten seconds
+						//Send the tweet-rate every ten seconds //TODO remove and provide as REST service
 						now = System.currentTimeMillis();
 						if((now - startTime) > 10000) {
-							messagingTemplate.convertAndSend("/queue/tweet_rate", new TweetRateMsg(tweetCount, now));
-							tweetCount = 0;
+//							messagingTemplate.convertAndSend("/queue/tweet_rate", new TweetRateMsg(tweetCount, now));
+//							tweetCount = 0;
 							startTime = System.currentTimeMillis();
 						}
 					} catch (MessagingException | InterruptedException e) {
@@ -138,6 +146,16 @@ public class AnalysisManager {
 		double[] coords = null;
 		List<String> hashtags = null;
 		
+		//Get Coordinates
+		try {
+			coords = locator.getCoordinates(tweet);
+		} catch (IOException e) { e.printStackTrace();	}
+		
+		//Drop the tweet if no coordinates present TODO allow user to include  
+		if(coords == null) {
+			return;
+		}
+		
 		//Extract HashTags
 		JsonNode tagNode = tweet.findValue("entities").findValue("hashtags");
 		hashtags = tagNode.findValuesAsText("text");
@@ -145,11 +163,6 @@ public class AnalysisManager {
 		//Get Sentiment
 		double sentiment = sentimentAnalyser.calculateSentiment(text);
 		sentiment = Math.round(sentiment*100)/100d; //round to second decimal place
-		
-		//Get Coordinates
-		try {
-			coords = GeoLocator.getCoordinates(tweet);
-		} catch (IOException e) { e.printStackTrace();	}
 		
 		//Get Date
 		Date date = null;
@@ -163,26 +176,44 @@ public class AnalysisManager {
 				date, hashtags); 
 		messageQueue.offer(tweetMsg);
 		
-		//Track number of processed tweets
-		++tweetCount;
+		tweets.add(tweetMsg); 
 		
-		//Update top tweet lists
-		int i=NUM_TOP_TWEETS;
-		if(sentiment > 0) {
-			if(topPosTweets[i-1] == null || sentiment > topPosTweets[i-1].getSentiment()) { //positive tweet
-				i--;
-				while(i > 0 && (topPosTweets[i-1] == null || sentiment > topPosTweets[i-1].getSentiment()))
-					i--;
-				topPosTweets[i] = tweetMsg;
-			}
-		} else if(sentiment < 0) {
-			if(topNegTweets[i-1] == null || sentiment < topNegTweets[i-1].getSentiment()) { //negative tweet
-				i--;
-				while(i > 0 && (topNegTweets[i-1] == null || sentiment < topNegTweets[i-1].getSentiment()))
-					i--;
-				topNegTweets[i] = tweetMsg;
-			}
+		//Update statistics
+		stats.update(tweetMsg);
+		
+		//Update max. distance between tweets after ten new tweets arrived
+		if(stats.getNumTweets() % 10 == 0) {
+			updateMaxDist();
 		}
+	}
+	
+	private void updateMaxDist() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				
+				double dist = 0.0d;
+				for(int i=0; i<tweets.size(); ++i) {
+					double[] coords1 = tweets.get(i).getCoords();
+					if(coords1 == null) 
+						continue;
+					
+					for(int j=i; j<tweets.size(); ++j) {
+						
+						double[] coords2 = tweets.get(j).getCoords();
+						
+						if(coords2 != null) {
+							dist = GeoUtils.haversine(coords1[0], coords1[1], coords2[0], coords2[1]);
+							if(dist > stats.getMaxDist()) {
+								dist = Math.round(dist*100)/100d; //round to second decimal place
+								stats.setMaxDist(dist);
+							}
+						}
+					}
+				}
+			}
+			
+		}, "UpdateMaxDist").start();
 	}
 	
 	/**
@@ -199,23 +230,14 @@ public class AnalysisManager {
 	}
 	
 	public void addAvailableFile(File file) {		
-		availableFiles.add(new FileMeta(file.getName(), file.length()));
+		availableFiles.add(new FileMetaDTO(file.getName(), file.length()));
 	}
 	
 	public void setTweetSource(TweetSource source) {
 		this.source = source;
 	}
 	
-	public HashSet<FileMeta> getAvailableFiles() {
+	public HashSet<FileMetaDTO> getAvailableFiles() {
 		return this.availableFiles;
 	}
-	
-	public TweetDataMsg[] getTopPosTweets() {
-		return topPosTweets;
-	}
-	
-	public TweetDataMsg[] getTopNegTweets() {
-		return topNegTweets;
-	}
-
 }

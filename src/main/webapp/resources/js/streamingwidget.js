@@ -75,7 +75,35 @@ streamer = (function() {
 			
 			stompClient.subscribe("/queue/data", data_callback);
 
-			stompClient.subscribe("/queue/tweet_rate", rate_callback);
+			stompClient.subscribe("/queue/tweet_rate", rate_callback); //TODO remove
+			
+			//Poll for stats every 10 seconds
+			window.intervalVar = setInterval(function() {
+				
+				$.get('/Twintiment/analysis/stats', function(response) {
+				
+					//Update statistics table
+					$('#statsTable #numTweets').html(response.numTweets);
+					$('#statsTable #numInferred').html(response.numInferred);
+					$('#statsTable #numTagged').html(response.numTagged);
+					$('#statsTable #avgSentiment').html(response.avgSentiment);
+					$('#statsTable #maxDist').html(response.maxDist);
+					
+					
+					//Update top tweets
+					$('#topPosTweetsTable tbody').children().remove(); //clear table
+					for(i in response.topPosTweets) {
+						appendToTweetTable('#topPosTweetsTable', response.topPosTweets[i].message, response.topPosTweets[i].sentiment);
+					}
+					$('#topNegTweetsTable tbody').children().remove(); //clear table
+					for(i in response.topNegTweets) {
+						appendToTweetTable('#topNegTweetsTable', response.topNegTweets[i].message, response.topNegTweets[i].sentiment);
+					}
+				
+				});
+			
+			}, 10000);
+			
 		}, function(error) {
 			console.log("Error while connecting to STOMP server.\n" + error);
 			}
@@ -102,25 +130,7 @@ streamer = (function() {
 				//Disable radio buttons
 				setRadioButtonsDisabled(true);
 
-				//Poll for top tweets every 10 seconds
-				window.intervalVar = setInterval(function() {
-
-					$.get('/Twintiment/analysis/top_tweets', function(response) {
-						
-						$('#topPosTweetsTable tbody').children().remove(); //clear table
-						for(i in response.topPosTweets) {
-							appendToTweetTable('#topPosTweetsTable', response.topPosTweets[i].message, response.topPosTweets[i].sentiment);
-						}
-						$('#topNegTweetsTable tbody').children().remove(); //clear table
-						for(i in response.topNegTweets) {
-							appendToTweetTable('#topNegTweetsTable', response.topNegTweets[i].message, response.topNegTweets[i].sentiment);
-						}
-					})
-				}, 10000);
-				
 				connectToWs();
-				
-				
 			});
 		}, //startStreaming
 		

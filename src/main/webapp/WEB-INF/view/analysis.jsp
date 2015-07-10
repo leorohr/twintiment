@@ -82,14 +82,14 @@
 					<form:form>
 						<input id="filterTerms" name="filterTerms"
 							placeholder="Enter Filterterms..." class="form-control">
-						<input type="button" value="Start" class="btn btn-default btn-success" id="startStreaming"/>
+						<input type="button" value="Start" class="btn btn-success" id="startStreaming"/>
 						<input type="button" value="Stop" class="btn btn-default" id="stopStreaming"/>
 					</form:form>
 				</div>
 				<div class="tab-pane" id="fileTab">
 					<!-- File Controls -->
 					<div class="fileTableWrapper">
-						<table id="fileTable" class="table table-bordered">
+						<table id="fileTable" class="table table-bordered table-condensed table-hover">
 							<thead>
 								<tr>
 									<th>Filename</th>
@@ -123,7 +123,6 @@
 							<div class="progress-bar progress-bar-info" id="progress",
 								aria-valuemin="0" aria-valuemax="100"></div>
 						</div>
-						<label id="bitrateLbl"></label>
 					</div>
 				</div>
 			</div>
@@ -132,16 +131,30 @@
 
 	<div id="left_container" class="left_container">
 		<div id="map_div" class="map"></div>
-
-		<label class="radio-inline"> <input type="radio"
-				id="markerRadioBtn" name="mapTypeRb" checked="checked">Markers
-		</label> <label class="radio-inline"> <input type="radio"
-				id="heatRadioBtn" name="mapTypeRb">Heatmap
-		</label>
+		
+		<div id="statsSettingsWrapper">
+			<div id="statsTableWrapper">
+				<table id="statsTable">
+					<tr><td>#Tweets:</td><td id="numTweets"></td></tr>
+					<tr><td>#Tweets (inferred):</td><td id="numInferred"></td></tr>
+					<tr><td>#Tweets (geotagged):</td><td id="numTagged"></td></tr>
+					<tr><td>Avg Sentiment:</td><td id="avgSentiment"></td></tr>
+					<tr><td>Max Distance:</td><td id="maxDist"></td></tr>
+				</table>
+			</div>
+					
+			<div id="settingsWrapper">
+				<label class="radio-inline"><input type="radio" id="markerRadioBtn" name="mapTypeRb" checked="checked">Markers</label>
+				<label class="radio-inline"><input type="radio"	id="heatRadioBtn" name="mapTypeRb">Heatmap</label>
+				<div class="checkbox">
+					<label><input type="checkbox" id="inclAllTweetsCB"/>Include All Tweets</label>
+				</div>
+			</div>
+		</div>
 
 		<div>
 			<div class="topPosTweetsWrapper">
-				<table id="topPosTweetsTable" class="table table-bordered" border="1">
+				<table id="topPosTweetsTable" class="table table-bordered table-condensed" border="1">
 					<caption>5 Most Positive Tweets</caption>
 					<thead>
 						<tr>
@@ -155,7 +168,7 @@
 				</table>
 			</div>
 			<div class="topNegTweetsWrapper">
-				<table id="topNegTweetsTable" class="table table-bordered" border="1">
+				<table id="topNegTweetsTable" class="table table-bordered table-condensed" border="1">
 					<caption>5 Most Negative Tweets</caption>	
 					<thead>
 						<tr>
@@ -171,7 +184,7 @@
 		</div>
 
 		<div class="tweetTableWrapper">
-			<table id="tweetTable" class="table table-bordered" border="1">
+			<table id="tweetTable" class="table table-bordered table-condensed" border="1">
 				<thead>
 					<tr>
 						<th style="width: 85%">Message</th>
