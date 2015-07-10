@@ -144,6 +144,7 @@ public class AnalysisManager {
 		
 		//Get Sentiment
 		double sentiment = sentimentAnalyser.calculateSentiment(text);
+		sentiment = Math.round(sentiment*100)/100d; //round to second decimal place
 		
 		//Get Coordinates
 		try {
