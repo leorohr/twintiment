@@ -1,4 +1,4 @@
-package org.twintiment.vo;
+package org.twintiment.dto;
 
 public class TopTweetsMsg {
 	private TweetDataMsg[] topPosTweets;
