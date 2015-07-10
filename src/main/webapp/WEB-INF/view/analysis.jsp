@@ -21,11 +21,11 @@
 
 
 <!-- Bootstrap -->
-<link rel="stylesheet"
+<link rel="stylesheet"	
 	href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css"/>" />
 <link rel="stylesheet"
 	href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>" />
-<script.get
+<script
 	src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js"/> "></script>
 
 <!-- Leaflet  -->
@@ -69,12 +69,12 @@
 			<div id="chart_div" class="chart"></div>
 			<div id="tpm_chart_div" class="chart"></div>
 		</div>
-		<div id="stream_tab_container" class="stream_tab_container"></div>
+
 		<div id="content">
 			<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-				<li class="active"><a href="#liveTab" data-toggle="tab">Live
+				<li class="active"><a data-target="#liveTab" data-toggle="tab">Live
 						Feed</a></li>
-				<li><a href="#fileTab" data-toggle="tab">File</a></li>
+				<li><a data-target="#fileTab" data-toggle="tab">File</a></li>
 			</ul>
 			<div id="my-tab-content" class="tab-content">
 				<div class="tab-pane active" id="liveTab">
@@ -89,7 +89,7 @@
 				<div class="tab-pane" id="fileTab">
 					<!-- File Controls -->
 					<div class="fileTableWrapper">
-						<table id="fileTable" class="fileTable">
+						<table id="fileTable" class="table table-bordered">
 							<thead>
 								<tr>
 									<th>Filename</th>
@@ -108,10 +108,15 @@
 					</div>
 
 					<div id="fileUploadContainer">
-						<span class="btn btn-default fileinput-button">
-							<span>Select a file...</span>
-							<input id="fileupload" type="file" name="files[]" accept="application/json" data-url="/Twintiment/upload"/>
-						</span>
+						<div class="input-group">
+							<span class="input-group-btn">
+								<span class="btn btn-default btn-file">
+						    		Browse&hellip; <input id="fileupload" type="file" name="files[]" accept="application/json" data-url="/Twintiment/upload">
+								</span>
+							</span>
+							<input id="selectedFile" type="text" class="form-control" readonly>
+						</div>
+						
 						<button class="btn btn-default" id="startUpload">Upload</button>
 						<button class="btn btn-default" id="cancelUpload">Cancel</button>
 						<div class="progress">

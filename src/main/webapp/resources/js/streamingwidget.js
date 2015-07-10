@@ -38,7 +38,7 @@ streamer = (function() {
 			else {
 				
 				var marker = L.marker(js['coords']);//.addTo(mapWidget.map);
-				marker.bindPopup(js['message']+"<br>"+js['sentiment']);
+				marker.bindPopup(js['message']+"<br>Sentiment: "+js['sentiment']);
 				mapWidget.addMarker(marker);;
 			}
  		}
@@ -92,7 +92,7 @@ streamer = (function() {
 		startStreaming : function(filterterms) {
 			
 			// Start tweet streamer
-			var request = $.get("analysis/start_streaming", {
+			var request = $.get("/Twintiment/analysis/start_streaming", {
 				"filterTerms" : filterterms
 			}).fail(function(jqhxr, status, message) {
 				console.log(status + ": " + message);
@@ -105,7 +105,7 @@ streamer = (function() {
 				//Poll for top tweets every 10 seconds
 				window.intervalVar = setInterval(function() {
 
-					$.get('analysis/top_tweets', function(response) {
+					$.get('/Twintiment/analysis/top_tweets', function(response) {
 						
 						$('#topPosTweetsTable tbody').children().remove(); //clear table
 						for(i in response.topPosTweets) {
@@ -134,7 +134,7 @@ streamer = (function() {
 			}
 
 			// Start tweet streamer
-			var request = $.get("analysis/start", {
+			var request = $.get("/Twintiment/analysis/start", {
 				"filename" : this.selectedFile
 			}).fail(function(jqhxr, status, message) {
 				console.log(status + ": " + message);
@@ -152,7 +152,7 @@ streamer = (function() {
 		 * Stops the server's tweet feed and disconnects from the websocket.
 		 */
 		stopStreaming : function() {
-			var request = $.get("analysis/stop")
+			var request = $.get("/Twintiment/analysis/stop")
 				.done(function(reply) {
 					console.log("Stopped server's tweet feed. Status: " + reply);
 		

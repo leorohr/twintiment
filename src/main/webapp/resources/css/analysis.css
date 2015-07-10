@@ -52,10 +52,6 @@ div.right_container {
 	float: right;
 }
 
-div.stream_tab_container {
-	width: 40%;
-}
-
 div.fileTableWrapper {
 	overflow-y: auto;
 	max-height: 150px; 
@@ -64,4 +60,31 @@ div.fileTableWrapper {
 div.chart {
 	width: 100%;
 	height: 300px;
+}
+
+div#fileUploadContainer {
+	margin-top: 15px;
+	border-style: solid;
+	border-width: 1px;
+    border-color: #5281AE;
+    border-radius: 3px;
+}
+
+input#filterTerms {
+	max-width: 300px
+}
+
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  background: red;
+  cursor: inherit;
+  display: block;
 }

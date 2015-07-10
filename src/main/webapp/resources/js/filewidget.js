@@ -1,15 +1,15 @@
 $(document).ready(function() {
 
 //update on page load 
-//TODO only if table is actually visible
 updateFileTable(); 
 
 var fileupload = $('#fileupload').fileupload({
 //		maxChunkSize: 10000000 //10MB - TODO not chunked has file size limit of 4GB
-	replaceFileInput: true,
+	replaceFileInput: false,
 	maxNumberOfFiles: 1,
 	add: function (e, data) {
-        data.context = $('#startUpload') 
+        $('#selectedFile').val(data.files[0].name + " (" + bytesToSize(data.files[0].size) + ")");
+		data.context = $('#startUpload') 
             .click(function () {
                 fileupload = data.submit();
             });
@@ -54,7 +54,7 @@ $('#fileTable').click(function(e) {
 });
 
 function updateFileTable() {
-	$.get('files')
+	$.get('/Twintiment/files')
 		.success(function(msg) {
 			
 			$('.fileTable tbody').children().remove(); //clear table

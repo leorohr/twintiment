@@ -17,7 +17,7 @@ $('#chart_div').highcharts({
 	},
 	yAxis: {
 		title: {
-			text: '#Tweets/10secs'
+			text: '#Tweets Analysed/10secs'
 		}
 	},
 	legend: {

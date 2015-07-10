@@ -16,7 +16,6 @@ window.tweetPerMin = []; //mapping a minute to the number of tweets
 
 //Global functions
 function setRadioButtonsDisabled(disabled) {
-	//Lock radiobuttons
 	$('#heatRadioBtn').attr('disabled', disabled);
 	$('#markerRadioBtn').attr('disabled', disabled);
 }
