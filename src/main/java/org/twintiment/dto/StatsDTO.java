@@ -1,6 +1,10 @@
 package org.twintiment.dto;
 
-public class StatsDTO {
+import java.io.Serializable;
+
+public class StatsDTO implements Serializable {
+
+	private static final long serialVersionUID = 130377909851875282L;
 
 	private int numTweets;
 	private int numInferred;

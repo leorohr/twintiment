@@ -1,6 +1,11 @@
 package org.twintiment.dto;
 
-public class FileMetaDTO {
+import java.io.Serializable;
+
+public class FileMetaDTO implements Serializable {
+
+	private static final long serialVersionUID = -3619128356979513155L;
+
 	private String fileName;
 	private long fileSize;
 	

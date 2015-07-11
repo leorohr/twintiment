@@ -1,13 +1,16 @@
 package org.twintiment.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
  * A class used to transport data about a tweet from the server to the client.
- * Is marshalled to a JSON object.
  */
-public class TweetDataMsg {
+public class TweetDataMsg implements Serializable {
+	
+	private static final long serialVersionUID = 84240534021217212L;
+	
 	private String message;
 	private double sentiment;
 	private double[] coords;
