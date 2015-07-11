@@ -175,12 +175,6 @@
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
-		<resources>
-			<resource>
-				<targetPath>${project.build.directory}/classes/datasets</targetPath>
-				<directory>datasets</directory>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

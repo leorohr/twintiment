@@ -74,8 +74,6 @@ streamer = (function() {
 				console.log("Connected " + frame);
 			
 			stompClient.subscribe("/queue/data", data_callback);
-
-			stompClient.subscribe("/queue/tweet_rate", rate_callback); //TODO remove
 			
 			//Poll for stats every 10 seconds
 			window.intervalVar = setInterval(function() {
@@ -88,16 +86,19 @@ streamer = (function() {
 					$('#statsTable #numTagged').html(response.numTagged);
 					$('#statsTable #avgSentiment').html(response.avgSentiment);
 					$('#statsTable #maxDist').html(response.maxDist);
+					$('#statsTable #avgTime').html(response.avgTime);
 					
 					
 					//Update top tweets
 					$('#topPosTweetsTable tbody').children().remove(); //clear table
 					for(i in response.topPosTweets) {
-						appendToTweetTable('#topPosTweetsTable', response.topPosTweets[i].message, response.topPosTweets[i].sentiment);
+						if(response.topPosTweets[i] != null)
+							appendToTweetTable('#topPosTweetsTable', response.topPosTweets[i].message, response.topPosTweets[i].sentiment);
 					}
 					$('#topNegTweetsTable tbody').children().remove(); //clear table
 					for(i in response.topNegTweets) {
-						appendToTweetTable('#topNegTweetsTable', response.topNegTweets[i].message, response.topNegTweets[i].sentiment);
+						if(response.topNegTweets[i] != null)
+							appendToTweetTable('#topNegTweetsTable', response.topNegTweets[i].message, response.topNegTweets[i].sentiment);
 					}
 				
 				});

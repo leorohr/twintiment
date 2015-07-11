@@ -28,18 +28,16 @@ div#map_div {
 
 div#statsSettingsWrapper {
 	height: 90px;
-	max-width: 500px;
+	max-width: 450px;
 }
 
 div#settingsWrapper {
  	padding: 3px;
-	width: 50%;
 	float: right;
 }
 
 div#statsTableWrapper {
 	float: left;
-	width: 50%;
 	border-right: solid;
 	border-width: 1px;
 }

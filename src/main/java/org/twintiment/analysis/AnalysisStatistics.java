@@ -10,6 +10,7 @@ public class AnalysisStatistics {
 	private int numTweets = 0;
 	private int numInferred = 0;
 	private int numTagged = 0;
+	private long avgTime = 0l;
 	private double avgSentiment = 0.0d;
 	private double maxDist = 0.0d;
 
@@ -22,7 +23,7 @@ public class AnalysisStatistics {
 
 	public StatsDTO getDTO() {
 		return new StatsDTO(numTweets, numInferred, numTagged, avgSentiment,
-				maxDist, topPosTweets, topNegTweets);
+				maxDist, topPosTweets, topNegTweets, avgTime);
 	}
 
 	public int getNumTweets() {
@@ -65,12 +66,25 @@ public class AnalysisStatistics {
 		this.maxDist = maxDist;
 	}
 
-	
 	public synchronized void update(TweetDataMsg tweet) {
+		update(tweet, -1l);
+	}
+	
+	/**
+	 * 
+	 * @param tweet
+	 * @param analysisTime The time it took for the tweet to be analysed (in ms)
+	 */
+	public synchronized void update(TweetDataMsg tweet, long analysisTime) {
 		++numTweets;
 		
 		//Update avg sentiment
 		updateSentiment(tweet.getSentiment());
+		
+		//Update avg analysis time
+		if(analysisTime > 0) {
+			avgTime = Math.round(avgTime * ((numTweets - 1) / (double)numTweets) + analysisTime/((double)numTweets));
+		}
 		
 		//Update tweet top lists
 		int i = NUM_TOP_TWEETS;
@@ -113,7 +127,7 @@ public class AnalysisStatistics {
 		avgSentiment = avgSentiment * ((numTweets - 1) / numTweets) + sentiment/numTweets;
 		avgSentiment = Math.round(avgSentiment*10000)/10000d; //round to fourth decimal place	
 	}
-
+	
 	public void resetStats() {
 		numTweets = 0;
 		numTagged = 0;

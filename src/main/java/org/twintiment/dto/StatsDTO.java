@@ -5,6 +5,7 @@ public class StatsDTO {
 	private int numTweets;
 	private int numInferred;
 	private int numTagged;
+	private long avgTime;
 	private double avgSentiment;
 	private double maxDist;
 	private TweetDataMsg[] topPosTweets;
@@ -12,7 +13,7 @@ public class StatsDTO {
 
 	public StatsDTO(int numTweets, int numInferred, int numTagged,
 			double avgSentiment, double maxDist, TweetDataMsg[] topPosTweets,
-			TweetDataMsg[] topNegTweets) {
+			TweetDataMsg[] topNegTweets, long avgTime) {
 		this.numTweets = numTweets;
 		this.numInferred = numInferred;
 		this.numTagged = numTagged;
@@ -20,6 +21,7 @@ public class StatsDTO {
 		this.maxDist = maxDist;
 		this.topPosTweets = topPosTweets;
 		this.topNegTweets = topNegTweets;
+		this.avgTime = avgTime;
 	}
 
 	public int getNumTweets() {
@@ -48,5 +50,9 @@ public class StatsDTO {
 	
 	public TweetDataMsg[] getTopNegTweets() {
 		return topNegTweets;
+	}
+	
+	public long getAvgTime() {
+		return avgTime;
 	}
 }

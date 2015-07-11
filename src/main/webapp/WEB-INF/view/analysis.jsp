@@ -69,17 +69,18 @@
 		<div id="map_div"></div>
 
 		<div id="statsSettingsWrapper">
-			<div id="statsTableWrapper" class="col-md-6">
+			<div id="statsTableWrapper" class="col-md-7">
 				<table id="statsTable">
 					<tr><td>#Tweets:</td><td id="numTweets"></td></tr>
 					<tr><td>#Tweets (inferred):</td><td id="numInferred"></td></tr>
 					<tr><td>#Tweets (geotagged):</td><td id="numTagged"></td></tr>
 					<tr><td>Avg Sentiment:</td><td id="avgSentiment"></td></tr>
 					<tr><td>Max Distance:</td><td id="maxDist"></td></tr>
+					<tr><td>Avg Analysis Time (ms):</td><td id="avgTime"></td></tr>
 				</table>
 			</div>
 
-			<div id="settingsWrapper" class="col-md-6">
+			<div id="settingsWrapper" class="col-md-5">
 				<label class="radio-inline"><input type="radio" id="markerRadioBtn" name="mapTypeRb" checked="checked">Markers</label>
 				<label class="radio-inline"><input type="radio"	id="heatRadioBtn" name="mapTypeRb">Heatmap</label>
 				<div class="checkbox">

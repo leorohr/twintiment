@@ -84,12 +84,6 @@ public class FrontController {
 		return manager.getAvailableFiles();
 	}
 	
-//	@RequestMapping(value="/analysis/top_tweets", method=RequestMethod.GET)
-//	@ResponseBody
-//	public TopTweetsDTO getTopTweets() {
-//		return new TopTweetsDTO(manager.getTopPosTweets(), manager.getTopNegTweets());
-//	}
-	
 	@RequestMapping(value="/analysis/stats", method=RequestMethod.GET)
 	@ResponseBody
 	public StatsDTO getStats() {

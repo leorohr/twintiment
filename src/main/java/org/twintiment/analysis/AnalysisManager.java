@@ -37,6 +37,7 @@ public class AnalysisManager {
 	private boolean isStopped = false;
 	private Thread transmissionThread, analysisThread;
 	private TweetSource source;
+	private ObjectMapper mapper = new ObjectMapper();
 	private SentimentAnalyser sentimentAnalyser;
 	private HashSet<FileMetaDTO> availableFiles = new HashSet<FileMetaDTO>();
 	private List<TweetDataMsg> tweets = Collections.synchronizedList(new ArrayList<TweetDataMsg>());
@@ -102,20 +103,10 @@ public class AnalysisManager {
 			
 			@Override
 			public void run() {
-				long startTime = System.currentTimeMillis();
-				long now;
 				while(!isStopped) {
 					
 					try {
 						messagingTemplate.convertAndSend("/queue/data", messageQueue.take());
-						
-						//Send the tweet-rate every ten seconds //TODO remove and provide as REST service
-						now = System.currentTimeMillis();
-						if((now - startTime) > 10000) {
-//							messagingTemplate.convertAndSend("/queue/tweet_rate", new TweetRateMsg(tweetCount, now));
-//							tweetCount = 0;
-							startTime = System.currentTimeMillis();
-						}
 					} catch (MessagingException | InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -139,8 +130,8 @@ public class AnalysisManager {
 	 * 			into a JsonNode object.					
 	 */
 	private void analyseNextTweet() throws IOException {		
-			
-		ObjectMapper mapper = new ObjectMapper(); 
+		
+		long start = System.currentTimeMillis(); //used to track the avg analysis time
 		JsonNode tweet = mapper.readTree(source.getNextTweet());
 		String text = tweet.findValue("text").asText();
 		double[] coords = null;
@@ -179,7 +170,7 @@ public class AnalysisManager {
 		tweets.add(tweetMsg); 
 		
 		//Update statistics
-		stats.update(tweetMsg);
+		stats.update(tweetMsg, System.currentTimeMillis()-start);
 		
 		//Update max. distance between tweets after ten new tweets arrived
 		if(stats.getNumTweets() % 10 == 0) {

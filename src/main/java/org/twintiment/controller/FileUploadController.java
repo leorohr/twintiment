@@ -48,7 +48,6 @@ public class FileUploadController {
 			// making directories for our required path.
 			byte[] bytes = multiFile.getBytes();
 			File directory = new File(path + "/datasets");
-			directory.mkdir();
 			// saving the file
 			file = new File(directory.getAbsolutePath()
 					+ System.getProperty("file.separator") + multiFile.getOriginalFilename());
