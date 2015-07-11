@@ -84,7 +84,7 @@
 				<label class="radio-inline"><input type="radio" id="markerRadioBtn" name="mapTypeRb" checked="checked">Markers</label>
 				<label class="radio-inline"><input type="radio"	id="heatRadioBtn" name="mapTypeRb">Heatmap</label>
 				<div class="checkbox">
-					<label><input type="checkbox" id="inclAllTweetsCB"/>Include All Tweets</label>
+					<label><input type="checkbox" id="includeAllTweetsCB"/>Include All Tweets</label>
 				</div>
 			</div>
 		</div>
@@ -119,10 +119,6 @@
 				</table>
 			</div>
 		</div>
-	
-
-
-		
 
 		<div id="tweetTableWrapper">
 			<table id="tweetTable" class="table table-bordered table-condensed" border="1">
@@ -195,7 +191,7 @@
 						
 						<button class="btn btn-default" id="startUpload">Upload</button>
 						<button class="btn btn-default" id="cancelUpload">Cancel</button>
-						<div class="progress" style="display: none;">
+						<div class="progress">
 							<div class="progress-bar" id="progress",
 								aria-valuemin="0" aria-valuemax="100"></div>
 						</div>

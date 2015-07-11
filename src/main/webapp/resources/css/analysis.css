@@ -11,6 +11,10 @@ table {
 	width: 100%;
 }
 
+.highlight {
+	background-color: #F5F5F5;
+}
+
 /* divs */
 div.chart {
 	width: 100%;

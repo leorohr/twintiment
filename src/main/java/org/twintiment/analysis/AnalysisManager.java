@@ -24,6 +24,7 @@ import org.twintiment.analysis.geolocation.GeoLocator;
 import org.twintiment.analysis.geolocation.GeoUtils;
 import org.twintiment.analysis.sentiment.SentimentAnalyser;
 import org.twintiment.dto.FileMetaDTO;
+import org.twintiment.dto.Settings;
 import org.twintiment.dto.TweetDataMsg;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,6 +42,7 @@ public class AnalysisManager {
 	private SentimentAnalyser sentimentAnalyser;
 	private HashSet<FileMetaDTO> availableFiles = new HashSet<FileMetaDTO>();
 	private List<TweetDataMsg> tweets = Collections.synchronizedList(new ArrayList<TweetDataMsg>());
+	private Settings settings;
 	
 	@Autowired
 	private AnalysisStatistics stats;
@@ -82,7 +84,7 @@ public class AnalysisManager {
 		this.isStopped = false;
 		this.stats.resetStats();
 		
-		//TODO possibly multiple threads to analyse? depends on backend analysis implementation
+		//TODO possibly multiple threads to analyse
 		analysisThread = new Thread(new Runnable() {
 			
 			@Override
@@ -142,8 +144,8 @@ public class AnalysisManager {
 			coords = locator.getCoordinates(tweet);
 		} catch (IOException e) { e.printStackTrace();	}
 		
-		//Drop the tweet if no coordinates present TODO allow user to include  
-		if(coords == null) {
+		//Drop the tweet if no coordinates present  
+		if(coords == null && !settings.isIncludeAllTweets()) {
 			return;
 		}
 		
@@ -230,5 +232,9 @@ public class AnalysisManager {
 	
 	public HashSet<FileMetaDTO> getAvailableFiles() {
 		return this.availableFiles;
+	}
+	
+	public void setSettings(Settings settings) {
+		this.settings = settings;
 	}
 }

@@ -42,16 +42,24 @@ $('#cancelUpload').click(function(e) {
 });
 
 //Change colour on click
-$('#fileTable').click(function(e) {
-	$(this).find("tr").each(function() { //reset all rows to white
-		$(this).css('background-color', 'white')
-	});
+$('#fileTable').on('click', 'tbody tr', function(event) {
+    $(this).addClass('highlight').siblings().removeClass('highlight');
 
-	//select clicked row
-	var row = $(e.target.parentNode);
-	row.css('background-color', '#F5F5F5');
-	streamer.selectedFile = row.children()[0].innerHTML;	//first column contains filename
+    //first column contains filename
+    var row = $(event.target.parentNode);
+    streamer.selectedFile = row.children()[0].innerHTML;	
 });
+
+//$('#fileTable').click(function(e) {
+//	$(this).find("tr").each(function() { //reset all rows to white
+//		$(this).css('background-color', 'white')
+//	});
+//
+//	//select clicked row
+//	var row = $(e.target.parentNode);
+//	row.css('background-color', '#F5F5F5');
+//	
+//});
 
 function updateFileTable() {
 	$.get('/Twintiment/files')

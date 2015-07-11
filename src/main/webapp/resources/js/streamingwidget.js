@@ -118,21 +118,23 @@ streamer = (function() {
 		/*
 		 * Starts the server's live tweet feed and connects to the websocket.
 		 */
-		startStreaming : function(filterterms) {
-			
+		startStreaming : function(filterTerms) {
+
 			// Start tweet streamer
-			var request = $.get("/Twintiment/analysis/start_streaming", {
-				"filterTerms" : filterterms
-			}).fail(function(jqhxr, status, message) {
-				console.log(status + ": " + message);
-			}).done(function() {
+			$.postJSON("/Twintiment/analysis/start_streaming", {
+				filterTerms : filterTerms,
+				includeAllTweets: $('#includeAllTweetsCB').prop('checked')
+			}, function() {
 				console.log("Started server stream.");
 				
 				//Disable radio buttons
 				setRadioButtonsDisabled(true);
 
 				connectToWs();
+			}).fail(function(jqhxr, status, message) {
+				console.log(status + ": " + message);
 			});
+
 		}, //startStreaming
 		
 		/*
@@ -143,20 +145,23 @@ streamer = (function() {
 				alert("Please select a file from the list or upload a new one.");
 				return;
 			}
+			
 
 			// Start tweet streamer
-			var request = $.get("/Twintiment/analysis/start", {
-				"filename" : this.selectedFile
-			}).fail(function(jqhxr, status, message) {
-				console.log(status + ": " + message);
-			}).done(function() {
+			$.postJSON("/Twintiment/analysis/start", {
+				fileName : this.selectedFile,
+				includeAllTweets: $('#includeAllTweetsCB').prop('checked')
+			}, function() {
 				console.log("Started server stream.");
 				
 				//Disable radio buttons
 				setRadioButtonsDisabled(true);
 
 				connectToWs();
+			}).fail(function(jqhxr, status, message) {
+				console.log(status + ": " + message);
 			});
+
 		}, //startFileAnalysis
 	
 		/*

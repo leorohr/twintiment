@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.twintiment.analysis.AnalysisManager;
@@ -21,6 +21,7 @@ import org.twintiment.analysis.AnalysisStatistics;
 import org.twintiment.analysis.DataFile;
 import org.twintiment.analysis.TwitterStreaming;
 import org.twintiment.dto.FileMetaDTO;
+import org.twintiment.dto.Settings;
 import org.twintiment.dto.StatsDTO;
 
 @Controller
@@ -39,16 +40,17 @@ public class FrontController {
 		return new ModelAndView("analysis");
 	}
 	
-	@RequestMapping(value = "/analysis/start_streaming", method=RequestMethod.GET)
+	@RequestMapping(value = "/analysis/start_streaming", method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<String> startStreaming(@RequestParam(value="filterTerms", required=true) String filterTerms) {
+	public ResponseEntity<String> startStreaming(@RequestBody Settings settings) {
 		
-		//TODO check fiterterms for validity
-		if(filterTerms.equals(""))
+		manager.setSettings(settings);
+		
+		if(settings.getFilterTerms().equals(""))
 			return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
 		
     	try {
-			manager.setTweetSource(new TwitterStreaming(Arrays.asList(filterTerms.split(", | |,"))));
+			manager.setTweetSource(new TwitterStreaming(Arrays.asList(settings.getFilterTerms().split(", | |,"))));
 			manager.startAnalysis();
 		} catch (IOException e) { e.printStackTrace(); }
 		
@@ -63,12 +65,18 @@ public class FrontController {
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/analysis/start", method=RequestMethod.GET) 
+	@RequestMapping(value="/analysis/start", method=RequestMethod.POST) 
 	@ResponseBody
-	public ResponseEntity<String> startAnalysis(@RequestParam(value="filename", required=true)String fileName) {
+	public ResponseEntity<String> startAnalysis(@RequestBody Settings settings) {
+		
+		if(settings.getFileName() == null || settings.getFileName().equals("")) {
+			return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+		manager.setSettings(settings);
 		
 		try {
-			manager.setTweetSource(new DataFile(servletContext.getRealPath("/datasets/" + fileName)));
+			manager.setTweetSource(new DataFile(servletContext.getRealPath("/datasets/" + settings.getFileName())));
 			manager.startAnalysis();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

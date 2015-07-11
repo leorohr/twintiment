@@ -31,3 +31,16 @@ function appendToTweetTable(tableid, message, sentiment) {
 			.append($('</td>')))
 	.append($('</tr>')));	
 }
+
+$.postJSON = function(url, data, callback) {
+    return $.ajax({
+    headers: { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json' 
+    },
+    'type': 'POST',
+    'url': url,
+    'data': JSON.stringify(data),
+    'success': callback
+    });
+};
