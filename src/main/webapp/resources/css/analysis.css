@@ -12,12 +12,16 @@ table {
 }
 
 /* divs */
-div.left_container {
-	width: 60%;
-	float: left;
+div.chart {
+	width: 100%;
+	height: 300px;
 }
 
-div.map {
+div#content {
+	max-width: 300px;
+}
+
+div#map_div {
 	width: 100%;
 	height: 300px;
 }
@@ -40,39 +44,25 @@ div#statsTableWrapper {
 	border-width: 1px;
 }
 
-div.tweetTableWrapper {
+div#topTweetsWrapper {
+	clear: left;
+	max-height: 500px;
+	overflow-y: auto;
+}
+
+div#topTweetsWrapper div {
+	padding: 0px;
+}
+
+div#tweetTableWrapper {
 	max-height: 250px;
 	overflow-y: auto;
 	width: 100%; 
 }
 
-div.topNegTweetsWrapper {
-	float: right;
-	width: 50%;
-	max-height: 400px;
-	overflow-y: auto;
-}
-
-div.topPosTweetsWrapper {
-	float: left;
-	width: 50%;
-	max-height: 400px;
-	overflow-y: auto;
-}
-
-div.right_container {
-	width: 40%;
-	float: right;
-}
-
-div.fileTableWrapper {
+div#fileTableWrapper {
 	overflow-y: auto;
 	max-height: 150px; 
-}
-
-div.chart {
-	width: 100%;
-	height: 300px;
 }
 
 div#fileUploadContainer {
@@ -83,21 +73,17 @@ div#fileUploadContainer {
     border-radius: 3px;
 }
 
-input#filterTerms {
-	max-width: 300px
-}
-
 .btn-file input[type=file] {
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 100%;
-  min-height: 100%;
-  font-size: 100px;
-  text-align: right;
-  filter: alpha(opacity=0);
-  opacity: 0;
-  background: red;
-  cursor: inherit;
-  display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+  	min-width: 100%;
+	min-height: 100%;
+	font-size: 0px;
+	text-align: right;
+	filter: alpha(opacity=0);
+	opacity: 0;
+	background: red;
+	cursor: inherit;
+	display: block;
 }

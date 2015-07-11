@@ -63,8 +63,83 @@
 </head>
 
 <body>
+<div class="container-fluid">
+	
+	<div id="left_container" class="col-md-7">
+		<div id="map_div"></div>
 
-	<div id="right_container" class="right_container">
+		<div id="statsSettingsWrapper">
+			<div id="statsTableWrapper" class="col-md-6">
+				<table id="statsTable">
+					<tr><td>#Tweets:</td><td id="numTweets"></td></tr>
+					<tr><td>#Tweets (inferred):</td><td id="numInferred"></td></tr>
+					<tr><td>#Tweets (geotagged):</td><td id="numTagged"></td></tr>
+					<tr><td>Avg Sentiment:</td><td id="avgSentiment"></td></tr>
+					<tr><td>Max Distance:</td><td id="maxDist"></td></tr>
+				</table>
+			</div>
+
+			<div id="settingsWrapper" class="col-md-6">
+				<label class="radio-inline"><input type="radio" id="markerRadioBtn" name="mapTypeRb" checked="checked">Markers</label>
+				<label class="radio-inline"><input type="radio"	id="heatRadioBtn" name="mapTypeRb">Heatmap</label>
+				<div class="checkbox">
+					<label><input type="checkbox" id="inclAllTweetsCB"/>Include All Tweets</label>
+				</div>
+			</div>
+		</div>
+		
+		<div id="topTweetsWrapper">
+			<div id="topPosTweetsWrapper" class="col-md-6">
+				<table id="topPosTweetsTable" class="table table-bordered table-condensed" border="1">
+					<caption>5 Most Positive Tweets</caption>
+					<thead>
+						<tr>
+							<th style="width: 85%">Message</th>
+							<th style="width: 15%">Score</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Inserted by JS -->
+					</tbody>
+				</table>
+			</div>
+			<div id="topNegTweetsWrapper" class="col-md-6">
+				<table id="topNegTweetsTable" class="table table-bordered table-condensed" border="1">
+					<caption>5 Most Negative Tweets</caption>	
+					<thead>
+						<tr>
+							<th style="width: 85%">Message</th>
+							<th style="width: 15%">Score</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Inserted by JS -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	
+
+
+		
+
+		<div id="tweetTableWrapper">
+			<table id="tweetTable" class="table table-bordered table-condensed" border="1">
+				<thead>
+					<tr>
+						<th style="width: 85%">Message</th>
+						<th style="width: 15%">Score</th>
+					</tr>
+				</thead>
+				<tbody>
+					 <!-- Inserted by JS -->
+				</tbody>
+			</table>
+		</div>
+		
+	</div>
+
+	<div id="right_container" class="col-md-5">
 		<div id="chart_container" class="chart_container">
 			<div id="chart_div" class="chart"></div>
 			<div id="tpm_chart_div" class="chart"></div>
@@ -88,7 +163,7 @@
 				</div>
 				<div class="tab-pane" id="fileTab">
 					<!-- File Controls -->
-					<div class="fileTableWrapper">
+					<div id="fileTableWrapper">
 						<table id="fileTable" class="table table-bordered table-condensed table-hover">
 							<thead>
 								<tr>
@@ -119,8 +194,8 @@
 						
 						<button class="btn btn-default" id="startUpload">Upload</button>
 						<button class="btn btn-default" id="cancelUpload">Cancel</button>
-						<div class="progress">
-							<div class="progress-bar progress-bar-info" id="progress",
+						<div class="progress" style="display: none;">
+							<div class="progress-bar" id="progress",
 								aria-valuemin="0" aria-valuemax="100"></div>
 						</div>
 					</div>
@@ -129,75 +204,6 @@
 		</div>
 	</div>
 
-	<div id="left_container" class="left_container">
-		<div id="map_div" class="map"></div>
-		
-		<div id="statsSettingsWrapper">
-			<div id="statsTableWrapper">
-				<table id="statsTable">
-					<tr><td>#Tweets:</td><td id="numTweets"></td></tr>
-					<tr><td>#Tweets (inferred):</td><td id="numInferred"></td></tr>
-					<tr><td>#Tweets (geotagged):</td><td id="numTagged"></td></tr>
-					<tr><td>Avg Sentiment:</td><td id="avgSentiment"></td></tr>
-					<tr><td>Max Distance:</td><td id="maxDist"></td></tr>
-				</table>
-			</div>
-					
-			<div id="settingsWrapper">
-				<label class="radio-inline"><input type="radio" id="markerRadioBtn" name="mapTypeRb" checked="checked">Markers</label>
-				<label class="radio-inline"><input type="radio"	id="heatRadioBtn" name="mapTypeRb">Heatmap</label>
-				<div class="checkbox">
-					<label><input type="checkbox" id="inclAllTweetsCB"/>Include All Tweets</label>
-				</div>
-			</div>
-		</div>
-
-		<div>
-			<div class="topPosTweetsWrapper">
-				<table id="topPosTweetsTable" class="table table-bordered table-condensed" border="1">
-					<caption>5 Most Positive Tweets</caption>
-					<thead>
-						<tr>
-							<th style="width: 85%">Message</th>
-							<th style="width: 15%">Score</th>
-						</tr>
-					</thead>
-					<tbody>
-						<!-- Inserted by JS -->
-					</tbody>
-				</table>
-			</div>
-			<div class="topNegTweetsWrapper">
-				<table id="topNegTweetsTable" class="table table-bordered table-condensed" border="1">
-					<caption>5 Most Negative Tweets</caption>	
-					<thead>
-						<tr>
-							<th style="width: 85%">Message</th>
-							<th style="width: 15%">Score</th>
-						</tr>
-					</thead>
-					<tbody>
-						<!-- Inserted by JS -->
-					</tbody>
-				</table>
-			</div>
-		</div>
-
-		<div class="tweetTableWrapper">
-			<table id="tweetTable" class="table table-bordered table-condensed" border="1">
-				<thead>
-					<tr>
-						<th style="width: 85%">Message</th>
-						<th style="width: 15%">Score</th>
-					</tr>
-				</thead>
-				<tbody>
-					 <!-- Inserted by JS -->
-				</tbody>
-			</table>
-		</div>
-		
-	</div>
-
+</div>
 </body>
 </html>
