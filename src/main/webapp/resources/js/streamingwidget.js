@@ -36,7 +36,6 @@ streamer = (function() {
 				mapWidget.addHeatPoint(js['coords']);
 			}
 			else {
-				
 				var marker = L.marker(js['coords']);//.addTo(mapWidget.map);
 				marker.bindPopup(js['message']+"<br>Sentiment: "+js['sentiment']);
 				mapWidget.addMarker(marker);;
@@ -46,23 +45,12 @@ streamer = (function() {
 		//Add row to table
 		appendToTweetTable('#tweetTable', js['message'], js['sentiment']);
 		
-		//Update TweetsPerMin		
-		var minuteDate = new Date(js['date']).setSeconds(0); //date variable with secs dropped
+		//update sentiment chart
+		//TODO js['date'] or current timestamp?
+		sentiment_chart.series[0].addPoint([new Date().getTime(), js['sentiment']]);  
 		
-		if(tweetPerMin[tweetPerMin.length-1] != null && tweetPerMin[tweetPerMin.length-1]['x'] == minuteDate)
-			tweetPerMin[tweetPerMin.length-1]['y'] += 1;
-		else tweetPerMin.push({x: minuteDate, y: 1});
-		
-		//update chart
-		tpm_chart.series[0].setData(tweetPerMin);
 
-	} //data_callback
-
-	function rate_callback(message) {
-		var js = JSON.parse(message.body);
-		chart.series[0].addPoint([js['date'], js['tweets']]);	
-	} //rate_callback
-	
+	} //data_callback	
 	
 	function connectToWs() {
 		var socket = new SockJS("/Twintiment/data_stream");
@@ -100,10 +88,18 @@ streamer = (function() {
 						if(response.topNegTweets[i] != null)
 							appendToTweetTable('#topNegTweetsTable', response.topNegTweets[i].message, response.topNegTweets[i].sentiment);
 					}
+					
+					var data = tpm_chart.series[0].data; 
+					var prev = 0;
+					for(var i=0; i<data.length; ++i) {
+						prev += data[i]['y'];
+					}
+					tpm_chart.series[0].addPoint([new Date().getTime(), response.numTweets-prev]);
+					sentiment_chart.series[1].addPoint([new Date().getTime(), response.avgSentiment]);
 				
 				});
 			
-			}, 10000);
+			}, 5000);
 			
 		}, function(error) {
 			console.log("Error while connecting to STOMP server.\n" + error);

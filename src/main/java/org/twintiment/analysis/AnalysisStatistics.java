@@ -122,7 +122,7 @@ public class AnalysisStatistics {
 	 *            sentimen value up-to-date.
 	 */
 	private void updateSentiment(double sentiment) {
-		avgSentiment = avgSentiment * ((numTweets - 1) / numTweets) + sentiment/numTweets;
+		avgSentiment = avgSentiment * ((numTweets - 1) / (double)numTweets) + sentiment/numTweets;
 		avgSentiment = Math.round(avgSentiment*10000)/10000d; //round to fourth decimal place	
 	}
 	

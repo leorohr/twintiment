@@ -5,23 +5,26 @@ $('#chart_div').highcharts({
 		zoomType: 'x'
 	},
 	title: {
-		text: 'Analysis Throughput'
+		text: 'Sentiment'
 	},
-	subtitle: {
-		text: document.ontouchstart === undefined ?
-				'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-	},
+// 	subtitle: {
+// 		text: document.ontouchstart === undefined ?
+// 				'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+// 	},
 	xAxis: {
 		type: 'datetime',
-		tickInterval: 10000
+ 		tickInterval: 1000
 	},
 	yAxis: {
 		title: {
-			text: '#Tweets Analysed/10secs'
+			text: 'Sentiment Value'
 		}
 	},
 	legend: {
-		enabled: false
+		layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle',
+        borderWidth: 0
 	},
 	plotOptions: {
 			series: {
@@ -39,7 +42,10 @@ $('#chart_div').highcharts({
 	},
 	series: [{
 		type: 'line',
-		name: 'Tweets'
+		name: 'Sentiment'
+	}, {
+		type: 'line',
+		name: 'Avg. Sentiment'
 	}]
 });
 
@@ -50,17 +56,17 @@ $('#tpm_chart_div').highcharts({
 	title: {
 		text: 'Tweet Streaming Rate'
 	},
-	subtitle: {
-		text: document.ontouchstart === undefined ?
-				'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-	},
+// 	subtitle: {
+// 		text: document.ontouchstart === undefined ?
+// 				'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+// 	},
 	xAxis: {
 		type: 'datetime',
-		tickInterval: 60000 //1 min
+ 		tickInterval: 5000, //5 sec
 	},
 	yAxis: {
 		title: {
-			text: '#Tweets/min'
+			text: '#Tweets/5sec'
 		}
 	},
 	legend: {
@@ -88,7 +94,7 @@ $('#tpm_chart_div').highcharts({
 
 
 
-chart = $('#chart_div').highcharts();
+sentiment_chart = $('#chart_div').highcharts();
 tpm_chart = $('#tpm_chart_div').highcharts();
 
 });
