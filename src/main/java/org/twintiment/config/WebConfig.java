@@ -1,7 +1,9 @@
 package org.twintiment.config;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -32,5 +34,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	    CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 	    resolver.setDefaultEncoding("utf-8");
 	    return resolver;
+	}
+	
+	@Bean
+	@Qualifier("TwintimentTaskExecutor")
+	public ThreadPoolTaskExecutor taskExecutor() {
+		ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
+		pool.setCorePoolSize(8);
+		pool.setMaxPoolSize(8);
+		pool.setQueueCapacity(500);
+		pool.setWaitForTasksToCompleteOnShutdown(true);
+		pool.setThreadNamePrefix("TwintimentTaskExecutor-");
+		return pool;
 	}
 }	

@@ -17,8 +17,12 @@ import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.core.MessageSendingOperations;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.twintiment.analysis.geolocation.GeoLocator;
 import org.twintiment.analysis.geolocation.GeoUtils;
@@ -31,7 +35,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
-public class AnalysisManager {
+@Scope(value="session", proxyMode=ScopedProxyMode.INTERFACES)
+public class AnalysisManager implements IAnalysisManager {
 	
 	private final MessageSendingOperations<String> messagingTemplate;
 	private BlockingQueue<TweetDataMsg> messageQueue = new LinkedBlockingQueue<TweetDataMsg>(10000);
@@ -40,18 +45,18 @@ public class AnalysisManager {
 	private TweetSource source;
 	private ObjectMapper mapper = new ObjectMapper();
 	private SentimentAnalyser sentimentAnalyser;
+	private GeoLocator locator = new GeoLocator();
 	private HashSet<FileMetaDTO> availableFiles = new HashSet<FileMetaDTO>();
 	private List<TweetDataMsg> tweets = Collections.synchronizedList(new ArrayList<TweetDataMsg>());
 	private Settings settings;
+	private AnalysisStatistics stats = new AnalysisStatistics();
 	
 	@Autowired
-	private AnalysisStatistics stats;
+	@Qualifier("TwintimentTaskExecutor")
+	private ThreadPoolTaskExecutor executor; 
 	
 	@Autowired
-	private GeoLocator locator;
-	
-	@Autowired
-	ServletContext servletContext;
+	private ServletContext servletContext;
 	
 	@Autowired
 	public AnalysisManager(MessageSendingOperations<String> messagingTemplate) {
@@ -79,28 +84,12 @@ public class AnalysisManager {
 		}
 	}
 	
-	public void startAnalysis() {
+	public void runAnalysis() {
 		
 		this.isStopped = false;
 		this.stats.resetStats();
 		
-		//TODO possibly multiple threads to analyse
-		analysisThread = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				while(!isStopped) {
-					try {
-						analyseNextTweet();
-					} catch (IOException e) {
-						e.printStackTrace();
-						continue;
-					}	
-				}
-			}
-		}, "AnalysisThread");
-		analysisThread.start();
-		
+		//Start a thread that continuously broadcasts messages from the queue to the channel
 		transmissionThread = new Thread(new Runnable() {
 			
 			@Override
@@ -117,31 +106,62 @@ public class AnalysisManager {
 			}
 		}, "DataTransmissionThread");
 		transmissionThread.start();
+		
+		analysisThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while(!isStopped) {
+					if(source.hasNext()) {
+						String tweet = source.getNextTweet();
+						executor.submit(new Runnable() {
+
+							@Override
+							public void run() {
+								try {
+									AnalysisManager.this.analyseTweet(tweet);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+							
+						});
+					}	
+				}
+			}		
+		});
+		analysisThread.start();
 	}
+
 	
-	public void stopAnalysis() {
+	public void stopAnalysis() {		
+		
 		this.isStopped = true;
 		sentimentAnalyser.close();
 		source.close();
 	}
 	
-	/**
-	 * Retrieve a new tweet from a source and feed it to the analysis chain.
-	 * Add the resulting TweetDataMsg to the messageQueue.
-	 * @throws IOException if the tweet taken from the source could not be parsed
-	 * 			into a JsonNode object.					
-	 */
-	private void analyseNextTweet() throws IOException {		
+	private void analyseTweet(String rawTweet) throws IOException {		
 		
 		long start = System.currentTimeMillis(); //used to track the avg analysis time
-		JsonNode tweet = mapper.readTree(source.getNextTweet());
+		JsonNode tweet = mapper.readTree(rawTweet);
 		String text = tweet.findValue("text").asText();
 		double[] coords = null;
 		List<String> hashtags = null;
 		
 		//Get Coordinates
 		try {
-			coords = locator.getCoordinates(tweet);
+			JsonNode coordsNode;
+			if(!(coordsNode = tweet.get("coordinates")).isNull()) {
+				stats.incNumTagged();
+				//flip order. Twitter returns coords in lon/lat
+				coords = new double[] { coordsNode.get("coordinates").get(1).asDouble(),
+										coordsNode.get("coordinates").get(0).asDouble() };
+			} else {
+				coords = locator.getCoordinates(tweet.findValue("user").findValue("location").asText());
+				if(coords != null)
+					stats.incNumInferred();
+			}
 		} catch (IOException e) { e.printStackTrace();	}
 		
 		//Drop the tweet if no coordinates present  
@@ -176,37 +196,36 @@ public class AnalysisManager {
 		
 		//Update max. distance between tweets after ten new tweets arrived
 		if(stats.getNumTweets() % 10 == 0) {
-			updateMaxDist();
+			
+			executor.submit(new Runnable() {
+				@Override
+				public void run() {
+					updateMaxDist();
+				}
+			});
 		}
 	}
 	
 	private void updateMaxDist() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
+		double dist = 0.0d;
+		for(int i=0; i<tweets.size(); ++i) {
+			double[] coords1 = tweets.get(i).getCoords();
+			if(coords1 == null) 
+				continue;
+			
+			for(int j=i; j<tweets.size(); ++j) {
 				
-				double dist = 0.0d;
-				for(int i=0; i<tweets.size(); ++i) {
-					double[] coords1 = tweets.get(i).getCoords();
-					if(coords1 == null) 
-						continue;
-					
-					for(int j=i; j<tweets.size(); ++j) {
-						
-						double[] coords2 = tweets.get(j).getCoords();
-						
-						if(coords2 != null) {
-							dist = GeoUtils.haversine(coords1[0], coords1[1], coords2[0], coords2[1]);
-							if(dist > stats.getMaxDist()) {
-								dist = Math.round(dist*100)/100d; //round to second decimal place
-								stats.setMaxDist(dist);
-							}
-						}
+				double[] coords2 = tweets.get(j).getCoords();
+				
+				if(coords2 != null) {
+					dist = GeoUtils.haversine(coords1[0], coords1[1], coords2[0], coords2[1]);
+					if(dist > stats.getMaxDist()) {
+						dist = Math.round(dist*100)/100d; //round to second decimal place
+						stats.setMaxDist(dist);
 					}
 				}
 			}
-			
-		}, "UpdateMaxDist").start();
+		}
 	}
 	
 	/**
@@ -236,5 +255,9 @@ public class AnalysisManager {
 	
 	public void setSettings(Settings settings) {
 		this.settings = settings;
+	}
+	
+	public AnalysisStatistics getStats() {
+		return stats;
 	}
 }

@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.twintiment.analysis.AnalysisManager;
+import org.twintiment.analysis.IAnalysisManager;
 
 @Controller 
 @MultipartConfig
 public class FileUploadController {
 
 	@Autowired
-	private AnalysisManager manager;
+	private IAnalysisManager manager;
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST, headers = "content-type=multipart/*")
 	@ResponseBody
@@ -38,7 +38,7 @@ public class FileUploadController {
 		MultipartFile multiFile = request.getFile(iter.next());
 		File file = null;
 		try {
-			// just to show that we have actually received the file
+			// just to show that we have actually received the file TODO remove
 			System.out.println("File Length:" + multiFile.getBytes().length);
 			System.out.println("File Type:" + multiFile.getContentType());
 			String fileName = multiFile.getOriginalFilename();

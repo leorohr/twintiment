@@ -1,10 +1,8 @@
 package org.twintiment.analysis;
 
-import org.springframework.stereotype.Component;
 import org.twintiment.dto.StatsDTO;
 import org.twintiment.dto.TweetDataMsg;
 
-@Component
 public class AnalysisStatistics {
 
 	private int numTweets = 0;
@@ -14,7 +12,7 @@ public class AnalysisStatistics {
 	private double avgSentiment = 0.0d;
 	private double maxDist = 0.0d;
 
-	public final int NUM_TOP_TWEETS = 5;
+	private final int NUM_TOP_TWEETS = 5;
 	private TweetDataMsg[] topPosTweets = new TweetDataMsg[NUM_TOP_TWEETS]; 
 	private TweetDataMsg[] topNegTweets = new TweetDataMsg[NUM_TOP_TWEETS]; 
 

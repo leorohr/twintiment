@@ -17,7 +17,7 @@
 		<level value="debug" />
 	</logger>
 	<logger name="org.springframework.web">
-		<level value="info" />
+		<level value="debug" />
 	</logger>
 	<logger name="org.springframework.web.socket">
 		<level value="debug" />

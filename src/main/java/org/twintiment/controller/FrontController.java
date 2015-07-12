@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.twintiment.analysis.AnalysisManager;
-import org.twintiment.analysis.AnalysisStatistics;
 import org.twintiment.analysis.DataFile;
+import org.twintiment.analysis.IAnalysisManager;
 import org.twintiment.analysis.TwitterStreaming;
 import org.twintiment.dto.FileMetaDTO;
 import org.twintiment.dto.Settings;
@@ -28,11 +27,10 @@ import org.twintiment.dto.StatsDTO;
 public class FrontController {
 	 
 	@Autowired
-	private AnalysisManager manager;
+	private IAnalysisManager manager;
 	@Autowired
 	private ServletContext servletContext;
-	@Autowired
-	private AnalysisStatistics stats;
+	
 	
 	@RequestMapping("/analysis")
 	@ResponseBody
@@ -51,7 +49,7 @@ public class FrontController {
 		
     	try {
 			manager.setTweetSource(new TwitterStreaming(Arrays.asList(settings.getFilterTerms().split(", | |,"))));
-			manager.startAnalysis();
+			manager.runAnalysis();
 		} catch (IOException e) { e.printStackTrace(); }
 		
     	return new ResponseEntity<String>(HttpStatus.OK);
@@ -77,7 +75,7 @@ public class FrontController {
 		
 		try {
 			manager.setTweetSource(new DataFile(servletContext.getRealPath("/datasets/" + settings.getFileName())));
-			manager.startAnalysis();
+			manager.runAnalysis();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -96,6 +94,6 @@ public class FrontController {
 	@ResponseBody
 	public StatsDTO getStats() {
 		
-		return stats.getDTO();
+		return manager.getStats().getDTO();
 	}
 }
