@@ -15,6 +15,20 @@ table {
 	background-color: #F5F5F5;
 }
 
+/* Adjust slider size and position */
+.slider-handle {
+	width: 16px;
+	height: 16px;
+}
+
+.slider.slider-horizontal .slider-handle {
+	margin-top: -3px;
+}
+
+.slider-handle.min-slider-handle.round {
+    margin-left: 0px;
+}
+
 /* divs */
 div.chart {
 	width: 100%;

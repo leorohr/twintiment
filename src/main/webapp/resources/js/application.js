@@ -1,5 +1,13 @@
 $(document).ready(function() {
 
+//set up slider
+window.sentimentRangeSlider = $('#sentimentRangeSlider').slider({
+	id: "sentimentRangeSlider",
+	min: 0,
+	max: 5,
+	range: true,
+	value: [0,5]
+	});
 
 }); //document ready
 

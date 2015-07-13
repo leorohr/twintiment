@@ -155,30 +155,36 @@ public class AnalysisManager implements IAnalysisManager {
 		//Get Coordinates
 		try {
 			JsonNode coordsNode;
-			if(!(coordsNode = tweet.get("coordinates")).isNull()) {
-				stats.incNumTagged();
+			if(!(coordsNode = tweet.get("coordinates")).isNull()) {				
 				//flip order. Twitter returns coords in lon/lat
 				coords = new double[] { coordsNode.get("coordinates").get(1).asDouble(),
 										coordsNode.get("coordinates").get(0).asDouble() };
+				
+				//Drop tweet if it is not in selected area
+				if(!pointInAnyRect(coords, settings.getAreas()))
+					return;
+				
+				stats.incNumTagged();
 			} else {
 				coords = locator.getCoordinates(tweet.findValue("user").findValue("location").asText());
-				if(coords != null)
+				if(coords != null && pointInAnyRect(coords, settings.getAreas()))
 					stats.incNumInferred();
+				else return; //Drop tweet if it is not in selected area
 			}
 		} catch (IOException e) { e.printStackTrace();	}
 		
-		//Drop the tweet if no coordinates present  
-		if(coords == null && !settings.isIncludeAllTweets()) {
+		//Drop the tweet if no coordinates present and unlocated tweets are not to be shown 
+		if((coords == null && !settings.isIncludeAllTweets())) {
 			return;
-		}
-		
-		//Extract HashTags
-		JsonNode tagNode = tweet.findValue("entities").findValue("hashtags");
-		hashtags = tagNode.findValuesAsText("text");
+		}			
 		
 		//Get Sentiment
 		double sentiment = sentimentAnalyser.calculateSentiment(text);
 		sentiment = Math.round(sentiment*100)/100d; //round to second decimal place
+		
+		//Drop the tweet if sentiment is out of selected range
+		if(sentiment < settings.getSentimentRange()[0] || sentiment > settings.getSentimentRange()[1])
+			return;
 		
 		//Get Date
 		Date date = null;
@@ -209,6 +215,18 @@ public class AnalysisManager implements IAnalysisManager {
 		}
 	}
 	
+	private boolean pointInAnyRect(double[] coords, GeoUtils.LatLng[][] rectangles) {
+		if(rectangles == null)
+			return true;
+		GeoUtils.LatLng point = new GeoUtils.LatLng(coords[0], coords[1]);
+		for(GeoUtils.LatLng[] rect : rectangles) {
+			if(GeoUtils.pointInRect(point, rect))
+				return true;
+		}
+		
+		return false;
+	}
+
 	private void updateMaxDist() {
 		double dist = 0.0d;
 		for(int i=0; i<tweets.size(); ++i) {

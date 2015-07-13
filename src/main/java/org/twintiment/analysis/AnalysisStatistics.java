@@ -60,6 +60,15 @@ public class AnalysisStatistics {
 		++numTagged;
 	}
 
+	public synchronized void decNumInferred() {
+		--numInferred;
+	}
+
+	public synchronized void decNumTagged() {
+		--numTagged;
+	}
+
+
 	public synchronized void setMaxDist(double maxDist) {
 		this.maxDist = maxDist;
 	}

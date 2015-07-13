@@ -119,7 +119,9 @@ streamer = (function() {
 			// Start tweet streamer
 			$.postJSON("/Twintiment/analysis/start_streaming", {
 				filterTerms : filterTerms,
-				includeAllTweets: $('#includeAllTweetsCB').prop('checked')
+				includeAllTweets: $('#includeAllTweetsCB').prop('checked'),
+				sentimentRange: window.sentimentRangeSlider.slider('getValue'),
+				areas: mapWidget.getDrawnSquares()
 			}, function() {
 				console.log("Started server stream.");
 				

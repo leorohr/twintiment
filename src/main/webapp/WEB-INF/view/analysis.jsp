@@ -40,11 +40,21 @@
 	src="<c:url value="/resources/bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"/>"></script>
 <link rel="stylesheet"
 	href="<c:url value="/resources/bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css" />">
+<script
+	src="<c:url value="/resources/bower_components/leaflet.draw/dist/leaflet.draw.js"/>"></script>
+<link rel="stylesheet"
+	href="<c:url value="/resources/bower_components/leaflet.draw/dist/leaflet.draw.css" />">
 	
 
 <!-- Highcharts -->
 <script
 	src="<c:url value="/resources/bower_components/highcharts/highcharts.js"/>"></script>
+
+<!-- Bootstrap-Slider -->
+<script
+	src="<c:url value="/resources/bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"/>"></script>
+<link rel="stylesheet"
+	href="<c:url value="/resources/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" />">
 
 
 <link rel="stylesheet"
@@ -86,6 +96,7 @@
 				<div class="checkbox">
 					<label><input type="checkbox" id="includeAllTweetsCB"/>Include All Tweets</label>
 				</div>
+				<input id="sentimentRangeSlider" type="text"/>
 			</div>
 		</div>
 		
