@@ -44,8 +44,6 @@ public class AnalysisManager implements IAnalysisManager {
 	private Thread transmissionThread, analysisThread;
 	private TweetSource source;
 	private ObjectMapper mapper = new ObjectMapper();
-	private SentimentAnalyser sentimentAnalyser;
-	private GeoLocator locator = new GeoLocator();
 	private HashSet<FileMetaDTO> availableFiles = new HashSet<FileMetaDTO>();
 	private List<TweetDataMsg> tweets = Collections.synchronizedList(new ArrayList<TweetDataMsg>());
 	private Settings settings;
@@ -53,7 +51,13 @@ public class AnalysisManager implements IAnalysisManager {
 	
 	@Autowired
 	@Qualifier("TwintimentTaskExecutor")
-	private ThreadPoolTaskExecutor executor; 
+	private ThreadPoolTaskExecutor executor;
+	
+	@Autowired
+	private SentimentAnalyser sentimentAnalyser;
+	
+	@Autowired
+	private GeoLocator locator;
 	
 	@Autowired
 	private ServletContext servletContext;
@@ -137,7 +141,6 @@ public class AnalysisManager implements IAnalysisManager {
 	public void stopAnalysis() {		
 		
 		this.isStopped = true;
-		sentimentAnalyser.close();
 		source.close();
 	}
 	

@@ -7,10 +7,13 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.springframework.stereotype.Service;
+
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Service
 public class GeoLocator {
 	
 	private final String OSM_KEY = "Fmjtd%7Cluu82q622h%2Cbn%3Do5-94zwqf";

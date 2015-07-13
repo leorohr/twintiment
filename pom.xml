@@ -22,9 +22,6 @@
 		<spring-framework.version>4.1.6.RELEASE</spring-framework.version>
 		<org.springframework.security-version>4.0.1.RELEASE</org.springframework.security-version>
 
-		<!-- Hibernate / JPA -->
-		<hibernate.version>4.2.1.Final</hibernate.version>
-
 		<!-- Logging -->
 		<slf4j.version>1.7.5</slf4j.version>
 
@@ -150,26 +147,17 @@
 			<version>1.2.17</version>
 		</dependency>
 
-		<!-- Hibernate -->
+		<!-- CoreNLP -->
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-
-
-		<!-- Test Artifacts -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${spring-framework.version}</version>
-			<scope>test</scope>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-corenlp</artifactId>
+			<version>3.5.2</version>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-corenlp</artifactId>
+			<version>3.5.2</version>
+			<classifier>models</classifier>
 		</dependency>
 	</dependencies>
 
@@ -210,8 +198,6 @@
 				<version>2.2</version>
 				<configuration>
 					<contextReloadable>true</contextReloadable>
-					<!-- <url>http://localhost:8080/manager/text</url> <server>tomcat7</server> 
-						<path>/${project.artifactId}</path> -->
 				</configuration>
 			</plugin>
 		</plugins>
