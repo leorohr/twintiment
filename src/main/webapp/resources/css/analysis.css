@@ -11,6 +11,10 @@ table {
 	width: 100%;
 }
 
+label {
+	font-weight: normal;
+}
+
 .highlight {
 	background-color: #F5F5F5;
 }
@@ -46,12 +50,11 @@ div#map_div {
 
 div#statsSettingsWrapper {
 	height: 90px;
-	max-width: 450px;
+	max-width: 600px;
 }
 
 div#settingsWrapper {
  	padding: 3px;
-	float: right;
 }
 
 div#statsTableWrapper {
@@ -87,6 +90,10 @@ div#fileUploadContainer {
 	border-width: 1px;
     border-color: #5281AE;
     border-radius: 3px;
+}
+
+div.progress {
+	margin-bottom: 0px;
 }
 
 .btn-file input[type=file] {

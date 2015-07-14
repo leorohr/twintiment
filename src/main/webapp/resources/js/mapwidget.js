@@ -53,6 +53,8 @@ mapWidget = (function() {
 		addMarker : function(marker) {
 			markerLayer.addLayer(marker); },
 		getDrawnSquares : function() {
+			if($.isEmptyObject(drawnItems._layers))
+				return null;
 			var square_coords = [];
 			for(var i in drawnItems._layers) {
 				square_coords.push(drawnItems._layers[i]._latlngs);

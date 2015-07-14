@@ -3,10 +3,10 @@ $(document).ready(function() {
 //set up slider
 window.sentimentRangeSlider = $('#sentimentRangeSlider').slider({
 	id: "sentimentRangeSlider",
-	min: 0,
+	min: -5,
 	max: 5,
 	range: true,
-	value: [0,5]
+	value: [-5,5]
 	});
 
 }); //document ready
@@ -17,9 +17,11 @@ window.streamer;
 
 
 //Global functions
-function setRadioButtonsDisabled(disabled) {
-	$('#heatRadioBtn').attr('disabled', disabled);
-	$('#markerRadioBtn').attr('disabled', disabled);
+function setSettingsDisabled(disabled) { //disabled is boolean parameter
+	$('#heatRadioBtn').prop('disabled', disabled);
+	$('#markerRadioBtn').prop('disabled', disabled);
+	$('#includeAllTweetsCB').prop('disabled', disabled);
+	window.sentimentRangeSlider.slider(disabled ? 'disable' : 'enable');
 }
 
 function appendToTweetTable(tableid, message, sentiment) {

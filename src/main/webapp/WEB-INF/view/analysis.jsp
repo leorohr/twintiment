@@ -18,8 +18,6 @@
 <script type="text/javascript"
 	src="<c:url value="/resources/bower_components/stomp-websocket/lib/stomp.min.js" />"></script>
 
-
-
 <!-- Bootstrap -->
 <link rel="stylesheet"	
 	href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css"/>" />
@@ -45,7 +43,6 @@
 <link rel="stylesheet"
 	href="<c:url value="/resources/bower_components/leaflet.draw/dist/leaflet.draw.css" />">
 	
-
 <!-- Highcharts -->
 <script
 	src="<c:url value="/resources/bower_components/highcharts/highcharts.js"/>"></script>
@@ -55,7 +52,6 @@
 	src="<c:url value="/resources/bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"/>"></script>
 <link rel="stylesheet"
 	href="<c:url value="/resources/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" />">
-
 
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/analysis.css" />">
@@ -79,7 +75,7 @@
 		<div id="map_div"></div>
 
 		<div id="statsSettingsWrapper">
-			<div id="statsTableWrapper" class="col-md-7">
+			<div id="statsTableWrapper" class="col-md-5">
 				<table id="statsTable">
 					<tr><td>#Tweets:</td><td id="numTweets"></td></tr>
 					<tr><td>#Tweets (inferred):</td><td id="numInferred"></td></tr>
@@ -90,13 +86,13 @@
 				</table>
 			</div>
 
-			<div id="settingsWrapper" class="col-md-5">
+			<div id="settingsWrapper" class="col-md-7">
 				<label class="radio-inline"><input type="radio" id="markerRadioBtn" name="mapTypeRb" checked="checked">Markers</label>
 				<label class="radio-inline"><input type="radio"	id="heatRadioBtn" name="mapTypeRb">Heatmap</label>
 				<div class="checkbox">
-					<label><input type="checkbox" id="includeAllTweetsCB"/>Include All Tweets</label>
+					<label><input type="checkbox" id="includeAllTweetsCB"/>Include Tweets w/o Location</label>
 				</div>
-				<input id="sentimentRangeSlider" type="text"/>
+				<label>Allowed Sentiment Range</label><input id="sentimentRangeSlider" type="text"/>
 			</div>
 		</div>
 		

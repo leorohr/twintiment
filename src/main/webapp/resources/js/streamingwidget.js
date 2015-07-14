@@ -125,8 +125,8 @@ streamer = (function() {
 			}, function() {
 				console.log("Started server stream.");
 				
-				//Disable radio buttons
-				setRadioButtonsDisabled(true);
+				//Disable settings
+				setSettingsDisabled(true);
 
 				connectToWs();
 			}).fail(function(jqhxr, status, message) {
@@ -177,8 +177,8 @@ streamer = (function() {
 					//Stop polling for top tweets
 					clearInterval(window.intervalVar);
 
-					//reactivate radiobuttons
-					setRadioButtonsDisabled(false);
+					//reactivate settings
+					setSettingsDisabled(false);
 				});
 		} //stopStreaming
 	} //public
