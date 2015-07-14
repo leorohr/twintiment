@@ -9,6 +9,7 @@ import java.util.Iterator;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,8 @@ public class FileUploadController {
 
 	@Autowired
 	private IAnalysisManager manager;
+	
+	private Logger logger = Logger.getLogger(getClass());
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST, headers = "content-type=multipart/*")
 	@ResponseBody
@@ -38,11 +41,11 @@ public class FileUploadController {
 		MultipartFile multiFile = request.getFile(iter.next());
 		File file = null;
 		try {
-			// just to show that we have actually received the file TODO remove
-			System.out.println("File Length:" + multiFile.getBytes().length);
-			System.out.println("File Type:" + multiFile.getContentType());
 			String fileName = multiFile.getOriginalFilename();
-			System.out.println("File Name:" + fileName);
+			logger.info("Uploaded new Dataset");
+			logger.info("File Name:" + fileName);
+			logger.info("File Length:" + multiFile.getBytes().length);
+			logger.info("File Type:" + multiFile.getContentType());
 			String path = request.getServletContext().getRealPath("/");
 
 			// making directories for our required path.

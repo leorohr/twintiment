@@ -17,7 +17,7 @@ import com.twitter.hbc.httpclient.auth.OAuth1;
 
 
 /**
- * TODO
+ * 
  * @author leorohr
  */
 public class TwitterStreaming implements TweetSource {

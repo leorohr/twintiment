@@ -9,6 +9,18 @@ window.sentimentRangeSlider = $('#sentimentRangeSlider').slider({
 	value: [-2,2]
 	});
 
+//UID used for websocket communication
+window.clientID = generateUid();
+
+//Warn before leaving/reloading the page
+$(window).bind('beforeunload', function() {
+	return "This will stop the current analysis.";
+});
+//Stop streaming if page is refreshed or left
+$(window).unload(function() {
+	streamer.stopStreaming();
+});
+
 }); //document ready
 
 
@@ -35,6 +47,17 @@ function appendToTweetTable(tableid, message, sentiment) {
 			.append($('</td>')))
 	.append($('</tr>')));	
 }
+
+//Generates a unique ID to identify the client's own websocket channel.
+function generateUid() {
+
+    function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    }
+
+    return (S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4());
+};
+
 
 $.postJSON = function(url, data, callback) {
     return $.ajax({

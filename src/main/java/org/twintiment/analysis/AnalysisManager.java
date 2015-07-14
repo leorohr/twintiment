@@ -102,7 +102,7 @@ public class AnalysisManager implements IAnalysisManager {
 				while(!isStopped) {
 					
 					try {
-						messagingTemplate.convertAndSend("/queue/data", messageQueue.take());
+						messagingTemplate.convertAndSend("/queue/data-" + settings.getClientID(), messageQueue.take());
 					} catch (MessagingException | InterruptedException e) {
 						e.printStackTrace();
 					}

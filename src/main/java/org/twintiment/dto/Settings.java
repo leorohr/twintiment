@@ -8,6 +8,7 @@ public class Settings implements Serializable {
 
 	private static final long serialVersionUID = -216594605399053449L;
 
+	private String clientID;
 	private boolean includeAllTweets;
 	private String filterTerms;
 	private String fileName;
@@ -15,6 +16,14 @@ public class Settings implements Serializable {
 	private GeoUtils.LatLng[][] areas;
 	public Settings() {
 		
+	}
+
+	public String getClientID() {
+		return clientID;
+	}
+
+	public void setClientID(String clientID) {
+		this.clientID = clientID;
 	}
 
 	public String getFilterTerms() {

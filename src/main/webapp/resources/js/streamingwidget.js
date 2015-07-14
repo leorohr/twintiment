@@ -61,50 +61,50 @@ streamer = (function() {
 			function(frame) {
 				console.log("Connected " + frame);
 			
-			stompClient.subscribe("/queue/data", data_callback);
+				stompClient.subscribe("/queue/data-" + window.clientID, data_callback);
+
+				//Poll for stats every 10 seconds
+				window.intervalVar = setInterval(function() {
+
+					$.get('/Twintiment/analysis/stats', function(response) {
+
+						//Update statistics table
+						$('#statsTable #numTweets').html(response.numTweets);
+						$('#statsTable #numInferred').html(response.numInferred);
+						$('#statsTable #numTagged').html(response.numTagged);
+						$('#statsTable #avgSentiment').html(response.avgSentiment);
+						$('#statsTable #maxDist').html(response.maxDist);
+						$('#statsTable #avgTime').html(response.avgTime);
+
+
+						//Update top tweets
+						$('#topPosTweetsTable tbody').children().remove(); //clear table
+						for(i in response.topPosTweets) {
+							if(response.topPosTweets[i] != null)
+								appendToTweetTable('#topPosTweetsTable', response.topPosTweets[i].message, response.topPosTweets[i].sentiment);
+						}
+						$('#topNegTweetsTable tbody').children().remove(); //clear table
+						for(i in response.topNegTweets) {
+							if(response.topNegTweets[i] != null)
+								appendToTweetTable('#topNegTweetsTable', response.topNegTweets[i].message, response.topNegTweets[i].sentiment);
+						}
+
+						var data = tpm_chart.series[0].data; 
+						var prev = 0;
+						for(var i=0; i<data.length; ++i) {
+							prev += data[i]['y'];
+						}
+						tpm_chart.series[0].addPoint([new Date().getTime(), response.numTweets-prev]);
+						sentiment_chart.series[1].addPoint([new Date().getTime(), response.avgSentiment]);
+
+					});
+
+				}, 5000);
 			
-			//Poll for stats every 10 seconds
-			window.intervalVar = setInterval(function() {
-				
-				$.get('/Twintiment/analysis/stats', function(response) {
-				
-					//Update statistics table
-					$('#statsTable #numTweets').html(response.numTweets);
-					$('#statsTable #numInferred').html(response.numInferred);
-					$('#statsTable #numTagged').html(response.numTagged);
-					$('#statsTable #avgSentiment').html(response.avgSentiment);
-					$('#statsTable #maxDist').html(response.maxDist);
-					$('#statsTable #avgTime').html(response.avgTime);
-					
-					
-					//Update top tweets
-					$('#topPosTweetsTable tbody').children().remove(); //clear table
-					for(i in response.topPosTweets) {
-						if(response.topPosTweets[i] != null)
-							appendToTweetTable('#topPosTweetsTable', response.topPosTweets[i].message, response.topPosTweets[i].sentiment);
-					}
-					$('#topNegTweetsTable tbody').children().remove(); //clear table
-					for(i in response.topNegTweets) {
-						if(response.topNegTweets[i] != null)
-							appendToTweetTable('#topNegTweetsTable', response.topNegTweets[i].message, response.topNegTweets[i].sentiment);
-					}
-					
-					var data = tpm_chart.series[0].data; 
-					var prev = 0;
-					for(var i=0; i<data.length; ++i) {
-						prev += data[i]['y'];
-					}
-					tpm_chart.series[0].addPoint([new Date().getTime(), response.numTweets-prev]);
-					sentiment_chart.series[1].addPoint([new Date().getTime(), response.avgSentiment]);
-				
-				});
-			
-			}, 5000);
-			
-		}, function(error) {
-			console.log("Error while connecting to STOMP server.\n" + error);
-			}
-		);		
+			}, function(error) {
+				console.log("Error while connecting to STOMP server.\n" + error);
+				}
+			);		
 	} //connectToWs
 
 	//public
@@ -118,6 +118,7 @@ streamer = (function() {
 
 			// Start tweet streamer
 			$.postJSON("/Twintiment/analysis/start_streaming", {
+				clientID : window.clientID,
 				filterTerms : filterTerms,
 				includeAllTweets: $('#includeAllTweetsCB').prop('checked'),
 				sentimentRange: window.sentimentRangeSlider.slider('getValue'),
@@ -144,16 +145,18 @@ streamer = (function() {
 				return;
 			}
 			
-
 			// Start tweet streamer
 			$.postJSON("/Twintiment/analysis/start", {
+				clientID : window.clientID,
 				fileName : this.selectedFile,
-				includeAllTweets: $('#includeAllTweetsCB').prop('checked')
+				includeAllTweets: $('#includeAllTweetsCB').prop('checked'),
+				sentimentRange: window.sentimentRangeSlider.slider('getValue'),
+				areas: mapWidget.getDrawnSquares()
 			}, function() {
 				console.log("Started server stream.");
 				
 				//Disable radio buttons
-				setRadioButtonsDisabled(true);
+				setSettingsDisabled(true);
 
 				connectToWs();
 			}).fail(function(jqhxr, status, message) {

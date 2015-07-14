@@ -3,11 +3,6 @@ package org.twintiment.analysis;
 import java.io.IOException;
 import java.util.Properties;
 
-/**
- * TODO
- * @author leorohr
- *
- */
 public class AppProperties {
 	
 	private String consumerKey;
