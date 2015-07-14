@@ -1,67 +1,71 @@
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
 <html>
+
 <head>
 <title>Twintiment</title>
 
 <!--  jQuery  -->
 <script type="text/javascript"
-	src="/resources/bower_components/jquery/dist/jquery.min.js"></script>
+	src="<c:url value="/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
 <script type="text/javascript"
-	src="/resources/bower_components/jquery-ui/ui/minified/widget.min.js"></script>
+	src="<c:url value="/resources/bower_components/jquery-ui/ui/minified/widget.min.js" />"></script>
 <script type="text/javascript"
-	src="/resources/bower_components/blueimp-file-upload/js/jquery.fileupload.js"></script>
+	src="<c:url value="/resources/bower_components/blueimp-file-upload/js/jquery.fileupload.js" />"></script>
 
 <script type="text/javascript"
-	src="/resources/bower_components/sockjs-client/dist/sockjs.min.js"></script>
+	src="<c:url value="/resources/bower_components/sockjs-client/dist/sockjs.min.js" />"></script>
 <script type="text/javascript"
-	src="/resources/bower_components/stomp-websocket/lib/stomp.min.js"></script>
+	src="<c:url value="/resources/bower_components/stomp-websocket/lib/stomp.min.js" />"></script>
 
 <!-- Bootstrap -->
 <link rel="stylesheet"	
-	href="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+	href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css"/>" />
 <link rel="stylesheet"
-	href="/resources/bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>
+	href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>" />
 <script
-	src="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js"/> "></script>
 
 <!-- Leaflet  -->
 <link rel="stylesheet"
-	href="/resources/bower_components/leaflet/dist/leaflet.css"/>
+	href="<c:url value="/resources/bower_components/leaflet/dist/leaflet.css" />">
 <script
-	src="/resources/bower_components/leaflet/dist/leaflet.js"></script>
+	src="<c:url value="/resources/bower_components/leaflet/dist/leaflet.js" />"></script>
 <!-- Plugins -->
 <script
-	src="/resources/bower_components/Leaflet.heat/dist/leaflet-heat.js"></script>
+	src="<c:url value="/resources/bower_components/Leaflet.heat/dist/leaflet-heat.js"/>"></script>
 <script
-	src="/resources/bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+	src="<c:url value="/resources/bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"/>"></script>
 <link rel="stylesheet"
-	href="/resources/bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
+	href="<c:url value="/resources/bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css" />">
 <script
-	src="/resources/bower_components/leaflet.draw/dist/leaflet.draw.js"></script>
+	src="<c:url value="/resources/bower_components/leaflet.draw/dist/leaflet.draw.js"/>"></script>
 <link rel="stylesheet"
-	href="/resources/bower_components/leaflet.draw/dist/leaflet.draw.css"/>
+	href="<c:url value="/resources/bower_components/leaflet.draw/dist/leaflet.draw.css" />">
 	
 <!-- Highcharts -->
 <script
-	src="/resources/bower_components/highcharts/highcharts.js"></script>
+	src="<c:url value="/resources/bower_components/highcharts/highcharts.js"/>"></script>
 
 <!-- Bootstrap-Slider -->
 <script
-	src="/resources/bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+	src="<c:url value="/resources/bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"/>"></script>
 <link rel="stylesheet"
-	href="/resources/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css"/>
+	href="<c:url value="/resources/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" />">
 
 <link rel="stylesheet"
-	href="/resources/css/analysis.css"/>
+	href="<c:url value="/resources/css/analysis.css" />">
 <script type="text/javascript"
-	src="/resources/js/application.js"></script>
+	src="<c:url value="/resources/js/application.js" />"></script>
 <script type="text/javascript"
-	src="/resources/js/chartwidget.js"></script>
+	src="<c:url value="/resources/js/chartwidget.js" />"></script>
 <script type="text/javascript"
-	src="/resources/js/mapwidget.js"></script>
+	src="<c:url value="/resources/js/mapwidget.js" />"></script>
 <script type="text/javascript"
-	src="/resources/js/streamingwidget.js"></script>
+	src="<c:url value="/resources/js/streamingwidget.js" />"></script>
 <script type="text/javascript"
-	src="/resources/js/filewidget.js"></script>
+	src="<c:url value="/resources/js/filewidget.js" />"></script>
 
 </head>
 
@@ -95,7 +99,7 @@
 		
 		<div id="topTweetsWrapper">
 			<div id="topPosTweetsWrapper" class="col-md-6">
-				<table id="topPosTweetsTable" class="table table-bordered table-condensed" border="1">
+				<table id="topPosTweetsTable" class="table table-bordered table-condensed">
 					<caption>5 Most Positive Tweets</caption>
 					<thead>
 						<tr>
@@ -109,7 +113,7 @@
 				</table>
 			</div>
 			<div id="topNegTweetsWrapper" class="col-md-6">
-				<table id="topNegTweetsTable" class="table table-bordered table-condensed" border="1">
+				<table id="topNegTweetsTable" class="table table-bordered table-condensed">
 					<caption>5 Most Negative Tweets</caption>	
 					<thead>
 						<tr>
@@ -125,7 +129,7 @@
 		</div>
 
 		<div id="tweetTableWrapper">
-			<table id="tweetTable" class="table table-bordered table-condensed" border="1">
+			<table id="tweetTable" class="table table-bordered table-condensed">
 				<thead>
 					<tr>
 						<th style="width: 85%">Message</th>
@@ -155,12 +159,12 @@
 			<div id="my-tab-content" class="tab-content">
 				<div class="tab-pane active" id="liveTab">
 					<!-- Live Stream Controls -->
-					<form>
+					<form:form>
 						<input id="filterTerms" name="filterTerms"
 							placeholder="Enter Filterterms..." class="form-control">
 						<input type="button" value="Start" class="btn btn-success" id="startStreaming"/>
 						<input type="button" value="Stop" class="btn btn-default" id="stopStreaming"/>
-					</form>
+					</form:form>
 				</div>
 				<div class="tab-pane" id="fileTab">
 					<!-- File Controls -->
@@ -196,8 +200,7 @@
 						<button class="btn btn-default" id="startUpload">Upload</button>
 						<button class="btn btn-default" id="cancelUpload">Cancel</button>
 						<div class="progress">
-							<div class="progress-bar" id="progress",
-								aria-valuemin="0" aria-valuemax="100"></div>
+							<div class="progress-bar" id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
 						</div>
 					</div>
 				</div>
