@@ -14,37 +14,42 @@ import edu.stanford.nlp.util.CoreMap;
 public class CoreNLPSentiment implements SentimentAnalysisMethod {
 
 	private StanfordCoreNLP pipeline;
-	
+
 	public CoreNLPSentiment() {
 		Properties props = new Properties();
 		props.setProperty("annotators", "tokenize, ssplit, parse, sentiment");
 		pipeline = new StanfordCoreNLP(props);
 	}
-	
-	//TODO combine sentiment of each sentence to overall sentiment of the tweet.
-	//Weighted average?
+
 	@Override
 	public double calculateSentiment(String s) {
 
-		int mainSentiment = 0;
+		double score = 0d;
+		int wordCount = 0;
 		if (s != null && s.length() > 0) {
-		    int longest = 0;
-		    Annotation annotation = pipeline.process(s);
-		    List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
-		    for (CoreMap sentence : sentences) {
-		        Tree tree = sentence
-		                .get(SentimentAnnotatedTree.class);
-//		        sentence.get(SentimentCoreAnnotations.SentimentClass.class); //TODO
-		        
-		        int sentiment = RNNCoreAnnotations.getPredictedClass(tree);
-		        String partText = sentence.toString();
-		        if (partText.length() > longest) {
-		            mainSentiment = sentiment;
-		            longest = partText.length();
-		        }
-		    }
+			Annotation annotation = pipeline.process(s);
+			List<CoreMap> sentences = annotation
+					.get(CoreAnnotations.SentencesAnnotation.class);
+			for (CoreMap sentence : sentences) {
+				Tree tree = sentence.get(SentimentAnnotatedTree.class);
+
+				int sentiment = RNNCoreAnnotations.getPredictedClass(tree);
+				String partText = sentence.toString();
+
+				int sentenceLength = partText.split(" ").length;
+				wordCount += sentenceLength;
+				score = sentiment * sentenceLength;
+			}
 		}
-        return mainSentiment;
+		return score / wordCount;
+	}
+
+	@Override
+	public double normalisedSentiment(String s) {
+
+		// The CoreNLP sentiment values range from 0 to 4, hence subtracting 2
+		// scales them to the desired interval
+		return calculateSentiment(s) - 2;
 	}
 
 }

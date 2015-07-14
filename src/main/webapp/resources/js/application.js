@@ -3,10 +3,10 @@ $(document).ready(function() {
 //set up slider
 window.sentimentRangeSlider = $('#sentimentRangeSlider').slider({
 	id: "sentimentRangeSlider",
-	min: -5,
-	max: 5,
+	min: -2,
+	max: 2,
 	range: true,
-	value: [-5,5]
+	value: [-2,2]
 	});
 
 }); //document ready
