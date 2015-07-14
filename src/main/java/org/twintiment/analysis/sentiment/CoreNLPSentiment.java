@@ -34,7 +34,7 @@ public class CoreNLPSentiment implements SentimentAnalysisMethod {
 		    for (CoreMap sentence : sentences) {
 		        Tree tree = sentence
 		                .get(SentimentAnnotatedTree.class);
-//		        sentence.get(SentimentCoreAnnotations.SentimentClass.class); TODO whats that?
+//		        sentence.get(SentimentCoreAnnotations.SentimentClass.class); //TODO
 		        
 		        int sentiment = RNNCoreAnnotations.getPredictedClass(tree);
 		        String partText = sentence.toString();

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -143,7 +144,7 @@ public class AnalysisManager implements IAnalysisManager {
 		this.isStopped = true;
 		source.close();
 	}
-	
+
 	private void analyseTweet(String rawTweet) throws IOException {		
 		
 		long start = System.currentTimeMillis(); //used to track the avg analysis time
@@ -151,6 +152,7 @@ public class AnalysisManager implements IAnalysisManager {
 		String text = tweet.findValue("text").asText();
 		double[] coords = null;
 		List<String> hashtags = null;
+		boolean tagged = false;
 		
 		//Get Coordinates
 		try {
@@ -159,33 +161,29 @@ public class AnalysisManager implements IAnalysisManager {
 				//flip order. Twitter returns coords in lon/lat
 				coords = new double[] { coordsNode.get("coordinates").get(1).asDouble(),
 										coordsNode.get("coordinates").get(0).asDouble() };
-				
-				//Drop tweet if it is not in selected area
-				if(!pointInAnyRect(coords, settings.getAreas()))
-					return;
-				
-				stats.incNumTagged();
+				tagged = true;
 			} else {
 				coords = locator.getCoordinates(tweet.findValue("user").findValue("location").asText());
-				if(coords != null && pointInAnyRect(coords, settings.getAreas()))
-					stats.incNumInferred();
-				else return; //Drop tweet if it is not in selected area
 			}
 		} catch (IOException e) { e.printStackTrace();	}
 		
 		//Drop the tweet if no coordinates present and unlocated tweets are not to be shown 
 		if((coords == null && !settings.isIncludeAllTweets())) {
 			return;
-		}			
+		}
+
+		//Drop tweet if it is not in selected area
+		if(!pointInAnyRect(coords, settings.getAreas()))
+			return;
 		
 		//Get Sentiment
 		double sentiment = sentimentAnalyser.calculateSentiment(text);
 		sentiment = Math.round(sentiment*100)/100d; //round to second decimal place
 		
 		//Drop the tweet if sentiment is out of selected range
-		if(sentiment < settings.getSentimentRange()[0] || sentiment > settings.getSentimentRange()[1])
-			return;
-		
+//		if(sentiment < settings.getSentimentRange()[0] || sentiment > settings.getSentimentRange()[1])
+//			return;
+				
 		//Get Date
 		Date date = null;
 		try {
@@ -202,6 +200,10 @@ public class AnalysisManager implements IAnalysisManager {
 		
 		//Update statistics
 		stats.update(tweetMsg, System.currentTimeMillis()-start);
+		if(tagged) 
+			stats.incNumTagged();
+		else if(!tagged && coords != null)
+			stats.incNumInferred();
 		
 		//Update max. distance between tweets after ten new tweets arrived
 		if(stats.getNumTweets() % 10 == 0) {
@@ -274,8 +276,18 @@ public class AnalysisManager implements IAnalysisManager {
 		return this.availableFiles;
 	}
 	
-	public void setSettings(Settings settings) {
+	/**
+	 * Assumes that the passed {@link Settings} contain either a FileName to open 
+	 * or FilterTerms for the live stream. If both are set, the FileName is used
+	 * for the TweetSource object.
+	 */
+	public void setSettings(Settings settings) throws IOException {
 		this.settings = settings;
+		if(settings.getFileName() != null)
+			this.source = new DataFile(servletContext.getRealPath("/datasets/" + settings.getFileName()));
+		else if(settings.getFilterTerms() != null) 
+			this.source = new TwitterStreaming(Arrays.asList(settings.getFilterTerms().split(", | |,")));
+		else throw new IOException("No TweetSource found.");
 	}
 	
 	public AnalysisStatistics getStats() {

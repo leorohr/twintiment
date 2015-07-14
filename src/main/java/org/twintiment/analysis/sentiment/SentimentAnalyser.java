@@ -22,7 +22,7 @@ public class SentimentAnalyser {
 	}
 	
 	public double calculateSentiment(String s) {
-		return coreNLP.calculateSentiment(s);
+		return labMT.calculateSentiment(s);
 	}
 
 	@PreDestroy

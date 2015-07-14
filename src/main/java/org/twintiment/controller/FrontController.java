@@ -1,11 +1,7 @@
 package org.twintiment.controller;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Set;
-
-import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.twintiment.analysis.DataFile;
 import org.twintiment.analysis.IAnalysisManager;
-import org.twintiment.analysis.TwitterStreaming;
 import org.twintiment.dto.FileMetaDTO;
 import org.twintiment.dto.Settings;
 import org.twintiment.dto.StatsDTO;
@@ -27,10 +21,7 @@ import org.twintiment.dto.StatsDTO;
 public class FrontController {
 	 
 	@Autowired
-	private IAnalysisManager manager;
-	@Autowired
-	private ServletContext servletContext;
-	
+	private IAnalysisManager manager;	
 	
 	@RequestMapping("/analysis")
 	@ResponseBody
@@ -42,16 +33,16 @@ public class FrontController {
 	@ResponseBody
 	public ResponseEntity<String> startStreaming(@RequestBody Settings settings) {
 		
-		manager.setSettings(settings);
+		try {
+			manager.setSettings(settings);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		if(settings.getFilterTerms().equals(""))
 			return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
 		
-    	try {
-			manager.setTweetSource(new TwitterStreaming(Arrays.asList(settings.getFilterTerms().split(", | |,"))));
-			manager.runAnalysis();
-		} catch (IOException e) { e.printStackTrace(); }
-		
+		manager.runAnalysis();
     	return new ResponseEntity<String>(HttpStatus.OK);
 	}
 	
@@ -71,15 +62,13 @@ public class FrontController {
 			return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		
-		manager.setSettings(settings);
-		
 		try {
-			manager.setTweetSource(new DataFile(servletContext.getRealPath("/datasets/" + settings.getFileName())));
-			manager.runAnalysis();
-		} catch (FileNotFoundException e) {
+			manager.setSettings(settings);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		manager.runAnalysis();
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 	
