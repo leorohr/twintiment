@@ -7,7 +7,7 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<!-- Generic properties -->
+		<!-- General properties -->
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -107,25 +107,8 @@
 		<!-- Other Web dependencies -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>${jstl.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>com.springsource.org.apache.taglibs.standard</artifactId>
-					<groupId>org.apache.taglibs</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${servlet.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>${jsp.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

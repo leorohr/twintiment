@@ -1,70 +1,67 @@
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
-
 <head>
 <title>Twintiment</title>
 
 <!--  jQuery  -->
 <script type="text/javascript"
-	src="<c:url value="/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
+	src="/resources/bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript"
-	src="<c:url value="/resources/bower_components/jquery-ui/ui/minified/widget.min.js" />"></script>
+	src="/resources/bower_components/jquery-ui/ui/minified/widget.min.js"></script>
 <script type="text/javascript"
-	src="<c:url value="/resources/bower_components/blueimp-file-upload/js/jquery.fileupload.js" />"></script>
+	src="/resources/bower_components/blueimp-file-upload/js/jquery.fileupload.js"></script>
 
 <script type="text/javascript"
-	src="<c:url value="/resources/bower_components/sockjs-client/dist/sockjs.min.js" />"></script>
+	src="/resources/bower_components/sockjs-client/dist/sockjs.min.js"></script>
 <script type="text/javascript"
-	src="<c:url value="/resources/bower_components/stomp-websocket/lib/stomp.min.js" />"></script>
+	src="/resources/bower_components/stomp-websocket/lib/stomp.min.js"></script>
 
 <!-- Bootstrap -->
 <link rel="stylesheet"	
-	href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css"/>" />
+	href="/resources/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
 <link rel="stylesheet"
-	href="<c:url value="/resources/bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>" />
+	href="/resources/bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>
 <script
-	src="<c:url value="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js"/> "></script>
+	src="/resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <!-- Leaflet  -->
 <link rel="stylesheet"
-	href="<c:url value="/resources/bower_components/leaflet/dist/leaflet.css" />">
+	href="/resources/bower_components/leaflet/dist/leaflet.css"/>
 <script
-	src="<c:url value="/resources/bower_components/leaflet/dist/leaflet.js" />"></script>
+	src="/resources/bower_components/leaflet/dist/leaflet.js"></script>
 <!-- Plugins -->
 <script
-	src="<c:url value="/resources/bower_components/Leaflet.heat/dist/leaflet-heat.js"/>"></script>
+	src="/resources/bower_components/Leaflet.heat/dist/leaflet-heat.js"></script>
 <script
-	src="<c:url value="/resources/bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"/>"></script>
+	src="/resources/bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 <link rel="stylesheet"
-	href="<c:url value="/resources/bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css" />">
+	href="/resources/bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
 <script
-	src="<c:url value="/resources/bower_components/leaflet.draw/dist/leaflet.draw.js"/>"></script>
+	src="/resources/bower_components/leaflet.draw/dist/leaflet.draw.js"></script>
 <link rel="stylesheet"
-	href="<c:url value="/resources/bower_components/leaflet.draw/dist/leaflet.draw.css" />">
+	href="/resources/bower_components/leaflet.draw/dist/leaflet.draw.css"/>
 	
 <!-- Highcharts -->
 <script
-	src="<c:url value="/resources/bower_components/highcharts/highcharts.js"/>"></script>
+	src="/resources/bower_components/highcharts/highcharts.js"></script>
 
 <!-- Bootstrap-Slider -->
 <script
-	src="<c:url value="/resources/bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"/>"></script>
+	src="/resources/bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 <link rel="stylesheet"
-	href="<c:url value="/resources/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" />">
+	href="/resources/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css"/>
 
 <link rel="stylesheet"
-	href="<c:url value="/resources/css/analysis.css" />">
+	href="/resources/css/analysis.css"/>
 <script type="text/javascript"
-	src="<c:url value="/resources/js/application.js" />"></script>
+	src="/resources/js/application.js"></script>
 <script type="text/javascript"
-	src="<c:url value="/resources/js/chartwidget.js" />"></script>
+	src="/resources/js/chartwidget.js"></script>
 <script type="text/javascript"
-	src="<c:url value="/resources/js/mapwidget.js" />"></script>
+	src="/resources/js/mapwidget.js"></script>
 <script type="text/javascript"
-	src="<c:url value="/resources/js/streamingwidget.js" />"></script>
+	src="/resources/js/streamingwidget.js"></script>
 <script type="text/javascript"
-	src="<c:url value="/resources/js/filewidget.js" />"></script>
+	src="/resources/js/filewidget.js"></script>
 
 </head>
 
@@ -158,12 +155,12 @@
 			<div id="my-tab-content" class="tab-content">
 				<div class="tab-pane active" id="liveTab">
 					<!-- Live Stream Controls -->
-					<form:form>
+					<form>
 						<input id="filterTerms" name="filterTerms"
 							placeholder="Enter Filterterms..." class="form-control">
 						<input type="button" value="Start" class="btn btn-success" id="startStreaming"/>
 						<input type="button" value="Stop" class="btn btn-default" id="stopStreaming"/>
-					</form:form>
+					</form>
 				</div>
 				<div class="tab-pane" id="fileTab">
 					<!-- File Controls -->
