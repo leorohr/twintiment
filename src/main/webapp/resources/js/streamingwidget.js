@@ -46,8 +46,8 @@ streamer = (function() {
 		appendToTweetTable('#tweetTable', js['message'], js['sentiment']);
 		
 		//update sentiment chart
-		//TODO js['date'] or current timestamp?
-		sentiment_chart.series[0].addPoint([new Date().getTime(), js['sentiment']]);  
+		//TODO js['date'] or 'new Date().getTime()'?
+		sentiment_chart.series[0].addPoint([js['date'], js['sentiment']]);  
 		
 
 	} //data_callback	
