@@ -18,9 +18,9 @@
     "leaflet": "~0.7.3",
     "leaflet.markercluster": "~0.4.0-hotfix.1",
     "Leaflet.heat": "https://github.com/Leaflet/Leaflet.heat.git#gh-pages",
+    "leaflet.draw": "~0.2.4",
     "sockjs-client": "~1.0.0",
     "stomp-websocket": "~2.3.4",
-    "seiyria-bootstrap-slider": "~4.10.4",
-    "leaflet.draw": "~0.2.4"
+    "seiyria-bootstrap-slider": "~4.10.4"
   }
 }

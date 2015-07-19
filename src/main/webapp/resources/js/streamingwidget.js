@@ -169,7 +169,7 @@ streamer = (function() {
 		 * Stops the server's tweet feed and disconnects from the websocket.
 		 */
 		stopStreaming : function() {
-			var request = $.get("/Twintiment/analysis/stop")
+			$.get("/Twintiment/analysis/stop")
 				.done(function(reply) {
 					console.log("Stopped server's tweet feed. Status: " + reply);
 		
@@ -184,7 +184,7 @@ streamer = (function() {
 					setSettingsDisabled(false);
 				});
 		} //stopStreaming
-	} //public
+	}; //public
 }()); //module Streamer
 
 });

@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 /* Leaflet Map */
 mapWidget = (function() {	
-	var map = L.map('map_div').setView([51.505, -0.09], 5)
+	var map = L.map('map_div').setView([51.505, -0.09], 5);
 	
 	//Add tile layer
 	L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg', { /* TODO Change to MapBox  */
@@ -29,16 +29,14 @@ mapWidget = (function() {
 	});
 	map.addControl(drawControl);
 	map.on('draw:created', function (e) {
-	    var type = e.layerType,
-	        layer = e.layer;
+	    var layer = e.layer;
 	    drawnItems.addLayer(layer);
 	});
 
 	//Configure and add the layer for the heatmap
 	var heatLayer = L.heatLayer([], 
 		{
-// 			maxZoom : 12, //TODO
-			minOpacity: .5
+			minOpacity: .25
 		}).addTo(map);
 
 	//Add MarkerClusterLayer
@@ -62,7 +60,7 @@ mapWidget = (function() {
 			return square_coords;
 		},
 		map	: map
-	}
+	};
 
 }());
 

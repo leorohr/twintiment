@@ -163,7 +163,7 @@ public class AnalysisManager implements IAnalysisManager {
 										coordsNode.get("coordinates").get(0).asDouble() };
 				tagged = true;
 			} else {
-				coords = locator.getCoordinates(tweet.findValue("user").findValue("location").asText());
+				coords = locator.getCoordinates(tweet);
 			}
 		} catch (IOException e) { e.printStackTrace();	}
 		
