@@ -13,9 +13,9 @@ window.sentimentRangeSlider = $('#sentimentRangeSlider').slider({
 window.clientID = generateUid();
 
 //Warn before leaving/reloading the page
-$(window).bind('beforeunload', function() {
+/*$(window).bind('beforeunload', function() { //TODO only commented out for dev
 	return "This will stop the current analysis.";
-});
+}); */
 //Stop streaming if page is refreshed or left
 $(window).unload(function() {
 	streamer.stopStreaming();

@@ -20,7 +20,7 @@
 
 		<!-- Spring -->
 		<spring-framework.version>4.1.6.RELEASE</spring-framework.version>
-		<org.springframework.security-version>4.0.1.RELEASE</org.springframework.security-version>
+		<spring-framework.security-version>4.0.1.RELEASE</spring-framework.security-version>
 
 		<!-- Logging -->
 		<slf4j.version>1.7.5</slf4j.version>
@@ -31,7 +31,6 @@
 	</properties>
 
 	<dependencies>
-
 		<!-- Spring Packages -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -66,17 +65,17 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>${org.springframework.security-version}</version>
+			<version>${spring-framework.security-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>${org.springframework.security-version}</version>
+			<version>${spring-framework.security-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>${org.springframework.security-version}</version>
+			<version>${spring-framework.security-version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.springframework</groupId>

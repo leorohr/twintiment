@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class TextFeatures implements GeoInferenceMethod {
 
 	private final String NUTS_FILEPATH = getClass().getResource(
-			"/NUTS_2013_sorted_nuts_code.csv").getFile();
+			"/NUTS_2013.csv").getFile();
 
 	private CSVParser parser;
 	private CSVRecord[] records;
