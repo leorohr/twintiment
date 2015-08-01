@@ -9,6 +9,7 @@ public class AppProperties {
 	private String consumerSecret;
 	private String accessToken;
 	private String accessTokenSecret;
+	private String osmKey;
 	
 	public String getConsumerKey() {
 		return consumerKey;
@@ -25,6 +26,10 @@ public class AppProperties {
 	public String getAccessTokenSecret() {
 		return accessTokenSecret;
 	}
+	
+	public String getOSMKey() {
+		return osmKey;
+	}
 
 	// Singleton
 	private static AppProperties instance;
@@ -37,6 +42,7 @@ public class AppProperties {
 		consumerSecret = props.getProperty("consumerSecret");
 		accessToken = props.getProperty("accessToken");
 		accessTokenSecret = props.getProperty("accessTokenSecret");
+		osmKey = props.getProperty("osmKey");
 	}
 	
 	public static AppProperties getAppProperties() throws IOException {
