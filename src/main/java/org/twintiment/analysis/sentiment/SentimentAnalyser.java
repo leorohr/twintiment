@@ -10,11 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SentimentAnalyser {
 
-//	private CoreNLPSentiment coreNLP;
 	private LabMTSentiment labMT;
 	
 	public SentimentAnalyser() throws FileNotFoundException, IOException {
-//		coreNLP = new CoreNLPSentiment();
 		labMT = new LabMTSentiment();	
 	}
 	
