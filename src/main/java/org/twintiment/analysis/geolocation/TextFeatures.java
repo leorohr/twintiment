@@ -1,4 +1,4 @@
-package org.twintiment.analysis.geolocation.textfeatures;
+package org.twintiment.analysis.geolocation;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,7 +11,6 @@ import java.util.regex.PatternSyntaxException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.twintiment.analysis.geolocation.GeoInferenceMethod;
 
 import com.fasterxml.jackson.databind.JsonNode;
 

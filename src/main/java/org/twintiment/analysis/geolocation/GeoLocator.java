@@ -3,7 +3,6 @@ package org.twintiment.analysis.geolocation;
 import java.io.IOException;
 
 import org.springframework.stereotype.Service;
-import org.twintiment.analysis.geolocation.textfeatures.TextFeatures;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
