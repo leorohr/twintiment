@@ -17,6 +17,8 @@
 		<jstl.version>1.2</jstl.version>
 		<servlet.version>3.1.0</servlet.version>
 
+		<!-- GeoTools -->
+		<geotools.version>12-RC1</geotools.version>
 
 		<!-- Spring -->
 		<spring-framework.version>4.1.6.RELEASE</spring-framework.version>
@@ -29,6 +31,14 @@
 		<junit.version>4.11</junit.version>
 
 	</properties>
+	
+	<repositories>
+		<repository>
+			<id>osgeo</id>
+			<name>Open Source Geospatial Foundation Repository</name>
+			<url>http://download.osgeo.org/webdav/geotools/</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<!-- Spring Packages -->
@@ -96,6 +106,11 @@
 			<artifactId>hbc-core</artifactId>
 			<version>2.2.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.twitter4j</groupId>
+			<artifactId>twitter4j-core</artifactId>
+			<version>[4.0,)</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -108,6 +123,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl.version}</version>
+			<scope>provided</scope>
 			<exclusions>
 				<exclusion>
 					<artifactId>com.springsource.org.apache.taglibs.standard</artifactId>
@@ -144,6 +160,30 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
+		</dependency>
+		
+		<!-- WEKA -->
+		<dependency>
+			<groupId>nz.ac.waikato.cms.weka</groupId>
+			<artifactId>weka-stable</artifactId>
+			<version>3.6.6</version>
+		</dependency>
+	
+		<!-- GeoTools -->
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-shapefile</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-swing</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-geometry</artifactId>
+			<version>${geotools.version}</version>
 		</dependency>
 	</dependencies>
 

@@ -2,7 +2,6 @@ package org.twintiment.analysis.geolocation;
 
 import org.twintiment.dto.Settings;
 
-
 public class GeoUtils {
 	
 	private static final double R = 6372.8; // In kilometers

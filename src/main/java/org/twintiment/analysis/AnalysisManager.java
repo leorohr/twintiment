@@ -17,6 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 
+import org.geotools.filter.text.cql2.CQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -125,7 +126,7 @@ public class AnalysisManager implements IAnalysisManager {
 							public void run() {
 								try {
 									AnalysisManager.this.analyseTweet(tweet);
-								} catch (IOException e) {
+								} catch (Exception e) {
 									e.printStackTrace();
 								}
 							}
@@ -145,7 +146,7 @@ public class AnalysisManager implements IAnalysisManager {
 		source.close();
 	}
 
-	private void analyseTweet(String rawTweet) throws IOException {		
+	private void analyseTweet(String rawTweet) throws Exception {		
 		
 		long start = System.currentTimeMillis(); //used to track the avg analysis time
 		JsonNode tweet = mapper.readTree(rawTweet);
@@ -154,18 +155,23 @@ public class AnalysisManager implements IAnalysisManager {
 		List<String> hashtags = null;
 		boolean tagged = false;
 		
-		//Get Coordinates
-		try {
-			JsonNode coordsNode;
-			if(!(coordsNode = tweet.get("coordinates")).isNull()) {				
-				//flip order. Twitter returns coords in lon/lat
-				coords = new double[] { coordsNode.get("coordinates").get(1).asDouble(),
-										coordsNode.get("coordinates").get(0).asDouble() };
-				tagged = true;
-			} else {
+		JsonNode coordsNode;
+		if(!(coordsNode = tweet.get("coordinates")).isNull()) {				
+			//flip order. Twitter returns coords in lon/lat
+			coords = new double[] { coordsNode.get("coordinates").get(1).asDouble(),
+									coordsNode.get("coordinates").get(0).asDouble() };
+			tagged = true;
+		} else {
+			try {
 				coords = locator.getCoordinates(tweet);
+			} catch (CQLException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) { e.printStackTrace();	}
+		}
+		
+		// TODO If the locator did not infer coords, but the user chose to include gazetteer lookup
+//		if(coords == null) && USEROPTION.INCLUDEGAZETTEER)
+//			coords = locator.userLocationCoords(tweet);
 		
 		//Drop the tweet if no coordinates present and unlocated tweets are not to be shown 
 		if((coords == null && !settings.isIncludeAllTweets())) {
@@ -181,8 +187,8 @@ public class AnalysisManager implements IAnalysisManager {
 		sentiment = Math.round(sentiment*100)/100d; //round to second decimal place
 		
 		//Drop the tweet if sentiment is out of selected range
-//		if(sentiment < settings.getSentimentRange()[0] || sentiment > settings.getSentimentRange()[1])
-//			return;
+		if(sentiment < settings.getSentimentRange()[0] || sentiment > settings.getSentimentRange()[1])
+			return;
 				
 		//Get Date
 		Date date = null;
