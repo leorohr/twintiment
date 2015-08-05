@@ -93,6 +93,9 @@
 				<div class="checkbox">
 					<label><input type="checkbox" id="includeAllTweetsCB"/>Include Tweets w/o Location</label>
 				</div>
+				<div class="checkbox">
+					<label><input type="checkbox" id="fallbackGazetteer"/>Fallback Hometown Lookup</label>
+				</div>
 				<label>Allowed Sentiment Range</label><input id="sentimentRangeSlider" type="text"/>
 			</div>
 		</div>

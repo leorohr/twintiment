@@ -10,6 +10,7 @@ public class Settings implements Serializable {
 
 	private String clientID;
 	private boolean includeAllTweets;
+	private boolean fallbackGazetteer;
 	private String[]	filterTerms;
 	private String[] hashTags;
 	private String fileName;
@@ -60,6 +61,14 @@ public class Settings implements Serializable {
 	}
 	
 	
+	public boolean isFallbackGazetteer() {
+		return fallbackGazetteer;
+	}
+
+	public void setFallbackGazetteer(boolean fallBackGazetteer) {
+		this.fallbackGazetteer = fallBackGazetteer;
+	}
+
 	public int[] getSentimentRange() {
 		return sentimentRange;
 	}

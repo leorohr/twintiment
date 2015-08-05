@@ -157,7 +157,7 @@ public class AnalysisManager implements IAnalysisManager {
 		boolean tagged = false;
 		
 		//Drop the tweet if it does not contain the specified hashtags
-		if(settings.getHashTags() != null) {
+		if(settings.getHashTags().length > 0) {
 			JsonNode entities = tweet.get("entities");
 			boolean found = false;
 			for(JsonNode ht : (ArrayNode)entities.get("hashtags")) {
@@ -189,9 +189,9 @@ public class AnalysisManager implements IAnalysisManager {
 			}
 		}
 		
-		// TODO If the locator did not infer coords, but the user chose to include gazetteer lookup
-//		if(coords == null) && USEROPTION.INCLUDEGAZETTEER)
-//			coords = locator.userLocationCoords(tweet);
+		// If the locator did not infer coords, but the user chose to include gazetteer lookup
+		if(coords == null && settings.isFallbackGazetteer())
+			coords = locator.userLocationCoords(tweet);
 		
 		//Drop the tweet if no coordinates present and unlocated tweets are not to be shown 
 		if((coords == null && !settings.isIncludeAllTweets())) {

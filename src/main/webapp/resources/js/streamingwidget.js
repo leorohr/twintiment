@@ -135,6 +135,7 @@ streamer = (function() {
 				filterTerms : filterTerms,
 				hashTags :  hashTags,
 				includeAllTweets: $('#includeAllTweetsCB').prop('checked'),
+				fallbackGazetteer: $('#fallbackGazetteer').prop('checked'),
 				sentimentRange: window.sentimentRangeSlider.slider('getValue'),
 				areas: mapWidget.getDrawnSquares()
 			}, function() {
