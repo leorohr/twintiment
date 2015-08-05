@@ -36,20 +36,60 @@ mapWidget = (function() {
 	//Configure and add the layer for the heatmap
 	var heatLayer = L.heatLayer([], 
 		{
-			minOpacity: .25
+			minOpacity: .5
 		}).addTo(map);
 
 	//Add MarkerClusterLayer
-	var markerLayer = new L.MarkerClusterGroup();
+	var markerLayer = L.markerClusterGroup({
+ 			animateAddingMarkers: true,
+ 			iconCreateFunction: function (cluster) {
+ 				var markers = cluster.getAllChildMarkers();
+ 				var sentiment = 0;
+ 				for (var i = 0; i < markers.length; i++) {
+ 					sentiment += markers[i].options.sentiment;
+ 				}
+ 				sentiment /= markers.length;
+ 				var c = sentiment > 0 ? 'marker-cluster-small' :
+ 						sentiment < 0 ? 'marker-cluster-large' : 
+ 										'marker-cluster-medium';
+
+ 				var icon = new L.DivIcon({
+ 					html: "<div><span>"	+ markers.length + "</span></div>",
+ 					className: 'marker-cluster ' + c,
+ 					iconSize: new L.Point(40, 40)
+ 				});
+				
+ 				return icon;
+ 			}
+			});
+
 	map.addLayer(markerLayer);
+
+	//Create different markers
+	var redIcon = L.icon({
+		iconUrl: '/Twintiment/resources/img/marker-icon-red.png'
+	});
+	var greenIcon = new L.icon({
+		iconUrl: '/Twintiment/resources/img/marker-icon-green.png'
+	});
 	
 	//Public functions
 	return { 
 		addHeatPoint : function(latLng) {
 			heatLayer.addLatLng(latLng);
 		},
-		addMarker : function(marker) {
-			markerLayer.addLayer(marker); },
+		addMarker : function(coords, sentiment, message) {
+			var marker = L.marker(coords,
+ 				{
+ 				icon :
+ 					sentiment > 0 ? greenIcon :
+ 					sentiment < 0 ? redIcon :
+ 					new L.Icon.Default(),
+ 				sentiment: sentiment	
+ 				});
+			marker.bindPopup(message+"<br>Sentiment: "+sentiment);
+			markerLayer.addLayer(marker); 
+		},
 		getDrawnSquares : function() {
 			if($.isEmptyObject(drawnItems._layers))
 				return null;

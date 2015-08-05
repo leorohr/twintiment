@@ -36,9 +36,7 @@ streamer = (function() {
 				mapWidget.addHeatPoint(js['coords']);
 			}
 			else {
-				var marker = L.marker(js['coords']);//.addTo(mapWidget.map);
-				marker.bindPopup(js['message']+"<br>Sentiment: "+js['sentiment']);
-				mapWidget.addMarker(marker);;
+				mapWidget.addMarker(js['coords'], js['sentiment'], js['message']);
 			}
  		}
 
