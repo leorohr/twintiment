@@ -94,7 +94,7 @@ public class NutsUtils {
 		iterator.close();
 		if(mp != null) {
 			com.vividsolutions.jts.geom.Point p = mp.getCentroid();
-			return new double[] { p.getX(), p.getY() };
+			return new double[] { p.getY(), p.getX() };
 		}		
 		
 		return null;
