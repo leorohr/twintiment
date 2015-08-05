@@ -10,7 +10,8 @@ public class Settings implements Serializable {
 
 	private String clientID;
 	private boolean includeAllTweets;
-	private String filterTerms;
+	private String[]	filterTerms;
+	private String[] hashTags;
 	private String fileName;
 	private int[] sentimentRange;
 	private GeoUtils.LatLng[][] areas;
@@ -26,14 +27,22 @@ public class Settings implements Serializable {
 		this.clientID = clientID;
 	}
 
-	public String getFilterTerms() {
+	public String[] getFilterTerms() {
 		return filterTerms;
 	}
 	
-	public void setFilterTerms(String filterTerms) {
+	public void setFilterTerms(String[] filterTerms) {
 		this.filterTerms = filterTerms;
 	}
 	
+	public String[] getHashTags() {
+		return hashTags;
+	}
+
+	public void setHashTags(String[] hashTags) {
+		this.hashTags = hashTags;
+	}
+
 	public String getFileName() {
 		return fileName;
 	}

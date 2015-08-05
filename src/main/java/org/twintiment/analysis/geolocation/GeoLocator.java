@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -22,6 +21,7 @@ import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.SerializationHelper;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -49,9 +49,10 @@ public class GeoLocator {
 			hometown = new Hometown();
 			historical = new HistoricalFeatures();
 			
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(getClass().getResource("/classifier.model").getFile()));
-			cls = (Classifier) ois.readObject();
-			ois.close();
+			cls = (Classifier) SerializationHelper.read(new FileInputStream(getClass().getResource("/classifier.model").getFile()));
+//			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(getClass().getResource("/classifier.model").getFile()));
+//			cls = (Classifier) ois.readObject();
+//			ois.close();
 			
 			nu = new NutsUtils();
 			props = AppProperties.getAppProperties();
@@ -91,7 +92,6 @@ public class GeoLocator {
 	
 	public double[] getCoordinates(JsonNode tweet) throws Exception {
 		
-		//TODO parallelise
 		Instances textft = text.createInstances(tweet, fvAttributes);
 		Instances histft = historical.createInstances(tweet, fvAttributes);
 		Instances htft = hometown.createInstances(tweet, fvAttributes);

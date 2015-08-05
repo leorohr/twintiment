@@ -6,7 +6,22 @@ streamer = (function() {
 	
 	/* UI Bindings */
 	$('#startStreaming').click(function() {
-		streamer.startStreaming($('#filterTerms').val());
+		var str = $('#filterTerms').val().toLowerCase();
+
+		var words = str.split(/\s|,/g);
+		var hashTags = [];
+		var filterTerms = [];
+		words.forEach(function(val, i, arr) {
+			if(val == "")
+				return;
+			if(val.search('#') != -1)
+				hashTags.push(val);
+			else filterTerms.push(val);
+		});
+		if(filterTerms.length == 0 && hashTags.length > 0)
+			filterTerms = hashTags;
+
+		streamer.startStreaming(filterTerms, hashTags);
 	});
 
 	$('#stopStreaming').click(function() {
@@ -112,12 +127,13 @@ streamer = (function() {
 		/*
 		 * Starts the server's live tweet feed and connects to the websocket.
 		 */
-		startStreaming : function(filterTerms) {
+		startStreaming : function(filterTerms, hashTags) {
 
 			// Start tweet streamer
 			$.postJSON("/Twintiment/analysis/start_streaming", {
 				clientID : window.clientID,
 				filterTerms : filterTerms,
+				hashTags :  hashTags,
 				includeAllTweets: $('#includeAllTweetsCB').prop('checked'),
 				sentimentRange: window.sentimentRangeSlider.slider('getValue'),
 				areas: mapWidget.getDrawnSquares()

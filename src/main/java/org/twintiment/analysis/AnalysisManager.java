@@ -35,6 +35,7 @@ import org.twintiment.dto.TweetDataMsg;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 @Component
 @Scope(value="session", proxyMode=ScopedProxyMode.INTERFACES)
@@ -150,11 +151,30 @@ public class AnalysisManager implements IAnalysisManager {
 		
 		long start = System.currentTimeMillis(); //used to track the avg analysis time
 		JsonNode tweet = mapper.readTree(rawTweet);
-		String text = tweet.findValue("text").asText();
+		String text = tweet.get("text").asText();
 		double[] coords = null;
 		List<String> hashtags = null;
 		boolean tagged = false;
 		
+		//Drop the tweet if it does not contain the specified hashtags
+		if(settings.getHashTags() != null) {
+			JsonNode entities = tweet.get("entities");
+			boolean found = false;
+			for(JsonNode ht : (ArrayNode)entities.get("hashtags")) {
+				for(String s_ht : settings.getHashTags()) {
+					if(s_ht.contains(ht.get("text").asText().toLowerCase()))
+						found = true;
+						break;
+				}
+				if(found)
+					break;
+			}
+			
+			if(!found) 
+				return;
+		}
+		
+		// Get coordinates
 		JsonNode coordsNode;
 		if(!(coordsNode = tweet.get("coordinates")).isNull()) {				
 			//flip order. Twitter returns coords in lon/lat
@@ -292,7 +312,7 @@ public class AnalysisManager implements IAnalysisManager {
 		if(settings.getFileName() != null)
 			this.source = new DataFile(servletContext.getRealPath("/datasets/" + settings.getFileName()));
 		else if(settings.getFilterTerms() != null) 
-			this.source = new TwitterStreaming(Arrays.asList(settings.getFilterTerms().split(", | |,")));
+			this.source = new TwitterStreaming(Arrays.asList(settings.getFilterTerms()));
 		else throw new IOException("No TweetSource found.");
 	}
 	
