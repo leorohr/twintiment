@@ -81,7 +81,7 @@ public class NutsUtils {
 
 	/**
 	 * @param nutsCode The NUTS code for which coordinates are to be determined.
-	 * @return Coordinates in lon/lat
+	 * @return Coordinates in lat/lon
 	 * @throws IOException
 	 * @throws CQLException
 	 */

@@ -40,19 +40,20 @@ public class GeoLocator {
 	
 	public static HashMap<String, Integer> nutsToVecPos = new HashMap<>();
 	
-	private Classifier cls;
+	private Classifier histCls;
+	private Classifier htCls;
+	private Classifier textCls;
 	
 	public GeoLocator() {
 	
 		try {
-			text = new TextFeatures();
-			hometown = new Hometown();
 			historical = new HistoricalFeatures();
+			hometown = new Hometown();
+			text = new TextFeatures();
 			
-			cls = (Classifier) SerializationHelper.read(new FileInputStream(getClass().getResource("/classifier.model").getFile()));
-//			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(getClass().getResource("/classifier.model").getFile()));
-//			cls = (Classifier) ois.readObject();
-//			ois.close();
+			histCls = (Classifier) SerializationHelper.read(new FileInputStream(getClass().getResource("/hist_rf.model").getFile()));
+			htCls = (Classifier) SerializationHelper.read(new FileInputStream(getClass().getResource("/ht_rf.model").getFile()));
+			textCls = (Classifier) SerializationHelper.read(new FileInputStream(getClass().getResource("/text_rf.model").getFile()));
 			
 			nu = new NutsUtils();
 			props = AppProperties.getAppProperties();
@@ -97,15 +98,14 @@ public class GeoLocator {
 		Instances htft = hometown.createInstances(tweet, fvAttributes);
 
 		String textNuts = null;
-		if(textft != null) {
-			textNuts = getPredictedNutsCode(textft);	
-		}
+		if(textft != null)
+			textNuts = getPredictedNutsCode(textft, textCls);	
 		String histNuts = null;
 		if(histft != null)
-			histNuts = getPredictedNutsCode(histft);
+			histNuts = getPredictedNutsCode(histft, histCls);
 		String htNuts = null;
 		if(htft != null)
-			htNuts = getPredictedNutsCode(htft);
+			htNuts = getPredictedNutsCode(htft, htCls);
 
 		//If two methods or more agree on the same NUTS, use that one
 		//Otherwise the precedences are Hist>HT>Text
@@ -134,7 +134,7 @@ public class GeoLocator {
 	 * @return NUTS code as String or empty String null
 	 * @throws Exception 
 	 */
-	public String getPredictedNutsCode(Instances instances) throws Exception {
+	public String getPredictedNutsCode(Instances instances, Classifier cls) throws Exception {
 		double maxProb = 0.0d;
 		Instance prediction = null;
 		for(int i=0; i<instances.numInstances(); ++i) {
