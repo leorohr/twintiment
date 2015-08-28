@@ -11,7 +11,7 @@ public class Settings implements Serializable {
 	private String clientID;
 	private boolean includeAllTweets;
 	private boolean fallbackGazetteer;
-	private String[]	filterTerms;
+	private String[] filterTerms;
 	private String[] hashTags;
 	private String fileName;
 	private int[] sentimentRange;
