@@ -4,7 +4,7 @@
   <class id="1" language="java" name="org.twintiment.analysis.AnalysisStatistics" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/analysis/AnalysisStatistics.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1031" y="534"/>    
+    <position height="-1" width="-1" x="1827" y="222"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -13,7 +13,7 @@
   </class>  
   <class id="2" language="java" name="org.twintiment.analysis.DataFile" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/analysis/DataFile.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="534" y="174"/>    
+    <position height="170" width="144" x="885" y="40"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -22,7 +22,7 @@
   </class>  
   <class id="3" language="java" name="org.twintiment.analysis.TwitterStreaming" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/analysis/TwitterStreaming.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="740" y="165"/>    
+    <position height="152" width="261" x="1069" y="40"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -31,7 +31,7 @@
   </class>  
   <class id="4" language="java" name="org.twintiment.analysis.AppProperties" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/analysis/AppProperties.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="956" y="171"/>    
+    <position height="152" width="210" x="625" y="40"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -40,107 +40,132 @@
   </class>  
   <class id="5" language="java" name="org.twintiment.analysis.AnalysisManager" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/analysis/AnalysisManager.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1301" y="201"/>    
+    <position height="-1" width="-1" x="1511" y="179"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <interface id="6" language="java" name="org.twintiment.analysis.IAnalysisManager" project="Twintiment" 
+  <class id="6" language="java" name="org.twintiment.analysis.TwintimentAccessToken" project="Twintiment" 
+    file="/Twintiment/src/main/java/org/twintiment/analysis/TwintimentAccessToken.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1800" y="510"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="7" language="java" name="org.twintiment.analysis.IAnalysisManager" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/analysis/IAnalysisManager.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1349" y="447"/>    
+    <position height="-1" width="-1" x="1520" y="469"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </interface>  
-  <interface id="7" language="java" name="org.twintiment.analysis.TweetSource" project="Twintiment" 
+  <interface id="8" language="java" name="org.twintiment.analysis.TweetSource" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/analysis/TweetSource.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="741" y="410"/>    
+    <position height="116" width="144" x="1069" y="358"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </interface>  
-  <class id="8" language="java" name="org.twintiment.controller.FileUploadController" project="Twintiment" 
+  <class id="9" language="java" name="org.twintiment.controller.FileUploadController" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/controller/FileUploadController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1003" y="787"/>    
+    <position height="-1" width="-1" x="1099" y="554"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="org.twintiment.controller.FrontController" project="Twintiment" 
+  <class id="10" language="java" name="org.twintiment.controller.FrontController" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/controller/FrontController.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1437" y="686"/>    
+    <position height="-1" width="-1" x="1543" y="733"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <realization id="10">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="7"/>  
-  </realization>  
   <realization id="11">    
-    <end type="SOURCE" refId="3"/>    
+    <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="7"/>  
   </realization>  
   <association id="12">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="13" name="instance"/>      
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="13" name="manager"/>      
       <multiplicity id="14" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="15">    
-    <bendpoint x="1208" y="703"/>    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="16" name="manager"/>      
-      <multiplicity id="17" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="18">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="6"/>  
-  </realization>  
-  <association id="19">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="20" name="stats">        
-        <position height="18" width="33" x="1164" y="331"/>      
-      </attribute>      
-      <multiplicity id="21" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="22">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="23" name="source">        
-        <position height="18" width="45" x="820" y="346"/>      
-      </attribute>      
-      <multiplicity id="24" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="25">    
+  <association id="15">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="16" name="source">        
+        <position height="18" width="45" x="1205" y="335"/>      
+      </attribute>      
+      <multiplicity id="17" minimum="0" maximum="1">        
+        <position height="16" width="25" x="1234" y="356"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="18">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="19" name="stats">        
+        <position height="18" width="33" x="1678" y="184"/>      
+      </attribute>      
+      <multiplicity id="20" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="21">    
     <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="26" name="manager"/>      
-      <multiplicity id="27" minimum="0" maximum="1"/>    
+      <attribute id="22" name="manager"/>      
+      <multiplicity id="23" minimum="0" maximum="1">        
+        <position height="16" width="25" x="1373" y="498"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="24">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="25" name="tmpAccessToken">        
+        <position height="18" width="101" x="1578" y="597"/>      
+      </attribute>      
+      <multiplicity id="26" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <realization id="27">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="8"/>  
+  </realization>  
+  <association id="28">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="29" name="instance">        
+        <position height="18" width="54" x="832" y="160"/>      
+      </attribute>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="31">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="8"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="false" static="true"/>    

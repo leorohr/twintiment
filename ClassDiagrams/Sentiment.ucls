@@ -4,7 +4,7 @@
   <class id="1" language="java" name="org.twintiment.analysis.sentiment.SentimentAnalyser" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/analysis/sentiment/SentimentAnalyser.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="556" y="225"/>    
+    <position height="-1" width="-1" x="561" y="349"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -14,7 +14,7 @@
   <interface id="2" language="java" name="org.twintiment.analysis.sentiment.SentimentAnalysisMethod" 
     project="Twintiment" file="/Twintiment/src/main/java/org/twintiment/analysis/sentiment/SentimentAnalysisMethod.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="556" y="546"/>    
+    <position height="-1" width="-1" x="563" y="669"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -24,7 +24,7 @@
   <class id="3" language="java" name="org.twintiment.analysis.sentiment.LabMTSentiment" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/analysis/sentiment/LabMTSentiment.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="556" y="390"/>    
+    <position height="-1" width="-1" x="563" y="513"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      

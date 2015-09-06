@@ -3,7 +3,7 @@
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" name="org.twintiment.dto.Settings" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/dto/Settings.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="613" y="273"/>    
+    <position height="368" width="230" x="58" y="316"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="org.twintiment.dto.FileMetaDTO" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/dto/FileMetaDTO.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="850" y="165"/>    
+    <position height="152" width="165" x="328" y="316"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="org.twintiment.dto.StatsDTO" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/dto/StatsDTO.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1184" y="201"/>    
+    <position height="224" width="422" x="533" y="316"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="org.twintiment.dto.TweetDataMsg" project="Twintiment" 
     file="/Twintiment/src/main/java/org/twintiment/dto/TweetDataMsg.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1194" y="515"/>    
+    <position height="-1" width="-1" x="733" y="809"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -38,25 +38,25 @@
     </display>  
   </class>  
   <association id="5">    
-    <bendpoint x="1096" y="357"/>    
+    <bendpoint x="833" y="614"/>    
     <end type="SOURCE" refId="3" navigable="false">      
       <attribute id="6" name="topPosTweets">        
-        <position height="18" width="85" x="1028" y="401"/>      
+        <position height="18" width="85" x="701" y="682"/>      
       </attribute>      
-      <multiplicity id="7" minimum="0" maximum="2147483647"/>    
+      <multiplicity id="7" minimum="0" maximum="2147483647">        
+        <position height="16" width="23" x="798" y="688"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="8">    
-    <bendpoint x="1328" y="370"/>    
+    <bendpoint x="623" y="617"/>    
     <end type="SOURCE" refId="3" navigable="false">      
       <attribute id="9" name="topNegTweets">        
-        <position height="18" width="87" x="1201" y="393"/>      
+        <position height="18" width="87" x="577" y="699"/>      
       </attribute>      
-      <multiplicity id="10" minimum="0" maximum="2147483647">        
-        <position height="16" width="23" x="1302" y="402"/>      
-      </multiplicity>    
+      <multiplicity id="10" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
