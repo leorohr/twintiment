@@ -42,7 +42,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
 		pool.setCorePoolSize(8);
 		pool.setMaxPoolSize(8);
-		pool.setQueueCapacity(500);
+		pool.setQueueCapacity(50000);
 		pool.setWaitForTasksToCompleteOnShutdown(true);
 		pool.setThreadNamePrefix("TwintimentTaskExecutor-");
 		return pool;
