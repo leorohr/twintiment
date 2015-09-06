@@ -107,7 +107,7 @@
 					<thead>
 						<tr>
 							<th style="width: 85%">Message</th>
-							<th style="width: 15%">Score</th>
+							<th style="width: 15%">Sentiment</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -121,7 +121,7 @@
 					<thead>
 						<tr>
 							<th style="width: 85%">Message</th>
-							<th style="width: 15%">Score</th>
+							<th style="width: 15%">Sentiment</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -136,7 +136,7 @@
 				<thead>
 					<tr>
 						<th style="width: 85%">Message</th>
-						<th style="width: 15%">Score</th>
+						<th style="width: 15%">Sentiment</th>
 					</tr>
 				</thead>
 				<tbody>
