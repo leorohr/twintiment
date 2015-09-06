@@ -79,23 +79,23 @@
 
 		<div id="statsSettingsWrapper">
 			<div id="statsTableWrapper" class="col-md-5">
-				<table id="statsTable">
-					<tr><td>#Tweets:</td><td id="numTweets"></td></tr>
-					<tr><td>#Tweets (inferred):</td><td id="numInferred"></td></tr>
-					<tr><td>#Tweets (geotagged):</td><td id="numTagged"></td></tr>
-					<tr><td>Avg Sentiment:</td><td id="avgSentiment"></td></tr>
-					<tr><td>Max Distance:</td><td id="maxDist"></td></tr>
-					<tr><td>Avg Analysis Time (ms):</td><td id="avgTime"></td></tr>
+				<table id="statsTable" title="Analysis Statistics">
+					<tr title="Number of received tweets"><td>#Tweets:</td><td id="numTweets"></td></tr>
+					<tr title="Number of inferred locations"><td>#Tweets (inferred):</td><td id="numInferred"></td></tr>
+					<tr title="Number of tweets with geotag"><td>#Tweets (geotagged):</td><td id="numTagged"></td></tr>
+					<tr title="The average sentiment of all processed tweets"><td>Avg Sentiment:</td><td id="avgSentiment"></td></tr>
+					<tr title="The maximum distance between any two tweets on the map"><td>Max Distance:</td><td id="maxDist"></td></tr>
+					<tr title="The average time from receiving a tweet on the server until it is sent to the client"><td>Avg Analysis Time (ms):</td><td id="avgTime"></td></tr>
 				</table>
 			</div>
 
 			<div id="settingsWrapper" class="col-md-7">
-				<label class="radio-inline"><input type="radio" id="markerRadioBtn" name="mapTypeRb" checked="checked">Markers</label>
-				<label class="radio-inline"><input type="radio"	id="heatRadioBtn" name="mapTypeRb">Heatmap</label>
-				<div class="checkbox">
+				<label title="Display tweets as markers on the map" class="radio-inline"><input type="radio" id="markerRadioBtn" name="mapTypeRb" checked="checked">Markers</label>
+				<label title="Create a heatmap with the locations of tweets" class="radio-inline"><input type="radio"	id="heatRadioBtn" name="mapTypeRb">Heatmap</label>
+				<div class="checkbox" title="Include tweets without any location information in the tables">
 					<label><input type="checkbox" id="includeAllTweetsCB"/>Include Tweets w/o Location</label>
 				</div>
-				<div class="checkbox">
+				<div class="checkbox" title="If no location can be inferred with the default methods, try to resolve the user's home town with a gazetteer service.">
 					<label><input type="checkbox" id="fallbackGazetteer"/>Fallback Hometown Lookup</label>
 				</div>
 				<label>Allowed Sentiment Range</label><input id="sentimentRangeSlider" type="text"/>
@@ -165,8 +165,8 @@
 				<div class="tab-pane active" id="liveTab">
 					<!-- Live Stream Controls -->
 					<form:form>
-						<input id="filterTerms" name="filterTerms"
-							placeholder="Enter Filterterms..." class="form-control">
+						<input id="filterTerms" name="filterTerms" title="If only hashtags are entered, the tags will also be used as filterterms."
+							placeholder="Enter Filterterms... (e.g. kcl, #london)" class="form-control">
 						<input type="button" value="Start" class="btn btn-success" id="startStreaming"/>
 						<input type="button" value="Stop" class="btn btn-default" id="stopStreaming"/>
 					</form:form>
