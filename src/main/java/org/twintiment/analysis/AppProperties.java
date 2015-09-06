@@ -7,8 +7,6 @@ public class AppProperties {
 	
 	private String consumerKey;
 	private String consumerSecret;
-	private String accessToken;
-	private String accessTokenSecret;
 	private String osmKey;
 	
 	public String getConsumerKey() {
@@ -17,14 +15,6 @@ public class AppProperties {
 
 	public String getConsumerSecret() {
 		return consumerSecret;
-	}
-
-	public String getAccessToken() {
-		return accessToken;
-	}
-
-	public String getAccessTokenSecret() {
-		return accessTokenSecret;
 	}
 	
 	public String getOSMKey() {
@@ -40,8 +30,6 @@ public class AppProperties {
 		
 		consumerKey = props.getProperty("consumerKey");
 		consumerSecret = props.getProperty("consumerSecret");
-		accessToken = props.getProperty("accessToken");
-		accessTokenSecret = props.getProperty("accessTokenSecret");
 		osmKey = props.getProperty("osmKey");
 	}
 	

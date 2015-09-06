@@ -5,9 +5,6 @@ import java.io.IOException;
 
 import javax.annotation.PreDestroy;
 
-import org.springframework.stereotype.Service;
-
-@Service
 public class SentimentAnalyser {
 
 	private LabMTSentiment labMT;

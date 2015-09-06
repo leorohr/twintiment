@@ -25,7 +25,7 @@ public class TwitterStreaming implements TweetSource {
 	private BlockingQueue<String> msgQueue = new LinkedBlockingQueue<String>(10000);
 	private Client hosebirdClient;
 	
-	public TwitterStreaming(List<String> filterTerms) throws IOException {
+	public TwitterStreaming(List<String> filterTerms, String accessToken, String accessTokenSecret) throws IOException {
 
 		Hosts hosebirdHosts = new HttpHosts(Constants.STREAM_HOST);
 		StatusesFilterEndpoint hosebirdEndpoint = new StatusesFilterEndpoint();
@@ -38,7 +38,7 @@ public class TwitterStreaming implements TweetSource {
 		AppProperties properties = AppProperties.getAppProperties();
 		Authentication hosebirdAuth = new OAuth1(
 				properties.getConsumerKey(), properties.getConsumerSecret(),
-				properties.getAccessToken(), properties.getAccessTokenSecret()); 
+				accessToken, accessTokenSecret); 
 				
 		
 		ClientBuilder builder = new ClientBuilder()

@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.geotools.filter.text.cql2.CQLException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.twintiment.analysis.AnalysisManager;
 import org.twintiment.analysis.AppProperties;
 import org.twintiment.analysis.geolocation.GeoInferenceMethod;
 import org.twintiment.analysis.geolocation.GeoLocator;
@@ -17,6 +19,7 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -32,13 +35,16 @@ public class HistoricalFeatures implements GeoInferenceMethod {
 	private boolean waitForRate = false;
 	private Date waitUntil = null;
 	
-	public HistoricalFeatures() throws CQLException, IOException {
+	@Autowired
+	private AnalysisManager manager;
+	
+	public HistoricalFeatures(AccessToken accessToken) throws CQLException, IOException {
 
 		ConfigurationBuilder cb = new ConfigurationBuilder()
 			.setOAuthConsumerKey(props.getConsumerKey())
 			.setOAuthConsumerSecret(props.getConsumerSecret())
-			.setOAuthAccessToken(props.getAccessToken())
-			.setOAuthAccessTokenSecret(props.getAccessTokenSecret())
+			.setOAuthAccessToken(accessToken.getToken())
+			.setOAuthAccessTokenSecret(accessToken.getTokenSecret())
 			.setDebugEnabled(false);
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();

@@ -10,12 +10,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
-import org.springframework.stereotype.Service;
 import org.twintiment.analysis.AppProperties;
 import org.twintiment.analysis.geolocation.methods.HistoricalFeatures;
 import org.twintiment.analysis.geolocation.methods.Hometown;
 import org.twintiment.analysis.geolocation.methods.TextFeatures;
 
+import twitter4j.auth.AccessToken;
 import weka.classifiers.Classifier;
 import weka.core.Attribute;
 import weka.core.FastVector;
@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Service
 public class GeoLocator {
 	
 	private GeoInferenceMethod text;
@@ -44,10 +43,10 @@ public class GeoLocator {
 	private Classifier htCls;
 	private Classifier textCls;
 	
-	public GeoLocator() {
+	public GeoLocator(AccessToken accessToken) {
 	
 		try {
-			historical = new HistoricalFeatures();
+			historical = new HistoricalFeatures(accessToken);
 			hometown = new Hometown();
 			text = new TextFeatures();
 			

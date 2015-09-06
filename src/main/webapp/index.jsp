@@ -3,7 +3,7 @@
 <html>
 
 <head>
-	<c:redirect url="analysis.jsp"/>
+	<c:redirect url="/login"/>	
 </head>	
 
 </html>

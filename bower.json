@@ -12,15 +12,16 @@
   "dependencies": {
     "blueimp-file-upload": "https://github.com/blueimp/jQuery-File-Upload.git#9.10.1",
     "bootstrap": "~3.3.5",
+    "bootstrap-social": "~4.10.1",
+    "highcharts": "~4.1.7",
     "jquery": "~2.1.4",
     "jquery-ui": "~1.11.4",
-    "highcharts": "~4.1.7",
     "leaflet": "~0.7.3",
-    "leaflet.markercluster": "~0.4.0-hotfix.1",
-    "Leaflet.heat": "https://github.com/Leaflet/Leaflet.heat.git#gh-pages",
     "leaflet.draw": "~0.2.4",
+    "Leaflet.heat": "https://github.com/Leaflet/Leaflet.heat.git#gh-pages",
+    "leaflet.markercluster": "~0.4.0-hotfix.1",
+    "seiyria-bootstrap-slider": "~4.10.4",
     "sockjs-client": "~1.0.0",
-    "stomp-websocket": "~2.3.4",
-    "seiyria-bootstrap-slider": "~4.10.4"
+    "stomp-websocket": "~2.3.4"
   }
 }

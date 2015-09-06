@@ -33,6 +33,8 @@ import org.twintiment.dto.FileMetaDTO;
 import org.twintiment.dto.Settings;
 import org.twintiment.dto.TweetDataMsg;
 
+import twitter4j.auth.AccessToken;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -51,18 +53,15 @@ public class AnalysisManager implements IAnalysisManager {
 	private List<TweetDataMsg> tweets = Collections.synchronizedList(new ArrayList<TweetDataMsg>());
 	private Settings settings;
 	private AnalysisStatistics stats = new AnalysisStatistics();
+	private AccessToken accessToken;
+	private SentimentAnalyser sentimentAnalyser;
+	private GeoLocator locator;
 	
 	@Autowired
 	@Qualifier("TwintimentTaskExecutor")
 	private ThreadPoolTaskExecutor executor;
 	
-	@Autowired
-	private SentimentAnalyser sentimentAnalyser;
-	
-	@Autowired
-	private GeoLocator locator;
-	
-	@Autowired
+	@Autowired()
 	private ServletContext servletContext;
 	
 	@Autowired
@@ -305,6 +304,20 @@ public class AnalysisManager implements IAnalysisManager {
 	}
 	
 	/**
+	 * Creates the SentimentAnalyser and GeoLocator instances.
+	 * Can not be done in constructor, because users have to log in first,
+	 * Hence this should be called in the callback from the Twitter login. 
+	 */
+	public void setup() {
+		try {
+			locator = new GeoLocator(accessToken);
+			sentimentAnalyser = new SentimentAnalyser();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Assumes that the passed {@link Settings} contain either a FileName to open 
 	 * or FilterTerms for the live stream. If both are set, the FileName is used
 	 * for the TweetSource object.
@@ -314,11 +327,19 @@ public class AnalysisManager implements IAnalysisManager {
 		if(settings.getFileName() != null)
 			this.source = new DataFile(servletContext.getRealPath("/datasets/" + settings.getFileName()));
 		else if(settings.getFilterTerms() != null) 
-			this.source = new TwitterStreaming(Arrays.asList(settings.getFilterTerms()));
+			this.source = new TwitterStreaming(Arrays.asList(settings.getFilterTerms()), accessToken.getToken(), accessToken.getTokenSecret());
 		else throw new IOException("No TweetSource found.");
 	}
 	
 	public AnalysisStatistics getStats() {
 		return stats;
+	}
+	
+	public void setAccessToken(AccessToken accessToken) {
+		this.accessToken = accessToken;
+	}
+	
+	public AccessToken getAccessToken() {
+		return accessToken;
 	}
 }

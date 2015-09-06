@@ -7,6 +7,8 @@ import java.util.Set;
 import org.twintiment.dto.FileMetaDTO;
 import org.twintiment.dto.Settings;
 
+import twitter4j.auth.AccessToken;
+
 public interface IAnalysisManager {
 	public void runAnalysis();
 	public void stopAnalysis();
@@ -15,4 +17,7 @@ public interface IAnalysisManager {
 	public void setTweetSource(TweetSource source);
 	public AnalysisStatistics getStats();
 	public void addAvailableFile(File file);
+	public AccessToken getAccessToken();
+	public void setAccessToken(AccessToken accessToken);
+	public void setup();
 }
