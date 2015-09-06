@@ -177,6 +177,7 @@
 						<table id="fileTable" class="table table-bordered table-condensed table-hover">
 							<thead>
 								<tr>
+									<th></th>
 									<th>Filename</th>
 									<th>Size</th>
 								</tr>

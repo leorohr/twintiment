@@ -4,7 +4,6 @@ $(document).ready(function() {
 updateFileTable(); 
 
 var fileupload = $('#fileupload').fileupload({
-//		maxChunkSize: 10000000 //10MB - TODO not chunked has file size limit of 4GB
 	replaceFileInput: false,
 	maxNumberOfFiles: 1,
 	add: function (e, data) {
@@ -26,51 +25,24 @@ var fileupload = $('#fileupload').fileupload({
 		$('#progress').html(progress + "%");
     }
 });
-//}).on('fileuploadprogress', function(e, data) {
-//	$("#progressBar").progressbar( "option", "value", data.loaded/data.total * 100);
-//	$("#bitrateLbl").text(bytesToSize(data.loaded) + "/" + 
-//		bytesToSize(data.total) + " - " + 
-//		bytesToSize(data.bitrate/8) + '/s');
-// handlers for chunked uploading 
-//		.on('fileuploadchunksend', function (e, data) {})
-//		.on('fileuploadchunkdone', function (e, data) {})
-//		.on('fileuploadchunkfail', function (e, data) {})
-//		.on('fileuploadchunkalways', function (e, data) {});
 
 $('#cancelUpload').click(function(e) {
 	fileupload.abort();
 });
 
-//Change colour on click
-$('#fileTable').on('click', 'tbody tr', function(event) {
-    $(this).addClass('highlight').siblings().removeClass('highlight');
-
-    //first column contains filename
-    var row = $(event.target.parentNode);
-    streamer.selectedFile = row.children()[0].innerHTML;	
-});
-
-//$('#fileTable').click(function(e) {
-//	$(this).find("tr").each(function() { //reset all rows to white
-//		$(this).css('background-color', 'white')
-//	});
-//
-//	//select clicked row
-//	var row = $(e.target.parentNode);
-//	row.css('background-color', '#F5F5F5');
-//	
-//});
-
 function updateFileTable() {
 	$.get('/Twintiment/files')
 		.success(function(msg) {
 			
-			$('.fileTable tbody').children().remove(); //clear table
+			$('#fileTable tbody').children().remove() //clear table
 			
 			msg.forEach(function(file) {
 				//Add row to table
 				$('#fileTable').find('tbody')
 					.append($('<tr>')
+							.append($('<td>')
+								.append($('<input type="radio" name="file" value=' + file.fileName + '><br>'))
+							.append($('</td>')))
 							.append($('<td>')
 								.append(file.fileName)
 							.append($('</td>')))
@@ -79,11 +51,18 @@ function updateFileTable() {
 							.append($('</td>')))
 					.append($('</tr>')));	
 			}); //foreach
+
+			//Click listeners for radio buttons
+			$('#fileTable tbody input:radio').click(function() { 
+				streamer.selectedFile = $(this).prop('value')
+			});
 		}) //success
 		.error(function(msg) {
 			console.log(msg);
 		});
 }
+
+
 
 function bytesToSize(bytes) {
 	   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
