@@ -107,7 +107,10 @@ streamer = (function() {
 							prev += data[i]['y'];
 						}
 						tpm_chart.series[0].addPoint([new Date().getTime(), response.numTweets-prev]);
-						sentiment_chart.series[1].addPoint([sentiment_chart.series[0].xData[sentiment_chart.series[0].xData.length-1], response.avgSentiment]);
+
+						var lastSentimentTime = sentiment_chart.series[0].xData[sentiment_chart.series[0].xData.length-1];
+						if(lastSentimentTime != undefined)
+							sentiment_chart.series[1].addPoint([lastSentimentTime, response.avgSentiment]);
 
 					});
 
