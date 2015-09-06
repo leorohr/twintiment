@@ -7,10 +7,6 @@ $('#chart_div').highcharts({
 	title: {
 		text: 'Sentiment'
 	},
-// 	subtitle: {
-// 		text: document.ontouchstart === undefined ?
-// 				'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-// 	},
 	xAxis: {
 		type: 'datetime',
  		tickInterval: 1000
@@ -46,7 +42,10 @@ $('#chart_div').highcharts({
 	}, {
 		type: 'line',
 		name: 'Avg. Sentiment'
-	}]
+	}],
+    exporting: {
+        enabled: true
+    }
 });
 
 $('#tpm_chart_div').highcharts({
@@ -56,10 +55,6 @@ $('#tpm_chart_div').highcharts({
 	title: {
 		text: 'Tweet Streaming Rate'
 	},
-// 	subtitle: {
-// 		text: document.ontouchstart === undefined ?
-// 				'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-// 	},
 	xAxis: {
 		type: 'datetime',
  		tickInterval: 5000, //5 sec
@@ -89,7 +84,10 @@ $('#tpm_chart_div').highcharts({
 	series: [{
 		type: 'line',
 		name: 'Tweets'
-	}]
+	}],
+	exporting: {
+		enabled: true
+	}	
 });
 
 

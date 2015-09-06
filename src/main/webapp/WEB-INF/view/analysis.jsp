@@ -47,6 +47,8 @@
 <!-- Highcharts -->
 <script
 	src="<c:url value="/resources/bower_components/highcharts/highcharts.js"/>"></script>
+<script
+	src="<c:url value="/resources/bower_components/highcharts/modules/exporting.js"/>"></script>
 
 <!-- Bootstrap-Slider -->
 <script
@@ -186,8 +188,8 @@
 					</div>
 
 					<div>
-						<input type="button" value="Start Analysis" class="btn btn-default" id="startFileAnalysis"/>
-						<input type="button" value="Stop Analysis" class="btn btn-default" id="stopFileAnalysis"/>
+						<input type="button" value="Start" class="btn btn-success" id="startFileAnalysis"/>
+						<input type="button" value="Stop" class="btn btn-default" id="stopFileAnalysis"/>
 					</div>
 
 					<div id="fileUploadContainer">
