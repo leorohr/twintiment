@@ -33,42 +33,25 @@ public class FrontController {
 	@ResponseBody
 	public ResponseEntity<String> startStreaming(@RequestBody Settings settings) {
 		
+		if((settings.getFileName() == null || settings.getFileName().equals("")) && settings.getFilterTerms().length == 0) {
+			return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
 		try {
 			manager.setSettings(settings);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		if(settings.getFilterTerms().equals(""))
-			return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
-		
+				
 		manager.runAnalysis();
     	return new ResponseEntity<String>(HttpStatus.OK);
-	}
+	}	
 	
 	@RequestMapping(value="/analysis/stop", method=RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<String> stopStreaming() {
 		
 		manager.stopAnalysis(); 
-		return new ResponseEntity<String>(HttpStatus.OK);
-	}
-	
-	@RequestMapping(value="/analysis/start", method=RequestMethod.POST) 
-	@ResponseBody
-	public ResponseEntity<String> startAnalysis(@RequestBody Settings settings) {
-		
-		if(settings.getFileName() == null || settings.getFileName().equals("")) {
-			return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
-		}
-		
-		try {
-			manager.setSettings(settings);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		manager.runAnalysis();
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 	

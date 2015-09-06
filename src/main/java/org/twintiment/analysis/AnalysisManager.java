@@ -105,6 +105,7 @@ public class AnalysisManager implements IAnalysisManager {
 					
 					try {
 						messagingTemplate.convertAndSend("/queue/data-" + settings.getClientID(), messageQueue.take());
+						Thread.sleep(500); //Throttle transmission TODO remove
 					} catch (MessagingException | InterruptedException e) {
 						e.printStackTrace();
 					}

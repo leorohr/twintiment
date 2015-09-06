@@ -59,7 +59,6 @@ streamer = (function() {
 		appendToTweetTable('#tweetTable', js['message'], js['sentiment']);
 		
 		//update sentiment chart
-		//TODO js['date'] or 'new Date().getTime()'?
 		sentiment_chart.series[0].addPoint([js['date'], js['sentiment']]);  
 		
 
@@ -76,7 +75,7 @@ streamer = (function() {
 			
 				stompClient.subscribe("/queue/data-" + window.clientID, data_callback);
 
-				//Poll for stats every 10 seconds
+				//Poll for stats every 5 seconds
 				window.intervalVar = setInterval(function() {
 
 					$.get('/Twintiment/analysis/stats', function(response) {
@@ -108,7 +107,7 @@ streamer = (function() {
 							prev += data[i]['y'];
 						}
 						tpm_chart.series[0].addPoint([new Date().getTime(), response.numTweets-prev]);
-						sentiment_chart.series[1].addPoint([new Date().getTime(), response.avgSentiment]);
+						sentiment_chart.series[1].addPoint([sentiment_chart.series[0].xData[sentiment_chart.series[0].xData.length-1], response.avgSentiment]);
 
 					});
 
@@ -128,10 +127,15 @@ streamer = (function() {
 		 * Starts the server's live tweet feed and connects to the websocket.
 		 */
 		startStreaming : function(filterTerms, hashTags) {
+			if(filterTerms.length == 0 && hashTags.length == 0) {
+				alert("Please enter filterterms and/or hashtags!");
+				return;
+			}
 
 			// Start tweet streamer
 			$.postJSON("/Twintiment/analysis/start_streaming", {
 				clientID : window.clientID,
+				fileName : null,
 				filterTerms : filterTerms,
 				hashTags :  hashTags,
 				includeAllTweets: $('#includeAllTweetsCB').prop('checked'),
@@ -161,12 +165,14 @@ streamer = (function() {
 			}
 			
 			// Start tweet streamer
-			$.postJSON("/Twintiment/analysis/start", {
+			$.postJSON("/Twintiment/analysis/start_streaming", {
 				clientID : window.clientID,
 				fileName : this.selectedFile,
 				includeAllTweets: $('#includeAllTweetsCB').prop('checked'),
 				sentimentRange: window.sentimentRangeSlider.slider('getValue'),
-				areas: mapWidget.getDrawnSquares()
+				areas: mapWidget.getDrawnSquares(),
+				hashTags : [],
+				filterTerms: []
 			}, function() {
 				console.log("Started server stream.");
 				
