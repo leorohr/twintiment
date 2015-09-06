@@ -33,6 +33,7 @@ function setSettingsDisabled(disabled) { //disabled is boolean parameter
 	$('#heatRadioBtn').prop('disabled', disabled);
 	$('#markerRadioBtn').prop('disabled', disabled);
 	$('#includeAllTweetsCB').prop('disabled', disabled);
+	$('#fallbackGazetteer').prop('disabled', disabled);
 	window.sentimentRangeSlider.slider(disabled ? 'disable' : 'enable');
 }
 
