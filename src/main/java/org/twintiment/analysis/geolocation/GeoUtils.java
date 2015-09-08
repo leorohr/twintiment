@@ -2,9 +2,20 @@ package org.twintiment.analysis.geolocation;
 
 import org.twintiment.dto.Settings;
 
+/**
+ * A utitlity class for dealing with geographical coordinates.
+ */
 public class GeoUtils {
 	
 	private static final double R = 6372.8; // In kilometers
+	/**
+	 * Implementation of the haversine formula for great circle distances. (https://en.wikipedia.org/wiki/Haversine_formula)
+	 * @param lat1 Latitude of p1.
+	 * @param lon1 Longitude of p1.
+	 * @param lat2 Latitude of p2.
+	 * @param lon2 Longitude of p2.
+	 * @return The distance between two points p1 and p2. 
+	 */
     public static double haversine(double lat1, double lon1, double lat2, double lon2) {
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
@@ -56,6 +67,10 @@ public class GeoUtils {
 		return true;
 	}
     
+	/**
+	 * A helper class to represent a point in the geo-coordinate system using 
+	 * latitude and longitude.
+	 */
 	public static class LatLng {
 		
 		private double lat;

@@ -42,6 +42,8 @@ streamer = (function() {
 		streamer.stopStreaming();
 	});
 	
+	
+	// Called on each incoming message from the websocket
 	function data_callback(message) {
 		var js = JSON.parse(message.body);
 				

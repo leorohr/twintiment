@@ -17,8 +17,9 @@ import com.twitter.hbc.httpclient.auth.OAuth1;
 
 
 /**
- * 
- * @author leorohr
+ * A {@link TweetSource} that uses the Hosebird Client library to access the Twitter
+ * Streaming API. Incoming tweets are stored in the {@link TwitterStreaming#msqQueue} until they are retrieved
+ * by calls to {@link TwitterStreaming#getNextTweet()}.
  */
 public class TwitterStreaming implements TweetSource {
 	
@@ -51,12 +52,18 @@ public class TwitterStreaming implements TweetSource {
 		hosebirdClient = builder.build();
 		hosebirdClient.connect();
 	}
-		
+	
+	/**
+	 * Stop streaming without clearing the queue.
+	 */
 	public void stopStreaming() {
 		hosebirdClient.stop();	
 	}
 
 
+	/**
+	 * Returns, if available, the next tweet in the {@link TwitterStreaming#msgQueue}.
+	 */
 	@Override
 	public String getNextTweet() {
 
@@ -75,6 +82,9 @@ public class TwitterStreaming implements TweetSource {
 		return !msgQueue.isEmpty();
 	}
 
+	/**
+	 * Stop the stream and clear the queue.
+	 */
 	@Override
 	public void close() {
 		hosebirdClient.stop();

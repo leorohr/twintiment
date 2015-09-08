@@ -1,3 +1,5 @@
+// Widget that sets up and exposes the two chart objects (sentiment_chart and tpm_chart)
+
 $(document).ready(function() {
 
 $('#chart_div').highcharts({

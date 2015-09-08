@@ -14,6 +14,11 @@ import weka.core.Instances;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+/**
+ * Uses the hometown feature as signal to create instances. The {@code location} field of each tweet is
+ * ran against the NUTS dictionary and the instances are created based on the locations that can be resolved
+ * to NUTS codes. Only one probability attribute will ever be set to 1, all others will be 0.
+ */
 public class Hometown implements GeoInferenceMethod {
 	
 	private NutsUtils nu = new NutsUtils();

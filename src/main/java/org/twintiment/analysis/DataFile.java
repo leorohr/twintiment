@@ -6,7 +6,9 @@ import java.util.Scanner;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+/**
+ * Represents one JSON file that can be used a {@link TweetSource} for the {@link AnalysisManager}.
+ */
 public class DataFile implements TweetSource {
 
 	private Scanner scanner;

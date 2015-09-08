@@ -3,6 +3,9 @@ package org.twintiment.analysis;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Loads properties from a file. Stores the applications consumer key and secret as well as the open streetmap key.
+ */
 public class AppProperties {
 	
 	private String consumerKey;

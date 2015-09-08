@@ -39,6 +39,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+/**
+ * Manages and coordinates all activities related to processing the tweet.
+ * Processed tweet result in a {@link TweetDataMsg}, which are kept in the messageQueue until they are broadcasted.
+ * 
+ */
 @Component
 @Scope(value="session", proxyMode=ScopedProxyMode.INTERFACES)
 public class AnalysisManager implements IAnalysisManager {
@@ -90,6 +95,9 @@ public class AnalysisManager implements IAnalysisManager {
 		}
 	}
 	
+	/**
+	 * Kicks off the analysis and transmission threads, which continuously process and broadcast tweets.
+	 */
 	public void runAnalysis() {
 		
 		this.isStopped = false;
@@ -141,13 +149,22 @@ public class AnalysisManager implements IAnalysisManager {
 		analysisThread.start();
 	}
 
-	
+	/**
+	 * Interrupts transmission and analysis.
+	 */
 	public void stopAnalysis() {		
 		
 		this.isStopped = true;
 		source.close();
 	}
 
+	/**
+	 * Determines the tweets sentiment, its location and whether it is to be sent to the client (based on {@link SettingsDTO}).
+	 * If the tweet should be send to the client, a {@link TweetDataMsg} is created and added to the messageQueue. 
+	 * Maintains the statistics.
+	 * @param rawTweet The tweet in its JSON String format.
+	 * @throws Exception
+	 */
 	private void analyseTweet(String rawTweet) throws Exception {		
 		
 		long start = System.currentTimeMillis(); //used to track the avg analysis time
@@ -299,6 +316,9 @@ public class AnalysisManager implements IAnalysisManager {
 		this.source = source;
 	}
 	
+	/**
+	 * Returns the files that are stored on the server and can be used as a {@link TweetSource}.
+	 */
 	public HashSet<FileMetaDTO> getAvailableFiles() {
 		return this.availableFiles;
 	}

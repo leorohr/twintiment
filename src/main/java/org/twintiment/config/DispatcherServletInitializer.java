@@ -3,6 +3,9 @@ import javax.servlet.ServletRegistration.Dynamic;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+/**
+ * Configures the DispatcherServlet 
+ */
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
@@ -17,7 +20,6 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 	
 	@Override
 	protected String[] getServletMappings() {
-//		return new String[] { "/analysis", "/analysis.html", "/analysis.jsp", "/analysis/*" };
 		return new String[] { "/", "/analysis.jsp" };
 
 	}

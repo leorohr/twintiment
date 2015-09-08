@@ -1,3 +1,5 @@
+// Widget that controls the file upload and the display of the filetable.
+
 $(document).ready(function() {
 
 //update on page load 
@@ -30,6 +32,7 @@ $('#cancelUpload').click(function(e) {
 	fileupload.abort();
 });
 
+// Retrieves the available files from the server and displays them as a table
 function updateFileTable() {
 	$.get('/Twintiment/files')
 		.success(function(msg) {
@@ -62,8 +65,7 @@ function updateFileTable() {
 		});
 }
 
-
-
+// Converts a filesize in bytes to highest applicable potency
 function bytesToSize(bytes) {
 	   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 	   if (bytes == 0) return '0 Byte';

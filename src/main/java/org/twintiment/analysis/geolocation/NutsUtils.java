@@ -21,6 +21,9 @@ import org.opengis.filter.Filter;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
 
+/**
+ * A utility class to deal with the NUTS dictionary and shapefile.
+ */
 public class NutsUtils {
 	private CSVParser parser;
 	private CSVRecord[] records;
@@ -43,9 +46,9 @@ public class NutsUtils {
 	}
 
 	/**
-	 * @param coords
-	 *            In lon/lat
-	 * @return The most precise NUTS code or null if not found
+	 * @param lon The longitude to which a NUTS code shall be found.
+	 * @param lat The latitude to which a NUTS code shall be found.
+	 * @return The most precise NUTS code or null if not found.
 	 * @throws CQLException
 	 * @throws IOException
 	 */
@@ -81,7 +84,7 @@ public class NutsUtils {
 
 	/**
 	 * @param nutsCode The NUTS code for which coordinates are to be determined.
-	 * @return Coordinates in lat/lon
+	 * @return The centroid of the identified polygon (NUTS region) in lat/lon.
 	 * @throws IOException
 	 * @throws CQLException
 	 */
@@ -103,8 +106,8 @@ public class NutsUtils {
 	/**
 	 * Matches all words in the tweet against the NUTS dictionary 
 	 * and returns a list of all NUTS codes that were identified.
-	 * @param tweet
-	 * @return
+	 * @param tweet The textual content of a tweet (not the entire JSON string!)
+	 * @return A list of all possible NUTS codes for this tweet (based on its text).
 	 */
 	public ArrayList<String> matchTweet(String tweet) {
 		ArrayList<String> ret = new ArrayList<String>();
@@ -117,6 +120,11 @@ public class NutsUtils {
 		return ret;
 	}
 	
+	/**
+	 * Searches the most precise NUTS code based on the passed {@code word}.
+	 * @param word The word to look for in the NUTS dictionary. 
+	 * @return The most precise (i.e. longest) NUTS code that matches {@code word}.
+	 */
 	public String getNUTSCode(String word) {
 		// Remove special characters
 		word = word.replaceAll("[\\W]", "");

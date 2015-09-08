@@ -1,5 +1,8 @@
 package org.twintiment.analysis;
 
+/**
+ * Used to store the access token during the OAuth process. 
+ */
 public class TwintimentAccessToken {
     
 	private String token;

@@ -60,6 +60,7 @@ function generateUid() {
 };
 
 
+// Wrapper function for $.ajax that posts the JSON contained in 'data' to the 'url'
 $.postJSON = function(url, data, callback) {
     return $.ajax({
     headers: { 

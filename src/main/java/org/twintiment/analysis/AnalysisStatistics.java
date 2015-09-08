@@ -3,6 +3,10 @@ package org.twintiment.analysis;
 import org.twintiment.dto.StatsDTO;
 import org.twintiment.dto.TweetDataMsg;
 
+/**
+ * Keeps several statistics of the analysis. The {@link AnalysisManager} maintains an instance of this
+ * for each connection and runnning stream.
+ */
 public class AnalysisStatistics {
 
 	private int numTweets = 0;
@@ -78,7 +82,7 @@ public class AnalysisStatistics {
 	}
 	
 	/**
-	 * 
+	 * Updates the statistics. Is {@code synchronized} because tweets are processed by multiple threads.
 	 * @param tweet
 	 * @param analysisTime The time it took for the tweet to be analysed (in ms)
 	 */

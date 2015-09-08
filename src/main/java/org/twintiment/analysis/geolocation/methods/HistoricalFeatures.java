@@ -27,6 +27,13 @@ import weka.core.Instances;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+/**
+ * A {@link GeoInferenceMethod} that uses the historical features signal to create {@link Instance}s.
+ * Historical features are based on the prior tweets of a user. To create the instances, Twitter API is 
+ * contacted to retrieve the last 200 tweets of the user and use their locations to infer the current 
+ * tweet's location. The probability attributes of the instances carry the probability of a prior tweet
+ * from this user being from the corresponding NUTS region.
+ */
 public class HistoricalFeatures implements GeoInferenceMethod {
 	
 	private Twitter twitter;

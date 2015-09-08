@@ -2,8 +2,13 @@ package org.twintiment.dto;
 
 import java.io.Serializable;
 
+import org.twintiment.analysis.AnalysisManager;
 import org.twintiment.analysis.geolocation.GeoUtils;
 
+/**
+ * A DTO used to transfer settings that were defined on the client UI to the backend 
+ * {@link AnalysisManager}. 
+ */
 public class Settings implements Serializable {
 
 	private static final long serialVersionUID = -216594605399053449L;

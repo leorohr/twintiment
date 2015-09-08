@@ -16,6 +16,12 @@ import weka.core.Instances;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+/**
+ * An inference method that uses the tweet's textual content to create the classification instances.
+ * The text of a tweet is ran against the NUTS dictionary. E.g. if a tweet contains the word 'London'
+ * and no other word can be matched in the dictionary, the probability attribute of this tweet for
+ * being from london is set to 1.
+ */
 public class TextFeatures implements GeoInferenceMethod {
 
 	private NutsUtils nu = new NutsUtils();

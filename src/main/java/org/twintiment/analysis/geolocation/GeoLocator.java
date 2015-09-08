@@ -27,6 +27,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Provides functionality to infer the location of a tweet. {@link GeoInferenceMethod}s can be added
+ * and included in the {@link GeoLocator#getCoordinates(JsonNode)}.
+ */
 public class GeoLocator {
 	
 	private GeoInferenceMethod text;
@@ -90,6 +94,13 @@ public class GeoLocator {
 		fvAttributes.addElement(new Attribute("class"));		
 	}
 	
+	/**
+	 * Uses the {@link GeoInferenceMethod}s to create WEKA instances and run them against the three classifiers.
+	 * @param tweet The tweet as {@link JsonNode}.
+	 * @return A {@code double} array of length 2. First entry is the latitude, second the longitude of the tweet.
+	 * 			Can be {@code null} if no location can be inferred.
+	 * @throws Exception
+	 */
 	public double[] getCoordinates(JsonNode tweet) throws Exception {
 		
 		Instances textft = text.createInstances(tweet, fvAttributes);
@@ -128,9 +139,9 @@ public class GeoLocator {
 	}
 	
 	/**
-	 * Returns NUTS code with highes probability according to the loaded classifier.
-	 * @param instances
-	 * @return NUTS code as String or empty String null
+	 * Returns the NUTS code with highest probability according to the passed classifier.
+	 * @param The {@link Instances} that are to be classified by {@link Classifier} {@code cls}.
+	 * @return The NUTS code as String or empty String null
 	 * @throws Exception 
 	 */
 	public String getPredictedNutsCode(Instances instances, Classifier cls) throws Exception {

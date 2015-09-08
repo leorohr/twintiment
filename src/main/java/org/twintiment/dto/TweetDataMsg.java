@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * A class used to transport data about a tweet from the server to the client.
+ * A DTO used to transport data about a tweet from the server to the client.
  */
 public class TweetDataMsg implements Serializable {
 	

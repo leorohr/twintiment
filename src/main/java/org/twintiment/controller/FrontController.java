@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.twintiment.analysis.AnalysisManager;
+import org.twintiment.analysis.AnalysisStatistics;
 import org.twintiment.analysis.TwintimentAccessToken;
 import org.twintiment.analysis.AppProperties;
 import org.twintiment.analysis.IAnalysisManager;
@@ -28,6 +30,10 @@ import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
+/**
+ * The front controller of the application. Handles almost all REST communication with
+ * clients and exposes multiple endpoints.
+ */
 @Controller
 public class FrontController {
 	
@@ -39,6 +45,15 @@ public class FrontController {
 	@Autowired
 	private IAnalysisManager manager;	
 	
+	/**
+	 * Exposes {@code GET/POST /twitter_callback}. Is called after the Twitter authentication is completed
+	 * and the Twitter API calls the application back with the oauth verifier.
+	 * @param request The callback request containing the oauth verifier as parameter.
+	 * @param response
+	 * @return The String {@code redirect:analysis}, causing the client to be redirected to the {@code GET /analysis}
+	 * 			endpoint after the callback is executed.
+	 * @throws Exception
+	 */
 	@RequestMapping(value="/twitter_callback", method={RequestMethod.GET, RequestMethod.POST})
 	protected String twitterCallback(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		//Twitter verification
@@ -56,12 +71,23 @@ public class FrontController {
 		return "redirect:analysis";
 	}
 	
+	/**
+	 * Exposes {@code GET /analysis}.
+	 * @return the analysis.jsp view 
+	 */
 	@RequestMapping(value="/analysis", method=RequestMethod.GET)
 	@ResponseBody
 	public ModelAndView analysisView() {
 		return new ModelAndView("analysis");
 	}
 	
+	/**
+	 * Exposes {@code POST /analysis/start_streaming}. 
+	 * @param settings The {@link Settings} object that is used by the {@link AnalysisManager} to determine the
+	 * 		parameters of the analysis.
+	 * @return {@link HttpStatus#OK} if the settings were accepted, {@link HttpStatus#UNPROCESSABLE_ENTITY} if the
+	 * 			settings did contain neither a filename nor filterterms.
+	 */
 	@RequestMapping(value = "/analysis/start_streaming", method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<String> startStreaming(@RequestBody Settings settings) {
@@ -80,6 +106,11 @@ public class FrontController {
     	return new ResponseEntity<String>(HttpStatus.OK);
 	}	
 	
+	/**
+	 * Exposes {@code GET /analysis/stop}. 
+	 * Stops the analysis. (see {@link AnalysisManager#stopAnalysis()}). 
+	 * @return {@link HttpStatus#OK} when the analysis was stopped.
+	 */
 	@RequestMapping(value="/analysis/stop", method=RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<String> stopStreaming() {
@@ -88,6 +119,11 @@ public class FrontController {
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 	
+	/**
+	 * Exposes {@code GET /files}.
+	 * @return A set of {@link FileMetaDTO}s, representing the datasets that are 
+	 * available to analyse on the server. 
+	 */
 	@RequestMapping(value="/files", method=RequestMethod.GET)
 	@ResponseBody
 	public Set<FileMetaDTO> getAvailableFiles() {
@@ -95,6 +131,10 @@ public class FrontController {
 		return manager.getAvailableFiles();
 	}
 	
+	/**
+	 * Exposes {@code GET /analysis/stats}.
+	 * @return A {@link StatsDTO} object with the {@link AnalysisStatistics} of the currently running analysis in {@link AnalysisManager}.
+	 */
 	@RequestMapping(value="/analysis/stats", method=RequestMethod.GET)
 	@ResponseBody
 	public StatsDTO getStats() {
@@ -102,6 +142,14 @@ public class FrontController {
 		return manager.getStats().getDTO();
 	}
     
+	/**
+	 * Exposes {@code GET /login}. Uses the consumer key and secret from the {@link AppProperties} and 
+	 * redirects the user to the Twitter authorisation page, where they can login with their Twitter 
+	 * credentials.
+	 * @param response
+	 * @param request
+	 * @return The login.jsp view.
+	 */
     @RequestMapping(value="/login", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView loginView(HttpServletResponse response, HttpServletRequest request) {

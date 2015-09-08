@@ -2,6 +2,12 @@ package org.twintiment.dto;
 
 import java.io.Serializable;
 
+import org.twintiment.analysis.AnalysisManager;
+import org.twintiment.analysis.AnalysisStatistics;
+
+/**
+ * DTO to transfer the {@link AnalysisStatistics} from the {@link AnalysisManager} to the client.
+ */
 public class StatsDTO implements Serializable {
 
 	private static final long serialVersionUID = 130377909851875282L;

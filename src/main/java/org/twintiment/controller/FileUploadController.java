@@ -21,6 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.twintiment.analysis.IAnalysisManager;
 
+/**
+ * Controller that handles all file uploads from the client. 
+ */
 @Controller 
 @MultipartConfig
 public class FileUploadController {
@@ -30,6 +33,12 @@ public class FileUploadController {
 	
 	private Logger logger = Logger.getLogger(getClass());
 
+	/**
+	 * Exposes {@code POST /upload} endpoint. Uploaded files are stored in '/datasets'
+	 * @param request
+	 * @param response
+	 * @return {@link HttpStatus#OK} if the upload was successfully completed.
+	 */
 	@RequestMapping(value = "/upload", method = RequestMethod.POST, headers = "content-type=multipart/*")
 	@ResponseBody
 	public ResponseEntity<String> handleFileUpload(
